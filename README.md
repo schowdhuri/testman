@@ -1,2 +1,2 @@
-# testman
+# TestMan
 Minimal test management tool
