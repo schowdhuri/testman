@@ -13,6 +13,7 @@
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
     "express-wetland": "^1.0.0",
+    "knex": "^0.14.2",
     "multer": "^1.3.0",
     "nodemon": "^1.14.11",
     "react": "^16.2.0",
@@ -21,9 +22,8 @@
     "redux": "^3.7.2",
     "redux-saga": "^0.16.0",
     "sqlite3": "^3.1.13",
-    "wetland": "^2.5.0"
-  },
-  "devDependencies": {
+    "wetland": "^2.5.0",
     "wetland-cli": "^1.1.0"
-  }
+  },
+  "devDependencies": {}
 }

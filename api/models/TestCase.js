@@ -11,6 +11,7 @@ class TestCase {
         mapping.field("status", {
             type: "enumeration",
             nullable: false,
+            // defaultTo: "New",
             enumeration: ["New", "Pass", "Fail"]
         });
         mapping.oneToMany("comments", { targetEntity: "Comment", mappedBy: "comments" });

@@ -11,7 +11,7 @@ class Defect {
         mapping.field("status", {
             type: "enumeration",
             nullable: false,
-            defaultTo: "Open",
+            // defaultTo: "Open",
             enumeration: ["Open", "WIP", "Closed"]
         });
         mapping.oneToMany("comments", { targetEntity: "Comment", mappedBy: "comments" });

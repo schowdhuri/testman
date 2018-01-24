@@ -1,10 +1,21 @@
 const TestCase = require("../models/TestCase");
-
+const Comment = require("../models/Comment");
 const findAll = wetland => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(TestCase);
+
+    const testCaseQB = repository.getQueryBuilder("t");
+    // const commentRepository = manager.getRepository(Comment);
+    // const queryBuilder2 = commentRepository.getQueryBuilder("c");
+    // queryBuilder1.select("c");
+    // queryBuilder2.innerJoin("c.id", "comments.id");
+    // console.log(queryBuilder1.select("t").getQuery().getResult());
+    // const commentRepository = manager.getRepository(Comment);
+    // const commentQB = commentRepository.getQueryBuilder("c");
+    // return commentQB.select("id", "linkedDefect").getQuery().getResult();
+    // return queryBuilder1.select("comment_id").getQuery().getResult();
     return repository.find({}, {
-        populate: ["description"]
+        populate: ["description", "defects"]
     }).then(result => Promise.resolve(result || []));
 };
 
@@ -12,7 +23,7 @@ const findById = (id, wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(TestCase);
     return repository.findOne(id, {
-        populate: ["description"]
+        populate: [ "description" ]
     });
 };
 
@@ -25,7 +36,7 @@ const create = (obj, wetland) => {
         description: {
             value: obj.description || ""
         },
-        status: obj.status || "New"
+        status: obj.status || "New" // TODO: use model lifecycle hooks
     };
     const manager  = wetland.getManager();
     const populator = wetland.getPopulator(manager);
@@ -78,10 +89,10 @@ const update = (id, data, wetland) => {
 const remove = (id, wetland) => {
     if(!id)
         return Promise.reject("id is required");
-    
+
     const manager = wetland.getManager();
     const repository = manager.getRepository(TestCase);
-    
+
     return repository.findOne(id)
         .then(testCase => {
             if(!testCase)

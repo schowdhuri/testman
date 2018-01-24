@@ -6,7 +6,7 @@ const wetlandConfig = require("./wetland");
 
 const routes = require("./api/routes");
 
-const PORT = 3000;
+const PORT = 3200;
 
 // Setup DB
 // const dbConn = db.connect();
