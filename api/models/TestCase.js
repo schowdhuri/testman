@@ -2,6 +2,14 @@
 
 class TestCase {
     static setMapping(mapping) {
+        mapping.field("created", {
+            type: "datetime",
+            nullable: true
+        });
+        mapping.field("modified", {
+            type: "datetime",
+            nullable: true
+        });
         mapping.forProperty("id").primary().increments();
         mapping.field("name", {
             type: "string",
@@ -11,11 +19,20 @@ class TestCase {
         mapping.field("status", {
             type: "enumeration",
             nullable: false,
-            // defaultTo: "New",
             enumeration: ["New", "Pass", "Fail"]
         });
         mapping.oneToMany("comments", { targetEntity: "Comment", mappedBy: "comments" });
         mapping.manyToMany("defects", { targetEntity: "Defect", mappedBy: "testcases" });
+    }
+
+    beforeCreate() {
+        this.created = new Date();
+        this.modified = this.created;
+        this.status = "New";
+    }
+
+    beforeUpdate(values) {
+        values.modified = new Date();
     }
 }
 

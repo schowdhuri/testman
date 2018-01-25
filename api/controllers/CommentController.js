@@ -24,29 +24,9 @@ const findAll = wetland => {
 const findById = (id, wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(Comment);
-    const qb = repository.getQueryBuilder("c");
-    return qb
-        .where({ "c.id": id })
-        .leftJoin("c.content", "co")
-        .leftJoin("c.defects", "d")
-        .leftJoin("c.testcases", "tc")
-        .select("c.id", "co", "tc.id", "d.id")
-        .getQuery()
-        .execute()
-        .then(res => {
-            if(res && res[0]) {
-                return Promise.resolve({
-                    id: res[0]["c.id"],
-                    content: {
-                        id: res[0]["co.id"],
-                        value: res[0]["co.value"]
-                    },
-                    defect: res[0]["d.id"],
-                    testCase: res[0]["tc.id"]
-                });
-            }
-            return Promise.reject(null);
-        });
+    return repository.findOne(id, {
+        populate: [ "content", "testcases", "defects" ]
+    });
 };
 
 const create = (obj, wetland) => {
@@ -94,9 +74,10 @@ const update = (id, data, wetland) => {
     const manager  = wetland.getManager();
     const repository = manager.getRepository(Comment);
     const populator = wetland.getPopulator(manager);
+    const uow = manager.getUnitOfWork();
 
     return repository.findOne(id, {
-        populate: ["content"]
+        populate: [ "content" ]
     }).then(comment => {
         if(!comment)
             return Promise.reject(`Comment with id ${id} not found`);
@@ -112,6 +93,7 @@ const update = (id, data, wetland) => {
                 };
             }
             populator.assign(Comment, data, comment, true);
+            uow.registerDirty(comment, [ "content" ]);
             return manager
                 .flush()
                 .then(() => comment);
