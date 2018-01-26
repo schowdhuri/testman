@@ -13,7 +13,12 @@ const _getComments = (defectID, manager) => {
             alias: "def",
             populate: [ "defects", "content"]
         })
-        .then(comments => Promise.resolve(comments ? comments.map(c => c.content) : []));
+        .then(comments => Promise.resolve(comments
+            ? comments.map(c => Object.assign({}, {
+                id: c.id,
+                content: c.content && c.content.value
+            })).filter(c => c.content)
+            : []));
 };
 
 const findAll = wetland => {
@@ -34,7 +39,7 @@ const findAll = wetland => {
         }))))
         .then(resArr => Promise.all(resArr.map(res =>  _getComments(res.id, manager)
             .then(comments => Promise.resolve(Object.assign({}, res, {
-                comments: comments.map(c => c.value)
+                comments: comments.map(c => c.content)
             })))
         )));
 };
@@ -129,6 +134,7 @@ const update = (id, data, wetland) => {
     const manager  = wetland.getManager();
     const repository = manager.getRepository(Defect);
     const populator = wetland.getPopulator(manager);
+    const uow = manager.getUnitOfWork();
 
     return repository.findOne(id, {
         populate: ["description"]
@@ -147,6 +153,7 @@ const update = (id, data, wetland) => {
                 };
             }
             populator.assign(Defect, data, defect, true);
+            uow.registerDirty(comment, [ "description" ]);
             return manager
                 .flush()
                 .then(() => defect);

@@ -21,4 +21,6 @@ node_modules/
 .npm
 .yarn-integrity
 
+.data
 .db
+client/dist

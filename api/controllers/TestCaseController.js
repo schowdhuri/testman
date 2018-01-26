@@ -1,23 +1,56 @@
 const TestCase = require("../models/TestCase");
 const Comment = require("../models/Comment");
+
+const _getComments = (testCaseID, manager) => {
+    const repository = manager.getRepository(Comment);
+    return repository
+        .find({
+            "tc.id": testCaseID
+        }, {
+            alias: "tc",
+            populate: [ "testcases", "content"]
+        })
+        .then(comments => Promise.resolve(comments
+            ? comments.map(c => Object.assign({}, {
+                id: c.id,
+                content: c.content && c.content.value
+            })).filter(c => c.content)
+            : []));
+};
+
 const findAll = wetland => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(TestCase);
+    const qb = repository.getQueryBuilder("tc");
 
-    const testCaseQB = repository.getQueryBuilder("t");
-    // const commentRepository = manager.getRepository(Comment);
-    // const queryBuilder2 = commentRepository.getQueryBuilder("c");
-    // queryBuilder1.select("c");
-    // queryBuilder2.innerJoin("c.id", "comments.id");
-    // console.log(queryBuilder1.select("t").getQuery().getResult());
-    // const commentRepository = manager.getRepository(Comment);
-    // const commentQB = commentRepository.getQueryBuilder("c");
-    // return commentQB.select("id", "linkedDefect").getQuery().getResult();
-    // return queryBuilder1.select("comment_id").getQuery().getResult();
-    return repository.find({}, {
-        populate: ["description", "defects"]
-    }).then(result => Promise.resolve(result || []));
+    return qb
+        .leftJoin("tc.description", "desc")
+        .leftJoin("tc.defects", "d")
+        .select("tc.id", "d.id", "desc.value")
+        .getQuery()
+        .execute()
+        .then(resArr => Promise.resolve(resArr.map(res => ({
+            id: res["tc.id"],
+            description: res["desc.value"],
+            defects: res["d.id"]
+        }))))
+        .then(resArr => Promise.all(resArr.map(res =>  _getComments(res.id, manager)
+            .then(comments => Promise.resolve(Object.assign({}, res, {
+                comments: comments.map(c => c.content)
+            })))
+        )))
+        .catch(ex => console.log(ex));
 };
+
+// const findAll = wetland => {
+//     const manager = wetland.getManager();
+//     const repository = manager.getRepository(TestCase);
+
+//     const testCaseQB = repository.getQueryBuilder("t");
+//     return repository.find({}, {
+//         populate: ["description", "defects"]
+//     }).then(result => Promise.resolve(result || []));
+// };
 
 const findById = (id, wetland) => {
     const manager = wetland.getManager();
@@ -56,6 +89,7 @@ const update = (id, data, wetland) => {
     const manager  = wetland.getManager();
     const repository = manager.getRepository(TestCase);
     const populator = wetland.getPopulator(manager);
+    const uow = manager.getUnitOfWork();
 
     return repository.findOne(id, {
         populate: ["description"]
@@ -73,9 +107,8 @@ const update = (id, data, wetland) => {
                     value: data.description
                 };
             }
-            console.log("data: ", data)
             populator.assign(TestCase, data, testCase, true);
-            console.log("updated: ", testCase)
+            uow.registerDirty(comment, [ "description" ]);
             return manager
                 .flush()
                 .then(() => testCase);

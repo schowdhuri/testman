@@ -19,7 +19,6 @@ class Defect {
         mapping.field("status", {
             type: "enumeration",
             nullable: false,
-            // defaultTo: "Open",
             enumeration: ["Open", "WIP", "Closed"]
         });
         mapping.oneToMany("comments", { targetEntity: "Comment", mappedBy: "comments" });
@@ -27,8 +26,9 @@ class Defect {
     }
 
     beforeCreate() {
-        this.created = new Date();
-        this.modified = this.created;
+        const datetime = new Date();
+        this.modified = datetime;
+        this.created = datetime;
         this.status = "Open";
     }
 

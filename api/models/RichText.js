@@ -18,8 +18,9 @@ class RichText {
     }
 
     beforeCreate() {
-        this.created = new Date();
-        this.modified = this.created;
+        const datetime = new Date();
+        this.modified = datetime;
+        this.created = datetime;
     }
 
     beforeUpdate(values) {

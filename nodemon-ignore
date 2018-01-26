@@ -1,0 +1,7 @@
+client/*
+views/*
+.db/*
+.git/*
+migrations/*
+README.md
+LICENSE
