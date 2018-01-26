@@ -1,9 +1,9 @@
 import { spawn } from "redux-saga/effects";
 
-// import fetchCampaigns from "sagas/Campaigns/fetchCampaigns";
+import reqTestCases from "sagas/reqTestCases";
 
-function* sagas() {
-    // yield spawn(fetchCampaigns);
+function* rootSaga() {
+    yield spawn(reqTestCases);
 }
 
-export default sagas;
+export default rootSaga;

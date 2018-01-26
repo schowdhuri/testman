@@ -1,12 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-class Dashboard extends React.Component {
+class ExecCycle extends React.Component {
     render() {
         return (<div>
-            dashboard
+            ExecCycle
         </div>);
     }
 }
 
-export default Dashboard;
+export default ExecCycle;

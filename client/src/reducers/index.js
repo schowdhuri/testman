@@ -1,12 +1,11 @@
 import { combineReducers } from "redux";
-// import listView from "reducers/shared/List/index";
 
-// const rootReducer = combineReducers({
-//     // listView
-// });
+import isLoading from "./Shared/isLoading";
+import testDesign from "./TestDesign";
 
-const rootReducer = (state={}, action) => {
-    return state;
-};
+const rootReducer = combineReducers({
+    isLoading,
+    testDesign
+});
 
 export default rootReducer;

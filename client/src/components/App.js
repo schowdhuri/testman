@@ -2,10 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import Alert from "react-s-alert";
 
+import Header from "./Header";
+
+
+// import "node_modules/bootstrap/dist/css/bootstrap-theme.min.css"
+
 class App extends React.Component {
     render() {
         return (<div>
-            <h1>Common element</h1>
+            <Header />
             {this.props.children}
             <Alert position="top" effect="stackslide" stack={{ limit: 2 }} />
         </div>);

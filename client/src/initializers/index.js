@@ -13,6 +13,9 @@ import sagas from "sagas/index";
 
 import App from "components/App";
 import Dashboard from "components/Dashboard";
+import Design from "components/TestDesign";
+import ExecCycle from "components/ExecCycle";
+import Documents from "components/Documents";
 
 import "sass/index.scss";
 
@@ -23,17 +26,36 @@ const store = configureStore(reducer, sagaMiddleware);
 sagaMiddleware.run(sagas);
 
 const HomePage = () => {
-    console.log("hi")
     return (<App>
         <Dashboard />
     </App>);
 };
 HomePage.propTypes = {
-    // match: PropTypes.shape({
-    //     params: PropTypes.shape({
-    //         networkId: PropTypes.string
-    //     })
-    // })
+
+};
+const DesignPage = () => {
+    return (<App>
+        <Design />
+    </App>);
+};
+DesignPage.propTypes = {
+
+};
+const ExecCyclePage = () => {
+    return (<App>
+        <ExecCycle />
+    </App>);
+};
+ExecCyclePage.propTypes = {
+
+};
+const DocsPage = () => {
+    return (<App>
+        <Documents />
+    </App>);
+};
+ExecCyclePage.propTypes = {
+
 };
 
 ReactDOM.render(
@@ -41,15 +63,11 @@ ReactDOM.render(
         <Router history={history}>
             <Switch>
                 <Route name="home" path="/" exact component={HomePage} />
-
+                <Route name="design" path="/design" exact component={DesignPage} />
+                <Route name="execution" path="/execution" exact component={ExecCyclePage} />
+                <Route name="docs" path="/docs" exact component={DocsPage} />
             </Switch>
         </Router>
     </Provider>,
     document.getElementById("app-root")
 );
-
-/*
-<Route name="networkEdit" path="/network/edit/:networkId" component={NetworkEditPage} />
-                <Route name="networkAdd" path="/network/create" component={NetworkAddPage} />
-                <Route name="network" path="/network" component={NetworkPage} />
-*/

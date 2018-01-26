@@ -71,7 +71,7 @@ module.exports = {
         }, {
             test: /\.eot(\?v=\d+.\d+.\d+)?$/,
             use: {
-                loader: "file"
+                loader: "file-loader"
             }
         }, {
             test: /\.(woff|woff2)(\?v=\d+.\d+.\d+)?$/,
@@ -91,7 +91,7 @@ module.exports = {
         }, {
             test: /\.(jpe?g|png|gif)$/i,
             use: {
-                loader: "file"
+                loader: "file-loader"
             }
         }, {
             test: /\.ico$/,
@@ -106,7 +106,7 @@ module.exports = {
         new webpack.NoEmitOnErrorsPlugin(),
         new ExtractTextPlugin("[name].css"), // relative to output.path
         new webpack.ProvidePlugin({
-            "fetch": "imports?this=>global!exports?global.fetch!whatwg-fetch"
+            "fetch": "imports-loader?this=>global!exports-loader?global.fetch!whatwg-fetch"
         }),
         new ProgressBarPlugin(),
         new webpack.optimize.CommonsChunkPlugin({
