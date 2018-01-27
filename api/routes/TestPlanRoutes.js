@@ -1,15 +1,11 @@
 "use strict";
 
-const controller = require("../controllers/TestCaseController");
+const controller = require("../controllers/TestPlanController");
 
-const testCaseRoutes = app => {
-	app.route("/api/testcase")
+const testPlanRoutes = app => {
+	app.route("/api/testplan")
 		.get((req, res) => {
-			const testPlanId = req.query.testplan;
-			if(!testPlanId) {
-				res.status(400).send("testplan is required");
-			}
-			controller.findAll(testPlanId, req.wetland)
+			controller.findAll(req.wetland)
 				.then(result => {
 					res.json(result);
 				})
@@ -18,11 +14,7 @@ const testCaseRoutes = app => {
 				});
 		})
 		.post((req, res) => {
-			const testPlanId = req.query.testplan;
-			if(!testPlanId) {
-				res.status(400).send("testplan is required");
-			}
-			controller.create(testPlanId, req.body, req.wetland)
+			controller.create(req.body, req.wetland)
 				.then(result => {
 					res.json(result);
 				})
@@ -32,7 +24,7 @@ const testCaseRoutes = app => {
 				});
 		});
 
-	app.route("/api/testcase/:id")
+	app.route("/api/testplan/:id")
 		.get((req, res) => {
 			controller.findById(req.params.id, req.wetland)
 				.then(result => {
@@ -63,4 +55,4 @@ const testCaseRoutes = app => {
 		});
 };
 
-module.exports = testCaseRoutes;
+module.exports = testPlanRoutes;

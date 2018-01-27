@@ -1,4 +1,5 @@
 const TestCase = require("../models/TestCase");
+const TestPlan = require("../models/TestPlan");
 const Comment = require("../models/Comment");
 const Defect = require("../models/Defect");
 
@@ -26,7 +27,7 @@ const _getDefects = (testCaseID, manager) => {
     return qb
         .leftJoin("d.testcases", "tc")
         .select("d")
-        .where({ "tc.id": testCaseID})
+        .where({ "tc.id": testCaseID })
         .getQuery()
         .execute()
         .then(resArr => resArr.map(res => ({
@@ -36,39 +37,62 @@ const _getDefects = (testCaseID, manager) => {
         })));
 };
 
-const findAll = wetland => {
+const findAll = (testPlanId, wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(TestCase);
 
-    const testCaseQB = repository.getQueryBuilder("t");
-    return repository
-        .find({}, {
-            populate: [ "description" ]
-        })
-        .then(testCases => testCases.map(tc => Object.assign({}, tc, {
-            description: tc.description.value
+    const qb = repository.getQueryBuilder("tc");
+    return qb.
+        leftJoin("tc.testplan", "tp")
+        .select("tc.name", "tp.id", "tc.status")
+        .where({ "tp.id": testPlanId })
+        .getQuery()
+        .execute()
+        .then(resArr => resArr.map(res => ({
+            id: res["tc.id"],
+            name: res["tc.name"],
+            status: res["tc.status"],
+            testPlan: res["tp.id"]
         })))
         .then(testCases => Promise.all(testCases.map(tc => _getComments(tc.id, manager)
-            .then(comments => Object.assign({}, tc, {
-                comments: comments.map(c => c.content)
-            }))
+        .then(comments => Object.assign({}, tc, {
+            comments: comments.map(c => c.content)
+        }))
         )))
         .then(testCases => Promise.all(testCases.map(tc => _getDefects(tc.id, manager)
             .then(defects => Object.assign({}, tc, {
                 defects: defects.map(d => d && d.id)
             }))
         )));
+
+    // return repository
+    //     .find({}, {
+    //         populate: [ "description" ]
+    //     })
+    //     .then(testCases => testCases.map(tc => Object.assign({}, tc, {
+    //         description: tc.description.value
+    //     })))
+    //     .then(testCases => Promise.all(testCases.map(tc => _getComments(tc.id, manager)
+    //         .then(comments => Object.assign({}, tc, {
+    //             comments: comments.map(c => c.content)
+    //         }))
+    //     )))
+    //     .then(testCases => Promise.all(testCases.map(tc => _getDefects(tc.id, manager)
+    //         .then(defects => Object.assign({}, tc, {
+    //             defects: defects.map(d => d && d.id)
+    //         }))
+    //     )));
 };
 
 const findById = (id, wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(TestCase);
     return repository.findOne(id, {
-        populate: [ "description" ]
+        populate: [ "description", "testplan" ]
     });
 };
 
-const create = (obj, wetland) => {
+const create = (testPlanId, obj, wetland) => {
     if(!obj.name)
         return Promise.reject("name is required");
 
@@ -77,7 +101,9 @@ const create = (obj, wetland) => {
         description: {
             value: obj.description || ""
         },
-        status: obj.status || "New" // TODO: use model lifecycle hooks
+        testplan: {
+            id: testPlanId
+        }
     };
     const manager  = wetland.getManager();
     const populator = wetland.getPopulator(manager);
@@ -116,7 +142,7 @@ const update = (id, data, wetland) => {
                 };
             }
             populator.assign(TestCase, data, testCase, true);
-            uow.registerDirty(comment, [ "description" ]);
+            // uow.registerDirty(testCase, [ "description" ]);
             return manager
                 .flush()
                 .then(() => testCase);
@@ -124,7 +150,7 @@ const update = (id, data, wetland) => {
             console.log(ex);
             return Promise.reject(ex);
         }
-    });
+    }).catch(ex => console.log(ex));
 };
 
 const remove = (id, wetland) => {

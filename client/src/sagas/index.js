@@ -1,9 +1,11 @@
 import { spawn } from "redux-saga/effects";
 
-import reqTestCases from "sagas/reqTestCases";
+import redirectSaga from "./redirects";
+import testDesignSaga from "./TestDesign";
 
 function* rootSaga() {
-    yield spawn(reqTestCases);
+    yield spawn(redirectSaga);
+    yield spawn(testDesignSaga);
 }
 
 export default rootSaga;

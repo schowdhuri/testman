@@ -1,2 +1,12 @@
-export const REQ_TEST_CASES = "REQ_TEST_CASES";
-export const RCV_TEST_CASES = "RCV_TEST_CASES";
+export const REQ_TEST_CASES     = "REQ_TEST_CASES";
+export const RCV_TEST_CASES     = "RCV_TEST_CASES";
+export const REQ_TEST_PLANS     = "REQ_TEST_PLANS";
+export const RCV_TEST_PLANS     = "RCV_TEST_PLANS";
+export const RESET_TC_ADD_EDIT  = "RESET_TC_ADD_EDIT";
+export const REQ_TEST_CASE      = "REQ_TEST_CASE";
+export const RCV_TEST_CASE      = "RCV_TEST_CASE";
+export const REQ_TC_SAVE        = "REQ_TC_SAVE";
+export const RCV_TC_SAVE        = "RCV_TC_SAVE";
+export const SELECT_TEST_PLAN   = "SELECT_TEST_PLAN";
+export const CHANGE_TC_DESCR    = "CHANGE_TC_DESCR"
+export const CHANGE_TC_NAME     = "CHANGE_TC_NAME";

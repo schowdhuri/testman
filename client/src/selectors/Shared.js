@@ -1,1 +1,1 @@
-export const isLoading = state => state.isLoading.length;
+export const isLoading = state => Boolean(state.isLoading.length);

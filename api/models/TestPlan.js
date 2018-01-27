@@ -1,6 +1,6 @@
 "use strict";
 
-class TestCase {
+class TestPlan {
     static setMapping(mapping) {
         mapping.field("created", {
             type: "datetime",
@@ -15,22 +15,13 @@ class TestCase {
             type: "string",
             nullable: false
         });
-        mapping.oneToOne("description", { targetEntity: "RichText", inversedBy: "testcases" });
-        mapping.field("status", {
-            type: "enumeration",
-            nullable: false,
-            enumeration: ["New", "Pass", "Fail"]
-        });
-        mapping.manyToOne("testplan", { targetEntity: "TestPlan", inversedBy: "testplan" });
-        mapping.oneToMany("comments", { targetEntity: "Comment", mappedBy: "comments" });
-        mapping.manyToMany("defects", { targetEntity: "Defect", mappedBy: "testcases" });
+        mapping.oneToMany("testcases", { targetEntity: "TestCase", mappedBy: "testplan" });
     }
 
     beforeCreate() {
         const datetime = new Date();
         this.modified = datetime;
         this.created = datetime;
-        this.status = "New";
     }
 
     beforeUpdate(values) {
@@ -38,4 +29,4 @@ class TestCase {
     }
 }
 
-module.exports = TestCase;
+module.exports = TestPlan;

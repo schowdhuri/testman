@@ -1,0 +1,24 @@
+.test-design {
+    display: grid;
+    grid-template-columns: 280px auto;
+    grid-auto-rows: 100%;
+}
+.add-edit-tc {
+    margin-top: 32px;
+}
+.tests-list {
+    background: #fff;
+}
+.toolbar {
+    overflow: auto;
+    h3 {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin: 0;
+        padding: 16px;
+        text-transform: uppercase;
+    }
+    .btn {
+        float: right;
+    }
+}

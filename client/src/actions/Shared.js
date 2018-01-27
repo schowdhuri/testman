@@ -5,3 +5,7 @@ export const setLoading = (id, status) => ({
     id,
     status
 });
+
+export const redirectToTestDesign = () => ({
+    type: ACTIONS.REDIRECT_TEST_DESIGN
+});

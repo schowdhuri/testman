@@ -4,18 +4,21 @@ import TestCaseList from "./TestCaseList";
 import * as actions from "actions/TestDesign";
 
 import {
-    getTestCases
+    getTestCases,
+    getSelectedTestPlan
 } from "selectors/TestDesign";
 import { isLoading } from "selectors/Shared";
 
 const mapStateToProps = state => ({
     isLoading: isLoading(state),
+    testPlan: getSelectedTestPlan(state),
     testCases: getTestCases(state)
 });
 
 const mapDispatchToProps = dispatch => ({
-    fetchTestCases() {
-        dispatch(actions.reqTestCases());
+    fetchTestCases(testPlan) {
+        if(testPlan)
+            dispatch(actions.reqTestCases(testPlan.id));
     }
 });
 

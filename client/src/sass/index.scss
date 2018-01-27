@@ -3,10 +3,43 @@ $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
 @import "bootstrap_variables";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
 @import "bootswatch.sandstone";
+@import "~react-s-alert/dist/s-alert-default.css";
+@import "~react-s-alert/dist/s-alert-css-effects/stackslide.css";
 
+@import "utils";
+
+body {
+    background: #f2f2f2;
+}
 nav.navbar {
     border-radius: 0;
+    margin-bottom: 0;
     .container {
         width: 100%;
     }
+}
+
+html,
+body,
+#app-root {
+    height: 100%
+}
+.app {
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    grid-template-rows: 64px 1fr;
+}
+main {
+    display: grid;
+}
+
+.s-alert-box {
+    z-index: 1100;
+}
+.s-alert-top {
+    text-align: center;
+}
+.s-alert-box {
+    padding: 10px
 }
