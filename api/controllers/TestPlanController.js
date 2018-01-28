@@ -1,6 +1,5 @@
 const TestPlan = require("../models/TestPlan");
 const TestCase = require("../models/TestCase");
-const Comment = require("../models/Comment");
 
 const _getTestCases = (testPlanID, manager) => {
     const repository = manager.getRepository(TestCase);
@@ -24,12 +23,13 @@ const findAll = wetland => {
 
     return repository
         .find()
+        .then(testPlans => testPlans || [])
         .then(testPlans => Promise.all(testPlans.map(tp => _getTestCases(tp.id, manager)
             .then(testCases => Object.assign({}, tp, {
                 testcases: undefined,
                 testCases: testCases.map(tc => tc && tc.id)
             }))
-        )));
+        ))).catch(ex => console.log(ex));
 };
 
 const findById = (id, wetland) => {
@@ -65,33 +65,20 @@ const update = (id, data, wetland) => {
         return Promise.reject("id is required");
     if(!data)
         return Promise.reject("No data provided");
+    if(!data.name)
+        return Promise.reject("name is required");
 
     const manager  = wetland.getManager();
-    const repository = manager.getRepository(TestCase);
-    const populator = wetland.getPopulator(manager);
-    const uow = manager.getUnitOfWork();
-
-    return repository.findOne(id, {
-        populate: ["description"]
-    }).then(testCase => {
-        if(!testCase)
-            return Promise.reject(`TestCase with id ${id} not found`);
+    const repository = manager.getRepository(TestPlan);
+    
+    return repository.findOne(id).then(testPlan => {
+        if(!testPlan)
+            return Promise.reject(`TestPlan with id ${id} not found`);
         try {
-            if(testCase.description) {
-                data.description = {
-                    id: testCase.description.id,
-                    value: data.description
-                };
-            } else if(data.description) {
-                data.description = {
-                    value: data.description
-                };
-            }
-            populator.assign(TestCase, data, testCase, true);
-            uow.registerDirty(comment, [ "description" ]);
+            testPlan.name = data.name;
             return manager
                 .flush()
-                .then(() => testCase);
+                .then(() => testPlan);
         } catch(ex) {
             console.log(ex);
             return Promise.reject(ex);
@@ -104,15 +91,15 @@ const remove = (id, wetland) => {
         return Promise.reject("id is required");
 
     const manager = wetland.getManager();
-    const repository = manager.getRepository(TestCase);
+    const repository = manager.getRepository(TestPlan);
 
     return repository.findOne(id)
-        .then(testCase => {
-            if(!testCase)
-                return Promise.reject(`TestCase with id ${id} not found`);
-            return manager.remove(testCase)
+        .then(testPlan => {
+            if(!testPlan)
+                return Promise.reject(`TestPlan with id ${id} not found`);
+            return manager.remove(testPlan)
                 .flush()
-                .then(() => testCase);
+                .then(() => testPlan);
         });
 };
 

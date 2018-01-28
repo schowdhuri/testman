@@ -20,5 +20,9 @@
     }
     .btn {
         float: right;
+        &, &:focus {
+            outline: none;
+            box-shadow: none;
+        }
     }
 }

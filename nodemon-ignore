@@ -5,3 +5,4 @@ views/*
 migrations/*
 README.md
 LICENSE
+node_modules

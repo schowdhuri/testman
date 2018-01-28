@@ -17,6 +17,9 @@ const mapDispatchToProps = dispatch => ({
     onInit() {
         dispatch(actions.reqTestPlans());
     },
+    onSave(testPlan) {
+        dispatch(actions.reqSaveTestPlan(testPlan));
+    },
     onSelect(testPlan) {
         dispatch(actions.selectTestPlan(testPlan));
     }

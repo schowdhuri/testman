@@ -59,3 +59,13 @@ export const changeTCName = value => ({
     type: ACTIONS.CHANGE_TC_NAME,
     value
 });
+
+export const reqSaveTestPlan = testPlan => ({
+    type: ACTIONS.REQ_TP_SAVE,
+    testPlan
+});
+
+export const rcvSaveTestPlan = testPlan => ({
+    type: ACTIONS.RCV_TP_SAVE,
+    testPlan
+});

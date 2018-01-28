@@ -10,3 +10,5 @@ export const RCV_TC_SAVE        = "RCV_TC_SAVE";
 export const SELECT_TEST_PLAN   = "SELECT_TEST_PLAN";
 export const CHANGE_TC_DESCR    = "CHANGE_TC_DESCR"
 export const CHANGE_TC_NAME     = "CHANGE_TC_NAME";
+export const REQ_TP_SAVE        = "REQ_TP_SAVE";
+export const RCV_TP_SAVE        = "RCV_TP_SAVE";

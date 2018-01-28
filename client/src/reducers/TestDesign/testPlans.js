@@ -16,6 +16,28 @@ const testCases = (state=initialState, action) => {
                 selected: action.testPlans[0]
             };
 
+        case ACTIONS.RCV_TP_SAVE: {
+            const { testPlan } = action;
+            const index = state.all.findIndex(tp => tp.id==testPlan.id);
+            if(index==-1) {
+                return {
+                    ...state,
+                    all: [
+                        ...state.all,
+                        testPlan
+                    ]
+                };
+            }
+            return {
+                ...state,
+                all: [
+                    ...state.all.slice(0, index),
+                    testPlan,
+                    ...state.all.slice(index + 1)
+                ]
+            };
+        }
+
         case ACTIONS.SELECT_TEST_PLAN:
             return {
                 ...state,
