@@ -1,5 +1,6 @@
 import { spawn } from "redux-saga/effects";
 
+import deleteComment from "./deleteComment";
 import reqTestCase from "./reqTestCase";
 import reqTestCases from "./reqTestCases";
 import reqTestPlans from "./reqTestPlans";
@@ -8,6 +9,7 @@ import saveTestCase from "./saveTestCase";
 import saveTestPlan from "./saveTestPlan";
 
 function* testDesignSaga() {
+    yield spawn(deleteComment);
     yield spawn(reqTestCase);
     yield spawn(reqTestCases);
     yield spawn(reqTestPlans);

@@ -58,6 +58,21 @@ const testCases = (state=initialState, action) => {
             };
         }
 
+        case ACTIONS.RCV_DELETE_COMMENT: {
+            const { id } = action;
+            const index = state.comments.findIndex(c => c.id==id);
+            if(index != -1) {
+                return {
+                    ...state,
+                    comments: [
+                        ...state.comments.slice(0, index),
+                        ...state.comments.slice(index + 1)
+                    ]
+                };
+            }
+            break;
+        }
+
         case ACTIONS.RESET_TC_ADD_EDIT:
             return initialState;
 

@@ -40,8 +40,9 @@ export const reqSaveTestCase = (testPlanId, testCase) => ({
     testCase
 });
 
-export const rcvSaveTestCase = testCase => ({
-    type: ACTIONS.RCV_TEST_CASE,
+export const rcvSaveTestCase = (testPlanId, testCase) => ({
+    type: ACTIONS.RCV_TC_SAVE,
+    testPlanId,
     testCase
 });
 
@@ -85,4 +86,14 @@ export const reqSaveTCComment = (testCaseId, value, id) => ({
 export const rcvSaveTCComment = value => ({
     type: ACTIONS.RCV_SAVE_TC_COMMENT,
     value
+});
+
+export const reqDeleteComment = id => ({
+    type: ACTIONS.REQ_DELETE_COMMENT,
+    id
+});
+
+export const rcvDeleteComment = id => ({
+    type: ACTIONS.RCV_DELETE_COMMENT,
+    id
 });

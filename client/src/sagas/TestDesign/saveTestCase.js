@@ -12,7 +12,6 @@ import validateTestCase from "businessLogic/TestDesign/validateTestCase";
 import buildTestCase from "businessLogic/TestDesign/buildTestCase";
 
 function* saveTestCase(action) {
-    console.log(action)
     const { testPlanId, testCase } = action;
     if(!testPlanId) {
         Alert.error("testPlanId not found");
@@ -41,7 +40,7 @@ function* saveTestCase(action) {
                 dataType: "json"
             });
         }
-        yield put(rcvSaveTestCase(response.json));
+        yield put(rcvSaveTestCase(testPlanId, response.json));
         yield put(redirectToTestDesign());
     } catch(ex) {
         console.log(ex);

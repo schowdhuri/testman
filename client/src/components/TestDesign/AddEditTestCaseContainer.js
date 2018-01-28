@@ -29,6 +29,9 @@ const mapDispatchToProps = dispatch => ({
     onChangeName(val) {
         dispatch(actions.changeTCName(val));
     },
+    onDeleteComment(id) {
+        dispatch(actions.reqDeleteComment(id));
+    },
     onInit(id) {
         dispatch(actions.resetAddEdit());
         dispatch(actions.reqTestCase(id));
@@ -36,8 +39,8 @@ const mapDispatchToProps = dispatch => ({
     onSave(testPlanID, testCase) {
         dispatch(actions.reqSaveTestCase(testPlanID, testCase));
     },
-    onSaveComment(testCaseId, value) {
-        dispatch(actions.reqSaveTCComment(testCaseId, value));
+    onSaveComment(testCaseId, value, id) {
+        dispatch(actions.reqSaveTCComment(testCaseId, value, id));
     }
 });
 

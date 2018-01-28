@@ -1,0 +1,22 @@
+.comment {
+    &, textarea {
+        font-size: 1.2rem;
+    }
+    margin-bottom: 20px;
+    .well {
+        margin-bottom: 10px;
+    }
+    .controls {
+        color: #999;
+        font-size: 1rem;
+
+        span, a {
+            display: inline-block;
+            margin: 0 4px;
+
+            &:first-child {
+                margin-left: 0;
+            }
+        }
+    }
+}

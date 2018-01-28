@@ -52,6 +52,24 @@ const testCases = (state=initialState, action) => {
                     [action.testPlanId]: action.testCases
                 }
             };
+
+        case ACTIONS.RCV_TC_SAVE: {
+            const { testPlanId, testCase } = action;
+            const testCases = state.testCases[testPlanId]
+                ? [
+                    ...state.testCases[testPlanId],
+                    testCase
+                ]
+                : [ testCase ];
+            return {
+                ...state,
+                testCases: {
+                    ...state.testCases,
+                    [testPlanId]: testCases
+                }
+            };
+        }
+
     }
     return state;
 };

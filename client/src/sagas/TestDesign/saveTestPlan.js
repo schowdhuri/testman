@@ -12,7 +12,6 @@ import validateTestPlan from "businessLogic/TestDesign/validateTestPlan";
 import buildTestPlan from "businessLogic/TestDesign/buildTestPlan";
 
 function* saveTestPlan(action) {
-    console.log(action)
     const { testPlan } = action;
     const validationResult = validateTestPlan(testPlan);
     if(!validationResult.valid) {
