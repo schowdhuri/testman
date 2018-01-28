@@ -6,6 +6,7 @@ import request from "utils/request";
 import { REQ_TEST_CASE } from "constants/TestDesignActions";
 import { rcvTestCase } from "actions/TestDesign";
 import { setLoading } from "actions/Shared";
+import parseTestCase from "businessLogic/TestDesign/parseTestCase";
 
 function* getTestCases(action) {
     const { id } = action;
@@ -16,7 +17,7 @@ function* getTestCases(action) {
             dataType: "json"
         });
         const testCase = response.json;
-        yield put(rcvTestCase(testCase));
+        yield put(rcvTestCase(parseTestCase(testCase)));
     } catch(ex) {
         console.log(ex);
         Alert.error("Failed to fetch tests");

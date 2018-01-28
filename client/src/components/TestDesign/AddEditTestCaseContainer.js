@@ -20,6 +20,9 @@ const mapDispatchToProps = dispatch => ({
         dispatch(actions.resetAddEdit());
         dispatch(redirectToTestDesign());
     },
+    onChangeComment(value) {
+        dispatch(actions.changeTCComment(value));
+    },
     onChangeDescription(val) {
         dispatch(actions.changeTCDescription(val));
     },
@@ -32,6 +35,9 @@ const mapDispatchToProps = dispatch => ({
     },
     onSave(testPlanID, testCase) {
         dispatch(actions.reqSaveTestCase(testPlanID, testCase));
+    },
+    onSaveComment(testCaseId, value) {
+        dispatch(actions.reqSaveTCComment(testCaseId, value));
     }
 });
 

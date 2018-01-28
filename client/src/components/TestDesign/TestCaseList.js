@@ -9,12 +9,12 @@ import TestCasesToolbar from "./TestCasesToolbar";
 
 class TestCaseList extends React.Component {
     componentDidMount() {
-        this.props.fetchTestCases(this.props.testPlan);
+        if(this.props.testPlan && this.props.testPlanID == this.props.testPlan.id)
+            this.props.fetchTestCases(this.props.testPlan);
     }
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps.testPlan);
-        if(nextProps.testPlan != this.props.testPlan ||
-            (nextProps.testPlan && this.props.testPlan && nextProps.testPlan.id != this.props.testPlan.id)
+        if((nextProps.testPlan != this.props.testPlan ||
+            (nextProps.testPlan && this.props.testPlan && nextProps.testPlan.id != this.props.testPlan.id))
         ) {
             this.props.fetchTestCases(nextProps.testPlan);
         }
@@ -40,7 +40,7 @@ class TestCaseList extends React.Component {
                     {testCases.map(tc => (<tr key={`tc-${tc.id}`}>
                         <td>{tc.id}</td>
                         <td>
-                            <Link to={`design/testplan/${testPlan.id}/testcase/edit/${tc.id}`}>{tc.name}</Link>
+                            <Link to={`/design/testplan/${testPlan.id}/testcase/edit/${tc.id}`}>{tc.name}</Link>
                         </td>
                         <td>{tc.status}</td>
                         <td>{tc.defects ? tc.defects.length : 0}</td>

@@ -4,15 +4,15 @@ const initialState = {
     name: "",
     description: {
         value: ""
-    }
+    },
+    comments: [],
+    defects: [],
+    newComment: ""
 };
 
 const testCases = (state=initialState, action) => {
     const { type } = action;
     switch(type) {
-        case ACTIONS.RCV_TEST_CASE:
-            return action.testCase;
-
         case ACTIONS.CHANGE_TC_DESCR:
             return {
                 ...state,
@@ -28,8 +28,44 @@ const testCases = (state=initialState, action) => {
                 name: action.value
             };
 
+        case ACTIONS.CHANGE_TC_COMMENT:
+            return {
+                ...state,
+                newComment: action.value
+            };
+
+        case ACTIONS.RCV_SAVE_TC_COMMENT: {
+            const comment = action.value;
+            const index = state.comments.findIndex(c => c.id==comment.id);
+            if(index == -1) {
+                return {
+                    ...state,
+                    comments: [
+                        comment,
+                        ...state.comments,
+                    ],
+                    newComment: initialState.newComment
+                };
+            }
+            return {
+                ...state,
+                comments: [
+                    ...state.comments.slice(0, index),
+                    comment,
+                    ...state.comments.slice(index + 1)
+                ],
+                newComment: initialState.newComment
+            };
+        }
+
         case ACTIONS.RESET_TC_ADD_EDIT:
             return initialState;
+
+        case ACTIONS.RCV_TEST_CASE:
+            return {
+                ...initialState,
+                ...action.testCase
+            };
     }
     return state;
 };

@@ -1,17 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import ListView from "./ListView";
-import AddEditView from "./AddEditView";
+import AddEditTestCase from "./AddEditTestCaseContainer";
+import TestPlans from "./TestPlansContainer";
 
 import "sass/components/TestDesign.scss";
 
 class TestDesign extends React.Component {
     render() {
         const { mode, testID, testPlanID } = this.props;
-        return mode=="list"
-            ? <ListView testPlanID={testPlanID} />
-            : <AddEditView testPlanID={testPlanID} testID={testID} />;
+        return (<div className="test-design add-edit">
+            <AddEditTestCase testPlanID={testPlanID} testID={testID} />
+        </div>);
     }
 }
 TestDesign.propTypes = {

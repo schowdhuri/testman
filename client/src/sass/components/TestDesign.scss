@@ -1,15 +1,30 @@
 .test-design {
     display: grid;
-    grid-template-columns: 280px auto;
     grid-auto-rows: 100%;
+    &.list {
+        grid-template-columns: 280px auto;
+    }
 }
 .add-edit-tc {
-    margin-top: 32px;
+    position: relative;
+    margin: 64px 24px;
+
+    .action-bar {
+        position: absolute;
+        left: -24px;
+        right: -24px;
+        top: -64px;
+        .btn-toolbar {
+            float: right;
+            margin: 6px 24px 0 0;
+        }
+    }
 }
 .tests-list {
     background: #fff;
 }
-.toolbar {
+.toolbar,
+.action-bar {
     overflow: auto;
     h3 {
         font-size: 1.2rem;
@@ -18,11 +33,14 @@
         padding: 16px;
         text-transform: uppercase;
     }
-    .btn {
-        float: right;
-        &, &:focus {
-            outline: none;
-            box-shadow: none;
-        }
+}
+.toolbar .btn {
+    float: right;
+    &, &:focus {
+        outline: none;
+        box-shadow: none;
     }
+}
+.action-bar {
+
 }

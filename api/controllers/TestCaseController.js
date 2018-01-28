@@ -9,15 +9,17 @@ const _getComments = (testCaseID, manager) => {
         .find({
             "tc.id": testCaseID
         }, {
-            alias: "tc",
-            populate: [ "testcases", "content"]
+            populate: [ {"testcases": "tc"}, "content" ]
         })
         .then(comments => comments
             ? comments.map(c => Object.assign({}, {
                 id: c.id,
-                content: c.content && c.content.value
+                content: c.content && c.content.value,
+                created: c.created,
+                modified: c.modified
             })).filter(c => c.content)
-            : []);
+            : [])
+        .catch(ex => console.log(ex));
 };
 
 const _getDefects = (testCaseID, manager) => {
@@ -64,32 +66,20 @@ const findAll = (testPlanId, wetland) => {
                 defects: defects.map(d => d && d.id)
             }))
         )));
-
-    // return repository
-    //     .find({}, {
-    //         populate: [ "description" ]
-    //     })
-    //     .then(testCases => testCases.map(tc => Object.assign({}, tc, {
-    //         description: tc.description.value
-    //     })))
-    //     .then(testCases => Promise.all(testCases.map(tc => _getComments(tc.id, manager)
-    //         .then(comments => Object.assign({}, tc, {
-    //             comments: comments.map(c => c.content)
-    //         }))
-    //     )))
-    //     .then(testCases => Promise.all(testCases.map(tc => _getDefects(tc.id, manager)
-    //         .then(defects => Object.assign({}, tc, {
-    //             defects: defects.map(d => d && d.id)
-    //         }))
-    //     )));
 };
 
 const findById = (id, wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(TestCase);
-    return repository.findOne(id, {
-        populate: [ "description", "testplan" ]
-    });
+    return repository
+        .findOne(id, {
+            populate: [ "description", "testplan", "defects" ]
+        })
+        .then(testCase => _getComments(testCase.id, manager)
+            .then(comments => Object.assign({}, testCase, {
+                comments
+            }))
+        );
 };
 
 const create = (testPlanId, obj, wetland) => {

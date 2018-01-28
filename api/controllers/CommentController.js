@@ -42,9 +42,9 @@ const create = (obj, wetland) => {
     const populator = wetland.getPopulator(manager);
     let pLinkedEntity;
     if(obj.testCase) {
-        pLinkedEntity = manager.getRepository(TestCase).findOne(data.testCase)
+        pLinkedEntity = manager.getRepository(TestCase).findOne(obj.testCase)
     } else {
-        pLinkedEntity = manager.getRepository(Defect).findOne(data.defect)
+        pLinkedEntity = manager.getRepository(Defect).findOne(obj.defect)
     }
     return pLinkedEntity.then(linkedEntity => {
         if(!linkedEntity)

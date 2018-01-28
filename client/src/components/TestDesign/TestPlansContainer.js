@@ -4,22 +4,16 @@ import TestPlans from "./TestPlans";
 import * as actions from "actions/TestDesign";
 import { redirectToTestPlan } from "actions/Shared";
 
-import {
-    getSelectedTestPlanId,
-    getTestPlans
-} from "selectors/TestDesign";
+import { getTestPlans } from "selectors/TestDesign";
 import { isLoading } from "selectors/Shared";
 
 const mapStateToProps = state => ({
     isLoading: isLoading(state),
-    selected: getSelectedTestPlanId(state),
     testPlans: getTestPlans(state)
 });
 
 const mapDispatchToProps = dispatch => ({
-    onInit(testPlanId) {
-        // if(testPlanId)
-        //     dispatch(redirectToTestPlan(testPlanId));
+    reqTestPlans() {
         dispatch(actions.reqTestPlans());
     },
     onSave(testPlan) {
@@ -27,9 +21,6 @@ const mapDispatchToProps = dispatch => ({
     },
     onSelect(testPlanId) {
         dispatch(actions.selectTestPlan(testPlanId));
-    },
-    redirectTo(testPlanId) {
-        dispatch(redirectToTestPlan(testPlanId));
     }
 });
 

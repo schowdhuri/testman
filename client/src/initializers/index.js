@@ -36,22 +36,8 @@ HomePage.propTypes = {
 
 const DesignPage = () => {
     return (<App>
-        <Design />
+        <Design mode="list" />
     </App>);
-};
-
-const TestPlanPage = props => {
-    const { testPlanID } = props.match.params;
-    return (<App>
-        <Design testPlanID={testPlanID} />
-    </App>);
-};
-TestPlanPage.propTypes = {
-    match: PropTypes.shape({
-        params: PropTypes.shape({
-            testPlanID: PropTypes.string.isRequired
-        }).isRequired
-    }).isRequired
 };
 
 const AddTestPage = props => {
@@ -112,9 +98,8 @@ ReactDOM.render(
             <Switch>
                 <Route name="home" path="/" exact component={HomePage} />
                 <Route name="design" path="/design" exact component={DesignPage} />
-                <Route name="design" path="/design/testplan/:testPlanID" component={TestPlanPage} />
                 <Route name="design" path="/design/testplan/:testPlanID/testcase/add" exact component={AddTestPage} />
-                <Route name="design" path="/design/testplan/:testPlanID/testcase/edit/:testID" component={EditTestPage} />
+                <Route name="design" path="/design/testplan/:testPlanID/testcase/edit/:testID" exact component={EditTestPage} />
                 <Route name="execution" path="/execution" component={ExecCyclePage} />
                 <Route name="docs" path="/docs" component={DocsPage} />
             </Switch>
