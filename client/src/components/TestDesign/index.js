@@ -11,7 +11,7 @@ class TestDesign extends React.Component {
     render() {
         const { mode, testID, testPlanID } = this.props;
         return (<div className="test-design">
-            <TestPlans />
+            <TestPlans testPlanID={testPlanID} />
             <div className="test-cases">
                 {mode=="add" || mode=="edit"
                     ? <AddEditTestCase testPlanID={testPlanID} testID={testID} />

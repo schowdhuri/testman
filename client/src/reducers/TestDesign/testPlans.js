@@ -2,7 +2,7 @@ import * as ACTIONS from "constants/TestDesignActions";
 
 const initialState = {
     all: [],
-    selected: null,
+    selectedId: null,
     testCases: {}
 };
 
@@ -12,8 +12,7 @@ const testCases = (state=initialState, action) => {
         case ACTIONS.RCV_TEST_PLANS:
             return {
                 ...state,
-                all: action.testPlans,
-                selected: action.testPlans[0]
+                all: action.testPlans
             };
 
         case ACTIONS.RCV_TP_SAVE: {
@@ -41,7 +40,7 @@ const testCases = (state=initialState, action) => {
         case ACTIONS.SELECT_TEST_PLAN:
             return {
                 ...state,
-                selected: action.testPlan
+                selectedId: action.testPlanId
             };
 
         case ACTIONS.RCV_TEST_CASES:

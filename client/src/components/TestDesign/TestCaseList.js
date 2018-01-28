@@ -12,6 +12,7 @@ class TestCaseList extends React.Component {
         this.props.fetchTestCases(this.props.testPlan);
     }
     componentWillReceiveProps(nextProps) {
+        console.log(nextProps.testPlan);
         if(nextProps.testPlan != this.props.testPlan ||
             (nextProps.testPlan && this.props.testPlan && nextProps.testPlan.id != this.props.testPlan.id)
         ) {

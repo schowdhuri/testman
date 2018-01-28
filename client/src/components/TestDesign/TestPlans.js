@@ -13,20 +13,30 @@ class TestPlans extends React.Component {
         this.state = {
             editDialog: false
         };
+        this.autoRedirect = this.autoRedirect.bind(this);
         this.handleSave = this.handleSave.bind(this);
-        this.handleSelect = this.handleSelect.bind(this);
         this.hideEditDialog = this.hideEditDialog.bind(this);
         this.showEditDialog = this.showEditDialog.bind(this);
     }
     componentDidMount() {
-        this.props.onInit();
+        this.props.onInit(); 
+        this.autoRedirect(this.props);
+    }
+    componentWillReceiveProps(nextProps) {
+        this.autoRedirect(nextProps);
+    }
+    autoRedirect(p) {
+        const { selected, testPlanID, testPlans } = p;
+        if(!testPlanID && selected)
+            this.props.redirectTo(selected);
+        else if(!testPlanID && testPlans.length)
+            this.props.redirectTo(testPlans[0].id);
+        else if(testPlanID && testPlanID != selected)
+            this.props.onSelect(testPlanID);
     }
     handleSave(data) {
         this.props.onSave(data);
         this.hideEditDialog();
-    }
-    handleSelect(testPlan) {
-        this.props.onSelect(testPlan);
     }
     hideEditDialog() {
         this.setState({ editDialog: false, testPlan: {} });
@@ -38,17 +48,16 @@ class TestPlans extends React.Component {
         });
     }
     render() {
-        const { testPlans } = this.props;
+        const { testPlans, testPlanID } = this.props;
         const { editDialog, testPlan } = this.state;
         return (<div className="test-plans">
             <TestPlansToolbar onSave={this.props.onSave} />
             <ul>
                 {testPlans.map(tp => (<li
-                    className={`${tp.selected ? "bg-success selected" : ""}`}
+                    className={`${tp.id==testPlanID ? "bg-success selected" : ""}`}
                     key={tp.id}
-                    onClick={() => this.handleSelect(tp)}
                 >
-                    <span>{tp.name}</span>
+                    <Link to={`/design/testPlan/${tp.id}`}>{tp.name}</Link>
                     <button className="btn btn-link btn-edit" onClick={() => this.showEditDialog(tp)}>
                         <i className="glyphicon glyphicon-pencil" />
                     </button> 

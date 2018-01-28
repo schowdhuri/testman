@@ -6,6 +6,7 @@ export const setLoading = (id, status) => ({
     status
 });
 
-export const redirectToTestDesign = () => ({
-    type: ACTIONS.REDIRECT_TEST_DESIGN
+export const redirectToTestPlan = testPlanId => ({
+    type: ACTIONS.REDIRECT_TEST_PLAN,
+    testPlanId
 });

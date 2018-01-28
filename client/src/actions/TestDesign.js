@@ -45,9 +45,9 @@ export const rcvSaveTestCase = testCase => ({
     testCase
 });
 
-export const selectTestPlan = testPlan => ({
+export const selectTestPlan = testPlanId => ({
     type: ACTIONS.SELECT_TEST_PLAN,
-    testPlan
+    testPlanId
 });
 
 export const changeTCDescription = value => ({

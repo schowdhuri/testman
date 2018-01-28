@@ -1,21 +1,20 @@
 import { createSelector } from "reselect";
 
-export const getSelectedTestPlan = state => state.testDesign.testPlans.selected;
+export const getTestPlans = state => state.testDesign.testPlans.all;
+export const getSelectedTestPlanId = state => state.testDesign.testPlans.selectedId;
 
-const getAllTestPlans = state => state.testDesign.testPlans.all;
-
-export const getTestPlans = createSelector(
-    [ getAllTestPlans, getSelectedTestPlan ],
-    (testPlans, selected={}) => testPlans.map(tp => ({
-        ...tp,
-        selected: tp.id == selected.id
-    }))
+export const getSelectedTestPlan = createSelector(
+    [ getTestPlans, getSelectedTestPlanId],
+    (testPlans, testPlanId) => testPlanId
+        ? testPlans.find(tp => tp.id == testPlanId)
+        : null 
 );
+
 const getTestCaseMap = state => state.testDesign.testPlans.testCases;
 
 export const getTestCases = createSelector(
-    [ getTestCaseMap, getSelectedTestPlan ],
-    (testCases, testPlan) => testPlan && testCases[testPlan.id] || []
+    [ getTestCaseMap, getSelectedTestPlanId ],
+    (testCases, testPlanId) => testPlanId && testCases[testPlanId] || []
 );
 
 export const getTestCaseAddEditState = state=> state.testDesign.addEditTestCase;

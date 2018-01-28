@@ -5,7 +5,7 @@ import request from "utils/request";
 
 import { REQ_TC_SAVE } from "constants/TestDesignActions";
 import { rcvSaveTestCase } from "actions/TestDesign";
-import { redirectToTestDesign } from "actions/Shared";
+import { redirectToTestPlan } from "actions/Shared";
 import { setLoading } from "actions/Shared";
 
 import validateTestCase from "businessLogic/TestDesign/validateTestCase";
@@ -42,7 +42,7 @@ function* saveTestCase(action) {
             });
         }
         yield put(rcvSaveTestCase(response.json));
-        yield put(redirectToTestDesign());
+        yield put(redirectToTestPlan(testPlanId));
     } catch(ex) {
         console.log(ex);
         Alert.error("Failed to save test case");
