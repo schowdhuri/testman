@@ -27,7 +27,7 @@ const store = configureStore(reducer, sagaMiddleware);
 sagaMiddleware.run(sagas);
 
 const HomePage = () => {
-    return (<App>
+    return (<App navId="dashboard">
         <Dashboard />
     </App>);
 };
@@ -36,14 +36,14 @@ HomePage.propTypes = {
 };
 
 const DesignPage = () => {
-    return (<App>
+    return (<App navId="design">
         <Design mode="list" />
     </App>);
 };
 
 const AddTestPage = props => {
     const { testPlanID } = props.match.params;
-    return (<App>
+    return (<App navId="design">
         <Design
             mode="add"
             testPlanID={parseInt(testPlanID)} />
@@ -59,7 +59,7 @@ AddTestPage.propTypes = {
 
 const EditTestPage = props => {
     const { testPlanID, testID } = props.match.params;
-    return (<App>
+    return (<App navId="design">
         <Design
             mode="edit"
             testPlanID={parseInt(testPlanID)}
@@ -76,7 +76,7 @@ EditTestPage.propTypes = {
 };
 
 const ExecCyclePage = () => {
-    return (<App>
+    return (<App navId="execution">
         <ExecCycle />
     </App>);
 };
@@ -85,8 +85,8 @@ ExecCyclePage.propTypes = {
 };
 
 const DefectsPage = () => {
-    return (<App>
-        <Defects />
+    return (<App navId="defects">
+        <Defects mode="list" />
     </App>);
 };
 DefectsPage.propTypes = {
@@ -94,7 +94,7 @@ DefectsPage.propTypes = {
 };
 
 const DocsPage = () => {
-    return (<App>
+    return (<App navId="docs">
         <Documents />
     </App>);
 };
@@ -106,13 +106,13 @@ ReactDOM.render(
     <Provider store={store}>
         <Router history={history}>
             <Switch>
-                <Route name="home" path="/" exact component={HomePage} />
-                <Route name="design" path="/design" exact component={DesignPage} />
-                <Route name="design" path="/design/testplan/:testPlanID/testcase/add" exact component={AddTestPage} />
-                <Route name="design" path="/design/testplan/:testPlanID/testcase/edit/:testID" exact component={EditTestPage} />
-                <Route name="execution" path="/execution" component={ExecCyclePage} />
-                <Route name="defects" path="/defects" component={DefectsPage} />
-                <Route name="docs" path="/docs" component={DocsPage} />
+                <Route path="/" exact component={HomePage} />
+                <Route path="/design" exact component={DesignPage} />
+                <Route path="/design/testplan/:testPlanID/testcase/add" exact component={AddTestPage} />
+                <Route path="/design/testplan/:testPlanID/testcase/edit/:testID" exact component={EditTestPage} />
+                <Route path="/execution" component={ExecCyclePage} />
+                <Route path="/defects" component={DefectsPage} />
+                <Route path="/docs" component={DocsPage} />
             </Switch>
         </Router>
     </Provider>,

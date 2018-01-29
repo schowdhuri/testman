@@ -1,11 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import AddEditView from "./AddEditView";
+import ListView from "./ListView";
+
 class Defects extends React.Component {
     render() {
-        return (<div>
-            Defects...
-        </div>);
+        const { mode, defectID } = this.props;
+        return mode=="list"
+            ? <ListView />
+            : <AddEditView defectID={defectID} />;
     }
 }
 

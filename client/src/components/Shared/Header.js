@@ -19,15 +19,15 @@ const links = [{
     id: "defects",
     name: "Defects",
     url: "/defects"
-}, {
+}/*, {
     id: "docs",
     name: "Documents",
     url: "/docs"
-}]
+}*/];
 
 class Header extends React.Component {
     render() {
-        const { routeName } = this.props;
+        const { navId } = this.props;
         return (<header>
             <Navbar>
                 <Navbar.Header>
@@ -39,7 +39,7 @@ class Header extends React.Component {
                     {links.map(link => (<li
                         role="presentation"
                         key={link.id}
-                        className={`${routeName == link.id ? "active" : ""}`}
+                        className={`${navId==link.id ? "active" : ""}`}
                     >
                         <Link to={link.url}>{link.name}</Link>
                     </li>))}

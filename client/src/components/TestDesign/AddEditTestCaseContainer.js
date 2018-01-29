@@ -52,6 +52,6 @@ const mergeProps = (ownProps, stateProps, dispatchProps) => {
     };
 };
 
-const TestCaseListContainer = connect(mapStateToProps, mapDispatchToProps)(AddEditTestCase);
+const AddEditTestCaseContainer = connect(mapStateToProps, mapDispatchToProps)(AddEditTestCase);
 
-export default TestCaseListContainer;
+export default AddEditTestCaseContainer;

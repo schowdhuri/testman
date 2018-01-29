@@ -7,8 +7,9 @@ import Header from "./Shared/Header";
 
 class App extends React.Component {
     render() {
+        const { navId } = this.props;
         return (<div className="app">
-            <Header />
+            <Header navId={navId} />
             <main>
                 {this.props.children}
             </main>

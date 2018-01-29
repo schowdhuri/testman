@@ -29,11 +29,13 @@ const findAll = wetland => {
     return qb
         .leftJoin("d.description", "desc")
         .leftJoin("d.testcases", "tc")
-        .select("d.id", "tc.id", "desc.value")
+        .select("d", "tc.id", "desc.value")
         .getQuery()
         .execute()
         .then(resArr => Promise.resolve(resArr.map(res => ({
             id: res["d.id"],
+            name: res["d.name"],
+            status: res["d.status"],
             description: res["desc.value"],
             testCases: res["tc.id"]
         }))))

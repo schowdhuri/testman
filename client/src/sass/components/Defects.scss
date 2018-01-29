@@ -1,0 +1,51 @@
+.defects {
+    display: grid;
+    grid-auto-rows: 100%;
+
+    .data-grid {
+        td:first-child,
+        th:first-child {
+            padding-left: 16px;
+        }
+        td:last-child,
+        th:last-child {
+            padding-right: 16px;
+        }
+    }
+    .add-edit-defect {
+        position: relative;
+        margin: 64px 24px;
+
+        .action-bar {
+            position: absolute;
+            left: -24px;
+            right: -24px;
+            top: -64px;
+            .btn-toolbar {
+                float: right;
+                margin: 6px 24px 0 0;
+            }
+        }
+    }
+    .defect-list {
+        background: #fff;
+    }
+    .toolbar,
+    .action-bar {
+        overflow: auto;
+        h3 {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 16px;
+            text-transform: uppercase;
+        }
+    }
+    .toolbar .btn {
+        float: right;
+        &, &:focus {
+            outline: none;
+            box-shadow: none;
+        }
+    }
+}
