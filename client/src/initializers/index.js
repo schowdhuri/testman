@@ -15,6 +15,7 @@ import App from "components/AppContainer";
 import Dashboard from "components/Dashboard";
 import Design from "components/TestDesign";
 import ExecCycle from "components/ExecCycle";
+import Defects from "components/Defects";
 import Documents from "components/Documents";
 
 import "sass/index.scss";
@@ -83,6 +84,15 @@ ExecCyclePage.propTypes = {
 
 };
 
+const DefectsPage = () => {
+    return (<App>
+        <Defects />
+    </App>);
+};
+DefectsPage.propTypes = {
+
+};
+
 const DocsPage = () => {
     return (<App>
         <Documents />
@@ -101,6 +111,7 @@ ReactDOM.render(
                 <Route name="design" path="/design/testplan/:testPlanID/testcase/add" exact component={AddTestPage} />
                 <Route name="design" path="/design/testplan/:testPlanID/testcase/edit/:testID" exact component={EditTestPage} />
                 <Route name="execution" path="/execution" component={ExecCyclePage} />
+                <Route name="defects" path="/defects" component={DefectsPage} />
                 <Route name="docs" path="/docs" component={DocsPage} />
             </Switch>
         </Router>
