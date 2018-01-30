@@ -40,7 +40,7 @@ export const changeDefectComment = value => ({
 
 export const reqSaveDefectComment = (defectId, value, id) => ({
     type: ACTIONS.REQ_SAVE_DF_COMMENT,
-    testCaseId,
+    defectId,
     value,
     id
 });
