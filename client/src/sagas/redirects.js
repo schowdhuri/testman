@@ -8,6 +8,11 @@ function* redirectToTestDesign() {
     hashHistory.push("/design");
 }
 
+function* redirectToDefects() {
+    hashHistory.push("/defects");
+}
+
 export default function* () {
     yield spawn(takeEvery, ACTIONS.REDIRECT_TEST_DESIGN, redirectToTestDesign);
+    yield spawn(takeEvery, ACTIONS.REDIRECT_DEFECTS, redirectToDefects);
 };

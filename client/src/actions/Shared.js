@@ -9,3 +9,7 @@ export const setLoading = (id, status) => ({
 export const redirectToTestDesign = () => ({
     type: ACTIONS.REDIRECT_TEST_DESIGN
 });
+
+export const redirectToDefects = () => ({
+    type: ACTIONS.REDIRECT_DEFECTS
+});

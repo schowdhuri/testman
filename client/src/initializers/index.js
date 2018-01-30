@@ -89,8 +89,25 @@ const DefectsPage = () => {
         <Defects mode="list" />
     </App>);
 };
-DefectsPage.propTypes = {
 
+const AddDefectPage = () => {
+    return (<App navId="defects">
+        <Defects mode="add" />
+    </App>);
+};
+
+const EditDefectPage = props => {
+    const defectID = parseInt(props.match.params.defectID);
+    return (<App navId="defects">
+        <Defects mode="edit" defectID={defectID} />
+    </App>);
+};
+EditDefectPage.propTypes = {
+    match: PropTypes.shape({
+        params: PropTypes.shape({
+            defectID: PropTypes.string.isRequired
+        }).isRequired
+    }).isRequired
 };
 
 const DocsPage = () => {
@@ -111,7 +128,9 @@ ReactDOM.render(
                 <Route path="/design/testplan/:testPlanID/testcase/add" exact component={AddTestPage} />
                 <Route path="/design/testplan/:testPlanID/testcase/edit/:testID" exact component={EditTestPage} />
                 <Route path="/execution" component={ExecCyclePage} />
-                <Route path="/defects" component={DefectsPage} />
+                <Route path="/defects" exact component={DefectsPage} />
+                <Route path="/defects/add" component={AddDefectPage} />
+                <Route path="/defects/edit/:defectID" component={EditDefectPage} />
                 <Route path="/docs" component={DocsPage} />
             </Switch>
         </Router>

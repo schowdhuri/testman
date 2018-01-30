@@ -136,7 +136,7 @@ const update = (id, data, wetland) => {
     const manager  = wetland.getManager();
     const repository = manager.getRepository(Defect);
     const populator = wetland.getPopulator(manager);
-    const uow = manager.getUnitOfWork();
+    // const uow = manager.getUnitOfWork();
 
     return repository.findOne(id, {
         populate: ["description"]
@@ -155,7 +155,7 @@ const update = (id, data, wetland) => {
                 };
             }
             populator.assign(Defect, data, defect, true);
-            uow.registerDirty(comment, [ "description" ]);
+            // uow.registerDirty(comment, [ "description" ]);
             return manager
                 .flush()
                 .then(() => defect);

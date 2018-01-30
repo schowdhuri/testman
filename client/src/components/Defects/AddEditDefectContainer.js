@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 
-import * as actions from "actions/TestDesign";
+import * as actions from "actions/Defects";
 import { redirectToDefects } from "actions/Shared";
 
 import AddEditDefect from "./AddEditDefect";

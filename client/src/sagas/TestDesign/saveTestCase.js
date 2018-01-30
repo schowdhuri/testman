@@ -40,6 +40,7 @@ function* saveTestCase(action) {
                 dataType: "json"
             });
         }
+        Alert.success("Saved");
         yield put(rcvSaveTestCase(testPlanId, response.json));
         yield put(redirectToTestDesign());
     } catch(ex) {

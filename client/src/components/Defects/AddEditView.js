@@ -5,7 +5,7 @@ import AddEditDefect from "./AddEditDefectContainer";
 
 class AddEditView extends React.Component {
     render() {
-        const { mode, defectID } = this.props;
+        const { defectID } = this.props;
         return (<div className="defects add-edit">
             <AddEditDefect defectID={defectID} />
         </div>);

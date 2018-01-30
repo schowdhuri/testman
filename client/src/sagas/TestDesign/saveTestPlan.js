@@ -36,8 +36,8 @@ function* saveTestPlan(action) {
                 dataType: "json"
             });
         }
+        Alert.success("Saved");
         yield put(rcvSaveTestPlan(response.json));
-        // yield put(redirectToTestDesign());
     } catch(ex) {
         console.log(ex);
         Alert.error("Failed to save test plan");

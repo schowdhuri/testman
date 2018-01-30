@@ -28,8 +28,8 @@ class AddEditDefect extends React.Component {
         this.handleUpdateComment = this.handleUpdateComment.bind(this);
     }
     componentDidMount() {
-        if(this.props.testID) {
-            this.props.onInit(this.props.testID);
+        if(this.props.defectID) {
+            this.props.onInit(this.props.defectID);
         }
     }
     handleCancel() {
@@ -51,26 +51,26 @@ class AddEditDefect extends React.Component {
         this.props.onDeleteComment(commentId);
     }
     handleSave() {
-        this.props.onSave(this.props.testPlanID, this.props.testCase);
+        this.props.onSave(this.props.defect);
     }
     handleSaveComment() {
-        this.props.onSaveComment(this.props.testCase.id, this.props.testCase.newComment);
+        this.props.onSaveComment(this.props.defect.id, this.props.defect.newComment);
     }
     handleUpdateComment(value, id) {
-        this.props.onSaveComment(this.props.testCase.id, value, id);
+        this.props.onSaveComment(this.props.defect.id, value, id);
     }
     render() {
-        const { mode, testID, testCase } = this.props;
-        const { newComment, defects=[], comments=[] } = testCase;
+        const { defectID, defect } = this.props;
+        const { newComment, testCases, comments } = defect;
 
-        return (<div className="add-edit-tc">
+        return (<div className="add-edit-defect">
             <div className="action-bar header-gradient-1">
                 <ButtonToolbar>
-                    {!testID || <Button bsSize="small" bsStyle="danger" onClick={this.handleDelete}>Delete</Button>}
+                    {!defectID || <Button bsSize="small" bsStyle="danger" onClick={this.handleDelete}>Delete</Button>}
                     <Button bsSize="small" onClick={this.handleCancel}>Close</Button>
                     <Button bsSize="small" bsStyle="success" onClick={this.handleSave}>Save</Button>
                 </ButtonToolbar>
-                {testID ? <h3>Edit Test Case</h3> : <h3>Add Test Case</h3>}
+                {defectID ? <h3>Edit Defect</h3> : <h3>Add Defect</h3>}
             </div>
             <div className="container">
                 <Row>
@@ -80,14 +80,14 @@ class AddEditDefect extends React.Component {
                                 <FormGroup controlId="name">
                                     <ControlLabel>Name</ControlLabel>
                                     <FormControl
-                                        value={testCase.name}
+                                        value={defect.name}
                                         onChange={this.handleChangeName}
                                         type="text" />
                                 </FormGroup>
                                 <FormGroup controlId="description">
                                     <ControlLabel>Description</ControlLabel>
                                     <FormControl
-                                        value={testCase.description.value}
+                                        value={defect.description.value}
                                         onChange={this.handleChangeDescr}
                                         componentClass="textarea" />
                                 </FormGroup>
@@ -95,22 +95,22 @@ class AddEditDefect extends React.Component {
                         </Panel>
                     </Col>
                 </Row>
-                {testCase.defects && testCase.defects.length
+                {defect.testCases && defect.testCases.length
                     ? <Row>
                         <Col md={12}>
                             <Panel bsStyle="danger">
                                 <Panel.Heading>
-                                    <Panel.Title componentClass="h3">Defects</Panel.Title>
+                                    <Panel.Title componentClass="h3">Test Cases</Panel.Title>
                                 </Panel.Heading>
                                 <Panel.Body>
-                                    defects...
+                                    test cases...
                                 </Panel.Body>
                             </Panel>
                         </Col>
                     </Row>
                     : null}
 
-                {testCase.id
+                {defect.id
                     ? <Row>
                         <Col md={12}>
                             <Panel bsStyle="info">
@@ -149,7 +149,6 @@ class AddEditDefect extends React.Component {
     }
 }
 AddEditDefect.propTypes = {
-    mode: PropTypes.string,
     defectID: PropTypes.number
 };
 
