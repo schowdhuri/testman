@@ -1,4 +1,4 @@
-import * as ACTIONS from "constants/groupMultiSelectActions";
+import * as ACTIONS from "constants/GroupMultiSelectActions";
 import flatten from "businessLogic/shared/GroupMultiSelect/flatten";
 import isChildOf from "businessLogic/shared/GroupMultiSelect/isChildOf";
 

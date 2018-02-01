@@ -26,9 +26,9 @@ const ListB = ({ selectedItems, onDeselectItem, onDeselectAll, readOnly }) => {
                         return (<li className="group" key={item.id}>{item.name}</li>);
                     }
                     return (<li key={item.id} onClick={()=>{onDeselectItem(item);}}>
-                        {item.hasChildren ? <i className="fa fa-folder" /> : null}
+                        {item.hasChildren ? <i className="glyphicon glyphicon-folder" /> : null}
                         {item.name}
-                        <i className="fa fa-times" />
+                        <i className="glyphicon glyphicon-remove" />
                     </li>);
                 }) : null}
             </ul>

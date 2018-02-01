@@ -41,8 +41,8 @@ class Breadcrumb extends React.Component {
         return (<ul className="breadcrumb">
             <li>
                 {path && path.length
-                    ? <a href="javascript:;" onClick={this.handleNav}><i className="fa fa-home" /></a>
-                    : <span><i className="fa fa-home" /></span>}
+                    ? <a href="javascript:;" onClick={this.handleNav}><i className="glyphicon glyphicon-home" /></a>
+                    : <span><i className="glyphicon glyphicon-home" /></span>}
             </li>
             {path && path.length ? <li>{path[path.length-1].name}</li> : null}
             {path && path.length > 1

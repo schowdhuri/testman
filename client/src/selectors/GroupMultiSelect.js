@@ -16,7 +16,9 @@ const groupSelectedItems = createSelector(
             if(ri < 0) {
                 result.push({
                     id: shortId.generate(),
-                    name: s.path[s.path.length-1].name,
+                    name: s.path.length
+                        ? s.path[s.path.length-1].name
+                        : "Test Plans",
                     path: s.path,
                     items: [ s ]
                 });
@@ -54,7 +56,11 @@ export const getUnselectedItems = (state, allItems) => {
         allItems = allItems.filter(a => a.name.toLowerCase().indexOf(filterText.toLowerCase())>=0);
     if(!selectedItems || !selectedItems.length)
         return allItems;
-    return allItems.filter(a => !selectedItems.find(s => s.id===a.id));
+    return allItems.filter(a => !selectedItems.find(s => {
+        if(!s.path.length && !a.path.length)
+            return s.id===a.id;
+        return s.id===a.id && deepEqual(s.path, a.path);
+    }));
 };
 
 export const allowFilter = state => !state.path || state.path.length > 0;

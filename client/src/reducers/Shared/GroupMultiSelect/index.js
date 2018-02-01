@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 
-import { INIT, DESTROY } from "constants/groupMultiSelectActions";
+import { INIT, DESTROY } from "constants/GroupMultiSelectActions";
 
 import filterText from "./filterText";
 import path from "./path";

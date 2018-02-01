@@ -18,12 +18,3 @@ export const getTestCases = createSelector(
 );
 
 export const getTestCaseAddEditState = state=> state.testDesign.addEditTestCase;
-
-export const testSelector = {
-    getSelected: createSelector(
-        [ getTestCases, this.getSelectedItems ],
-        (testCases, )
-
-    ),
-
-};

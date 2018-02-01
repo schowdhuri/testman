@@ -1,32 +1,47 @@
 import { connect } from "react-redux";
-import TCSelector from "./Selector";
+import Selector from "./Selector";
 
-import * as actions from "actions/TestDesign";
+import * as actions from "actions/TestCaseSelector";
+import { reqTestCases } from "actions/TestDesign";
 
-import {
-    getUnselectedItems,
-    getSelectedItems
-} from "selectors/TestDesign";
+import testCaseSelector from "selectors/TestDesign";
 
 import { isLoading } from "selectors/Shared";
+import {
+    getAllItems,
+    getPath,
+    getSelected
+} from "selectors/TestCaseSelector";
 
 const mapStateToProps = state => ({
     isLoading: isLoading(state),
-    // testPlan: getSelectedTestPlan(state),
-    // testCases: getTestCases(state),
-    unselectedItems,
-    selectedItems
+    items: getAllItems(state),
+    path: getPath(state),
+    selectedItems: getSelected(state)
 });
 
 const mapDispatchToProps = dispatch => ({
-    fetchTestCases(testPlan) {
-        dispatch(actions.reqTestCases(testPlan.id));
+    onChangePath(path) {
+        dispatch(actions.changePath(path));
+        dispatch(actions.reqItems(undefined, path));
     },
-    fetchTestPlans() {
-        dispatch(actions.reqTestCases(testPlan.id));
+    onDeselect(item) {
+        dispatch(actions.deselect(item));
+    },
+    onDeselectAll() {
+        dispatch(actions.deselectAll());
+    },
+    onInit(selectedItems) {
+        dispatch(actions.reqItems(selectedItems, undefined));
+    },
+    onSelect(item, path) {
+        dispatch(actions.select(item, path));
+    },
+    onSelectAll(items) {
+        dispatch(actions.selectAll(items));
     }
 });
 
-const TCSelectorContainer = connect(mapStateToProps, mapDispatchToProps)(TCSelector);
+const SelectorContainer = connect(mapStateToProps, mapDispatchToProps)(Selector);
 
-export default TCSelectorContainer;
+export default SelectorContainer;

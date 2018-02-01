@@ -1,0 +1,15 @@
+.test-case-selector-modal {
+    .modal-content {
+        border: none;
+        display: grid;
+        grid-template-rows: 56px minmax(200px, 60vh) 76px
+    }
+    .modal-body {
+        background: none;
+        padding: 0;
+    }
+}
+.test-case-selector {
+    font-size: 1.1rem;
+    height: 100%;
+}

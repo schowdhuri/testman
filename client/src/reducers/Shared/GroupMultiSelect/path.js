@@ -1,4 +1,4 @@
-import { NAV_DOWN, NAV_TO, NAV_UP } from "constants/groupMultiSelectActions";
+import { NAV_DOWN, NAV_TO, NAV_UP } from "constants/GroupMultiSelectActions";
 
 const initialState = [];
 

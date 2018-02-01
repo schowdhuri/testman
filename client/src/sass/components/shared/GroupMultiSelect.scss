@@ -1,17 +1,32 @@
 .two-way-group-list {
-    $blue: #0e80ca;
-    $border-color: #e3e3e4;
-    $border-color-active: $blue;
-    $inactive-color: #999;
+    $background: #f2f2f2;
+    $primary: #f8f5f0;
+    $border-color: #dfd7ca;
+    $border-color-active: $primary;
+    $shadow-color: #999;
     $active-color: #404041;
     $inactive-bg: #f2f2f2;
     $active-bg: #fff;
-    $hover-bg: $blue;
-    $hover-color: #fff;
-    $header-bg: #f2f2f2;
+    $hover-bg: #f8f5f0;
+    $hover-color: #404041;
+    $breadcrumb-bg: #dfd7ca;
+    $header-bg: #f8f5f0;
+    $group-header-bg: lighten($breadcrumb-bg, 5%);
+    $group-header-hover-bg: #dfd7ca;
+    $normal-text: #606061;
+    $icon-color: #325d88;
 
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 100%;
+    height: 100%;
     position: relative;
-    min-height: 300px;
+    background-color: $background;
+
+    .glyphicon {
+        color: $icon-color;
+    }
 
     ul.items {
         list-style-type: none;
@@ -25,27 +40,28 @@
             padding: 10px 25px 10px 10px;
             position: relative;
             text-overflow: ellipsis;
+            color: $normal-text;
 
             &:hover {
                 background-color: $hover-bg;
                 color: $hover-color;
-                .fa {
+                .glyphicon {
                     visibility: visible;
                 }
             }
         }
         li.group {
-            background-color: #e3e3e4;
+            background-color: $group-header-bg;
             font-weight: 600;
             padding: 10px;
 
             &:hover {
-                background-color: #e3e3e4;
+                background-color: $group-header-hover-bg;
                 color: $active-color;
             }
         }
-        .fa-plus,
-        .fa-times {
+        .glyphicon-plus,
+        .glyphicon-remove {
             cursor: pointer;
             float: right;
             font-size: 0.8rem;
@@ -55,7 +71,7 @@
             top: 10px;
             visibility: hidden;
         }
-        .fa-folder {
+        .glyphicon-folder-close {
             margin-right: 10px;
         }
     }
@@ -63,19 +79,17 @@
     .left,
     .right {
         box-sizing: border-box;
-        width: 50%;
-        // display: inline-block;
-        vertical-align: top;
         border: solid 1px $border-color;
-        position: absolute;
-        top: 0;
-        bottom: 0;
+        display: grid;
     }
     .left {
-        left: 0;
+        grid-template-rows: 48px 1fr;
+        &.has-filter {
+            grid-template-rows: 100px 1fr;
+        }
     }
     .right {
-        right: 0;
+        grid-template-rows: 48px 1fr;
         border-left: none;
     }
     .list-header {
@@ -86,17 +100,24 @@
             vertical-align: middle;
         }
     }
-    .left.has-filter .list-header {
-        height: 100px;
+    li.back a,
+    .right .list-header .btn-link {
+        color: $icon-color;
+        font-size: 1.1rem;
+        font-weight: 500;
+        text-transform: uppercase;
     }
     .breadcrumb {
-        background: #fff;
+        background: $breadcrumb-bg;
         border-radius: 0;
         margin: 0;
-        padding: 16px 10px;
+        padding: 12px 10px;
 
         li.back {
-            float: right
+            float: right;
+            a, a:hover, a:focus {
+                text-decoration: none;
+            }
         }
         & > li:nth-child(2) {
             max-width: 160px;
@@ -115,11 +136,11 @@
             &:hover {
                 background: transparent;
             }
-            & > .fa {
+            & > .glyphicon {
                 font-size: 0.7rem;
             }
-            &:hover > .fa {
-                color: $blue;
+            &:hover > .glyphicon {
+                color: $primary;
             }
         }
 
@@ -129,21 +150,17 @@
     }
     .list-search,
     .right .list-header {
-        display: flex;
-        position: relative;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 48px;
         padding: 8px 10px;
         box-sizing: border-box;
-
-        label.excluded {
-            display: inline-block;
-            line-height: 32px;
-            flex: 3;
-        }
-        i.fa-search {
+    }
+    label.excluded {
+        display: inline-block;
+        line-height: 32px;
+        // flex: 3;
+    }
+    .list-search {
+        position: relative;
+        i.glyphicon-search {
             position: absolute;
             top: 16px;
             left: 20px;
@@ -158,9 +175,12 @@
             border-width: 1px;
             padding: 6px 10px 6px 30px;
         }
+    }
+    .right .list-header {
+        display: grid;
+        grid-template-columns: 3fr 2fr;
+
         .btn-link {
-            flex: 1;
-            font-size: 13px;
             height: 32px;
             min-width: 6em;
             outline: none;
@@ -175,17 +195,7 @@
     }
     .multiselect-list-wrapper {
         border-top: solid 1px lighten($border-color, 5%);
-        bottom: 0;
-        left: 0;
         overflow: auto;
-        position: absolute;
-        right: 0;
-        top: 48px;
-    }
-    .left.has-filter {
-        .multiselect-list-wrapper {
-            top: 100px;
-        }
     }
     &.readonly {
         .btn-select-all {
@@ -196,8 +206,8 @@
             &:hover {
                 // background-color: inherit;
                 // color: inherit;
-                .fa-plus,
-                .fa-times {
+                .glyphicon-plus,
+                .glyphicon-remove {
                     visibility: hidden;
                 }
             }
@@ -206,7 +216,7 @@
 
     .path-tree {
         background: #fff;
-        box-shadow: 1px 1px 4px #999;
+        box-shadow: 1px 1px 4px $shadow-color;
         cursor: default;
         font-size: 0.9rem;
         left: 2px;
@@ -219,15 +229,15 @@
             padding: 10px;
 
             &:hover {
-                background-color: #f2f2f2;
+                background-color: $inactive-bg;
             }
-            .fa {
+            .glyphicon {
                 margin-right: 5px;
                 font-size: 0.8rem;
             }
         }
         .active {
-            color: $blue;
+            color: $primary;
             cursor: pointer;
         }
         .spacer {

@@ -33,11 +33,11 @@ class UnselectedItem extends React.Component {
         const { item } = this.props;
 
         return (<li onClick={this.handleClick}>
-            {this.hasChildren() ? <i className="fa fa-folder" /> : null}
+            {this.hasChildren() ? <i className="glyphicon glyphicon-folder-close" /> : null}
             {item.name}
 
             {item.selectable || !this.hasChildren()
-                ? <i className="fa fa-plus" onClick={this.handleAdd}/>
+                ? <i className="glyphicon glyphicon-plus" onClick={this.handleAdd}/>
                 : null}
         </li>);
     }

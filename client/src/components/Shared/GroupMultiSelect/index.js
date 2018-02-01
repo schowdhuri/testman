@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import uuid from "uuid4";
+import shortId from "shortid";
 
 import * as actions from "actions/GroupMultiSelect";
 
@@ -13,7 +13,7 @@ import {
 } from "selectors/GroupMultiSelect";
 
 function mapStateToProps() {
-    const cid = uuid();
+    const cid = shortId.generate();
     return function(state, { items }) {
         const localState = state.groupMultiSelect[cid] || {};
         return {

@@ -47,7 +47,7 @@ class PathTree extends React.Component {
             onMouseUp={this.handleMouseUp}>
 
             <div className="level active" onClick={() => this.handleNav({})}>
-                <i className="fa fa-home" />
+                <i className="glyphicon glyphicon-home" />
             </div>
 
             {path.map((level, num) => {
@@ -61,8 +61,8 @@ class PathTree extends React.Component {
                     onClick={() => this.handleNav(level)}
                 >
                     {spacers}
-                    {num>=0 && num<path.length-1 ? <i className="fa fa-folder" /> : null}
-                    {num==path.length-1 ? <i className="fa fa-angle-right" /> : null}
+                    {num>=0 && num<path.length-1 ? <i className="glyphicon glyphicon-folder-close" /> : null}
+                    {num==path.length-1 ? <i className="glyphicon glyphicon-menu-right" /> : null}
                     <span>{level.name}</span>
                 </div>);
             })}

@@ -38,7 +38,7 @@ class ListA extends React.Component {
                     onNavUp={onNavUp}
                     path={path} />
                 {showFilter !== false ? <div className="list-search">
-                    <i className="fa fa-search" />
+                    <i className="glyphicon glyphicon-search" />
                     <Filter value={filterText} onFilter={onFilter} />
                 </div> : null}
             </div>

@@ -1,4 +1,4 @@
-import { FILTER_LIST, NAV_DOWN, NAV_UP, NAV_TO } from "constants/groupMultiSelectActions";
+import { FILTER_LIST, NAV_DOWN, NAV_UP, NAV_TO } from "constants/GroupMultiSelectActions";
 
 const filterReducer = (state="", actions) => {
     const { type } = actions;
