@@ -1,6 +1,6 @@
 "use strict";
 
-class TestCase {
+class ExecCycle {
     static setMapping(mapping) {
         mapping.field("created", {
             type: "datetime",
@@ -15,15 +15,20 @@ class TestCase {
             type: "string",
             nullable: false
         });
-        mapping.oneToOne("description", { targetEntity: "RichText", inversedBy: "testcases" });
+        mapping.field("startDate", {
+            type: "datetime",
+            nullable: true
+        });
+        mapping.field("endDate", {
+            type: "datetime",
+            nullable: true
+        });
         mapping.field("status", {
             type: "enumeration",
             nullable: false,
-            enumeration: ["New", "Pass", "Fail"]
+            enumeration: ["New", "In Progress", "Completed"]
         });
-        mapping.manyToOne("testplan", { targetEntity: "TestPlan", inversedBy: "testplan" });
-        mapping.oneToMany("comments", { targetEntity: "Comment", mappedBy: "testcases" });
-        mapping.manyToMany("defects", { targetEntity: "Defect", mappedBy: "testcases" });
+        mapping.oneToMany("testruns", { targetEntity: "TestRun", mappedBy: "execcycle" });
     }
 
     beforeCreate() {
@@ -38,4 +43,4 @@ class TestCase {
     }
 }
 
-module.exports = TestCase;
+module.exports = ExecCycle;

@@ -1,6 +1,6 @@
 "use strict";
 
-class TestCase {
+class TestRun {
     static setMapping(mapping) {
         mapping.field("created", {
             type: "datetime",
@@ -10,20 +10,19 @@ class TestCase {
             type: "datetime",
             nullable: true
         });
-        mapping.forProperty("id").primary().increments();
-        mapping.field("name", {
-            type: "string",
-            nullable: false
+        mapping.field("runDate", {
+            type: "datetime",
+            nullable: true
         });
-        mapping.oneToOne("description", { targetEntity: "RichText", inversedBy: "testcases" });
+        mapping.forProperty("id").primary().increments();
         mapping.field("status", {
             type: "enumeration",
             nullable: false,
             enumeration: ["New", "Pass", "Fail"]
         });
-        mapping.manyToOne("testplan", { targetEntity: "TestPlan", inversedBy: "testplan" });
-        mapping.oneToMany("comments", { targetEntity: "Comment", mappedBy: "testcases" });
-        mapping.manyToMany("defects", { targetEntity: "Defect", mappedBy: "testcases" });
+        mapping.manyToOne("execcycle", { targetEntity: "ExecCycle", inversedBy: "testruns" });
+        mapping.oneToOne("testcase", { targetEntity: "TestCase" });
+        mapping.oneToMany("comments", { targetEntity: "Comment", mappedBy: "testrun" });
     }
 
     beforeCreate() {
@@ -38,4 +37,4 @@ class TestCase {
     }
 }
 
-module.exports = TestCase;
+module.exports = TestRun;

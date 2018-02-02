@@ -21,7 +21,7 @@ class Defect {
             nullable: false,
             enumeration: ["Open", "WIP", "Closed"]
         });
-        mapping.oneToMany("comments", { targetEntity: "Comment", mappedBy: "comments" });
+        mapping.oneToMany("comments", { targetEntity: "Comment", mappedBy: "defects" });
         mapping.manyToMany("testcases", { targetEntity: "TestCase", inversedBy: "defects" })
     }
 

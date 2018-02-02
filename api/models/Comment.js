@@ -11,9 +11,10 @@ class Comment {
             nullable: true
         });
         mapping.forProperty("id").primary().increments();
-        mapping.oneToOne("content", { targetEntity: "RichText", inversedBy: "comnents" });
+        mapping.oneToOne("content", { targetEntity: "RichText" });
         mapping.manyToOne("testcases", { targetEntity: "TestCase", inversedBy: "testcases" });
         mapping.manyToOne("defects", { targetEntity: "Defect", inversedBy: "defects" });
+        mapping.manyToOne("testrun", { targetEntity: "TestRun", inversedBy: "testrun" });
     }
 
     beforeCreate() {
