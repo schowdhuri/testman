@@ -37,19 +37,18 @@ const findAll = wetland => {
 
 const findById = (id, wetland) => {
     const manager = wetland.getManager();
-    const repository = manager.getRepository(TestPlan);
+    const repository = manager.getRepository(TestRun);
     return repository
-        .findOne(id)
-        .then(testPlan => _getTestCases(testPlan.id, manager)
-            .then(testCases => Object.assign({}, testPlan, {
-                testcases: undefined,
-                testCases: testCases.map(tc => tc && tc.id)
-            })));
+        .findOne(id, {
+            populate: "testcase"
+        })
+        .then(testRun => Object.assign({}, testRun, {
+            testcase: undefined,
+            testCase: testRun.testcase
+        }));
 };
 
 const create = (obj, wetland) => {
-    if(!obj.name)
-        return Promise.reject("name is required");
     if(!obj.testCase)
         return Promise.reject("testCase is required");
     const data = {
@@ -72,25 +71,31 @@ const update = (id, data, wetland) => {
         return Promise.reject("id is required");
     if(!data)
         return Promise.reject("No data provided");
-    if(!data.name)
-        return Promise.reject("name is required");
+    if(!data.testCase)
+        return Promise.reject("testCase is required");
+    if(!data.status)
+        return Promise.reject("status is required");
 
     const manager  = wetland.getManager();
-    const repository = manager.getRepository(TestPlan);
+    const repository = manager.getRepository(TestRun);
+    const populator = wetland.getPopulator(manager);
 
-    return repository.findOne(id).then(testPlan => {
-        if(!testPlan)
-            return Promise.reject(`TestPlan with id ${id} not found`);
+    return repository.findOne(id).then(testRun => {
+        if(!testRun)
+            return Promise.reject(`TestRun with id ${id} not found`);
         try {
-            testPlan.name = data.name;
+            data.testcase = {
+                id: data.testCase
+            };
+            populator.assign(TestRun, data, testRun, true);
             return manager
                 .flush()
-                .then(() => testPlan);
+                .then(() => testRun);
         } catch(ex) {
             console.log(ex);
             return Promise.reject(ex);
         }
-    });
+    }).catch(ex => console.log(ex));
 };
 
 const remove = (id, wetland) => {
