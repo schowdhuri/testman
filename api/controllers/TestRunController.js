@@ -103,15 +103,15 @@ const remove = (id, wetland) => {
         return Promise.reject("id is required");
 
     const manager = wetland.getManager();
-    const repository = manager.getRepository(TestPlan);
+    const repository = manager.getRepository(TestRun);
 
     return repository.findOne(id)
-        .then(testPlan => {
-            if(!testPlan)
-                return Promise.reject(`TestPlan with id ${id} not found`);
-            return manager.remove(testPlan)
+        .then(testRun => {
+            if(!testRun)
+                return Promise.reject(`TestRun with id ${id} not found`);
+            return manager.remove(testRun)
                 .flush()
-                .then(() => testPlan);
+                .then(() => testRun);
         });
 };
 
