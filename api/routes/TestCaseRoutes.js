@@ -28,7 +28,7 @@ const testCaseRoutes = app => {
 				})
 				.catch(ex => {
 					console.log(ex)
-					res.status(500).send(ex);;
+					res.status(500).send(ex);
 				});
 		});
 
@@ -39,7 +39,7 @@ const testCaseRoutes = app => {
 					res.json(result);
 				})
 				.catch(ex => {
-					res.status(500).send(ex);;
+					res.status(500).send(ex);
 				});
 		})
 		.put((req, res) => {
@@ -48,18 +48,17 @@ const testCaseRoutes = app => {
 					res.json(result);
 				})
 				.catch(ex => {
-					res.status(500).send(ex);;
+					res.status(500).send(ex);
 				});
 		})
 		.delete((req, res) => {
-			try {
-				controller.remove(req.params.id, req.wetland)
+			controller.remove(req.params.id, req.wetland)
 				.then(result => {
 					res.json(result);
 				})
-			} catch(ex) {
-				res.status(500).send(ex);;
-			}
+				.catch(ex => {
+					res.status(500).send(ex);
+				});
 		});
 };
 
