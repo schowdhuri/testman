@@ -20,7 +20,7 @@ const defectRoutes = app => {
 				})
 				.catch(ex => {
 					console.log(ex)
-					res.status(500).send(ex);;
+					res.status(500).send(ex);
 				});
 		});
 
@@ -31,7 +31,7 @@ const defectRoutes = app => {
 					res.json(result);
 				})
 				.catch(ex => {
-					res.status(500).send(ex);;
+					res.status(500).send(ex);
 				});
 		})
 		.put((req, res) => {
@@ -40,7 +40,7 @@ const defectRoutes = app => {
 					res.json(result);
 				})
 				.catch(ex => {
-					res.status(500).send(ex);;
+					res.status(500).send(ex);
 				});
 		})
 		.delete((req, res) => {
@@ -50,7 +50,7 @@ const defectRoutes = app => {
 					res.json(result);
 				})
 			} catch(ex) {
-				res.status(500).send(ex);;
+				res.status(500).send(ex);
 			}
 		});
 };
