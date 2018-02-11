@@ -1,9 +1,9 @@
 "use strict";
 
-const controller = require("../controllers/TestPlanController");
+const controller = require("../controllers/ExecCycleController");
 
-const testPlanRoutes = app => {
-	app.route("/api/testplan")
+const execCycleRoutes = app => {
+	app.route("/api/exec")
 		.get((req, res) => {
 			controller.findAll(req.wetland)
 				.then(result => {
@@ -24,7 +24,7 @@ const testPlanRoutes = app => {
 				});
 		});
 
-	app.route("/api/testplan/:id")
+	app.route("/api/exec/:id")
 		.get((req, res) => {
 			controller.findById(req.params.id, req.wetland)
 				.then(result => {
@@ -54,4 +54,4 @@ const testPlanRoutes = app => {
 		});
 };
 
-module.exports = testPlanRoutes;
+module.exports = execCycleRoutes;

@@ -3,6 +3,7 @@ const testCaseRoutes = require("./TestCaseRoutes");
 const defectRoutes = require("./DefectRoutes");
 const commentRoutes = require("./CommentRoutes");
 const testRunRoutes = require("./TestRunRoutes");
+const execCycleRoutes = require("./ExecCycleRoutes");
 
 const pageRoutes = require("./pages");
 // more routes
@@ -13,6 +14,7 @@ module.exports = app => {
     defectRoutes(app);
     commentRoutes(app);
     testRunRoutes(app);
+    execCycleRoutes(app);
 
     pageRoutes(app);
 	// ...

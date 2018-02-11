@@ -57,10 +57,10 @@ const findAll = (testPlanId, wetland) => {
             testPlan: res["tp.id"]
         })))
         .then(testCases => Promise.all(testCases.map(tc => _getComments(tc.id, manager)
-        .then(comments => Object.assign({}, tc, {
-            comments: comments.map(c => c.content)
-        }))
-        )))
+            .then(comments => Object.assign({}, tc, {
+                comments: comments.map(c => c.content)
+            })))
+        ))
         .then(testCases => Promise.all(testCases.map(tc => _getDefects(tc.id, manager)
             .then(defects => Object.assign({}, tc, {
                 defects: defects.map(d => d && d.id)
