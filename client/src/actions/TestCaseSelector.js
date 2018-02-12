@@ -36,3 +36,18 @@ export const selectAll = items => ({
     type: ACTIONS.SELECT_ALL,
     items
 });
+
+export const resetSelection = selectedItems => ({
+    type: ACTIONS.RESET_SELECT,
+    selectedItems
+});
+
+export const reqImportTests = data => ({
+    type: ACTIONS.REQ_IMPORT_TESTS,
+    data
+});
+
+export const rcvImportTests = tests => ({
+    type: ACTIONS.RCV_IMPORT_TESTS,
+    tests
+});

@@ -5,7 +5,7 @@ import {
     Table
 } from "react-bootstrap";
 
-import SelectorModal from "./SelectorModal";
+import SelectorModal from "./SelectorModalContainer";
 import TestRunsToolbar from "./TestRunsToolbar";
 
 class TestRunList extends React.Component {

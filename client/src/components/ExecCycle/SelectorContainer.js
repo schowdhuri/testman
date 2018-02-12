@@ -32,6 +32,7 @@ const mapDispatchToProps = dispatch => ({
         dispatch(actions.deselectAll());
     },
     onInit(selectedItems) {
+        console.log("reqItems with ", selectedItems);
         dispatch(actions.reqItems(selectedItems, undefined));
     },
     onSelect(item, path) {

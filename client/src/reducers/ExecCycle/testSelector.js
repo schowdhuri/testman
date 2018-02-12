@@ -1,5 +1,4 @@
 import * as ACTIONS from "constants/TestCaseSelectorActions";
-// import { RCV_EXEC_CYCLE } from "constants/ExecCyclesActions";
 
 import isChildOf from "businessLogic/shared/GroupMultiSelect/isChildOf";
 
@@ -29,6 +28,12 @@ const selectorReducer = (state=initialState, action) => {
                     ? action.selectedItems
                     : state.selected,
                 isReady: true
+            };
+
+        case ACTIONS.RESET_SELECT:
+            return {
+                ...state,
+                selected: action.selectedItems
             };
 
         case ACTIONS.DESELECT:

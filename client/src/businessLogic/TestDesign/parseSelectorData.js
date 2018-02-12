@@ -7,7 +7,7 @@ const parseSelectorData = (arr, path) => {
                 name: tp.name,
                 items: tp.testCases.map(tc => ({
                     id: tc,
-                    name:`TC-${tc}`
+                    name:`Test-${tc}`
                 })),
                 path,
                 selectable: true
