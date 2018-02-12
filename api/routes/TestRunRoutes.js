@@ -5,7 +5,11 @@ const controller = require("../controllers/TestRunController");
 const testRunRoutes = app => {
 	app.route("/api/testrun")
 		.get((req, res) => {
-			controller.findAll(req.wetland)
+			const execCycleId = req.query.execCycle;
+			if(!execCycleId) {
+				res.status(400).send("execCycle is required");
+			}
+			controller.findAll(execCycleId, req.wetland)
 				.then(result => {
 					res.json(result);
 				})
@@ -14,7 +18,11 @@ const testRunRoutes = app => {
 				});
 		})
 		.post((req, res) => {
-			controller.create(req.body, req.wetland)
+			const execCycleId = req.query.execCycle;
+			if(!execCycleId) {
+				res.status(400).send("execCycle is required");
+			}
+			controller.create(execCycleId, req.body, req.wetland)
 				.then(result => {
 					res.json(result);
 				})

@@ -18,21 +18,24 @@ const _getTestCases = (testRunId, manager) => {
         })));
 };
 
-const findAll = wetland => {
+const findAll = (execCycleId, wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(TestRun);
-
-    return repository
-        .find({}, {
-            populate: [ "testcase", "execcycle" ]
-        })
-        .then(testRuns => testRuns || [])
-        // .then(testRuns => Promise.all(testPlans.map(tp => _getTestCases(tp.id, manager)
-        //     .then(testCases => Object.assign({}, tp, {
-        //         testcases: undefined,
-        //         testCases: testCases.map(tc => tc && tc.id)
-        //     }))
-        // ))).catch(ex => console.log(ex));
+    const qb = repository.getQueryBuilder("tr");
+    return qb
+        .leftJoin("tr.execcycle", "ec")
+        .leftJoin("tr.testcase", "tc")
+        .select("tr.id", "tc.id", "tc.name", "ec.id", "tr.status")
+        .where({ "ec.id": execCycleId })
+        .getQuery()
+        .execute()
+        .then(resArr => resArr.map(res => ({
+            id: res["tr.id"],
+            status: res["tr.status"],
+            execCycle: res["ec.id"],
+            name: res["tc.name"],
+            testCase: res["tc.id"]
+        })));
 };
 
 const findById = (id, wetland) => {
@@ -40,7 +43,7 @@ const findById = (id, wetland) => {
     const repository = manager.getRepository(TestRun);
     return repository
         .findOne(id, {
-            populate: "testcase"
+            populate: [ "testcase", "execcycle" ]
         })
         .then(testRun => Object.assign({}, testRun, {
             testcase: undefined,
@@ -48,13 +51,16 @@ const findById = (id, wetland) => {
         }));
 };
 
-const create = (obj, wetland) => {
+const create = (execCycleId, obj, wetland) => {
     if(!obj.testCase)
         return Promise.reject("testCase is required");
     const data = {
         name: obj.name,
         testcase: {
             id: obj.testCase
+        },
+        execCycle: {
+            id: execCycleId
         }
     };
     const manager  = wetland.getManager();

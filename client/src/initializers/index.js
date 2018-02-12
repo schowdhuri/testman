@@ -77,7 +77,7 @@ EditTestPage.propTypes = {
 
 const ExecCyclePage = () => {
     return (<App navId="execution">
-        <ExecCycle />
+        <ExecCycle mode="list" />
     </App>);
 };
 ExecCyclePage.propTypes = {

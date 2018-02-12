@@ -1,0 +1,75 @@
+.exec-cycles {
+    display: grid;
+    grid-auto-rows: 100%;
+    &.list {
+        grid-template-columns: 280px auto;
+    }
+
+    .toolbar,
+    .action-bar {
+        overflow: auto;
+        h3 {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 0;
+            padding: 16px;
+            text-transform: uppercase;
+        }
+    }
+    .toolbar .btn {
+        float: right;
+        &, &:focus {
+            outline: none;
+            box-shadow: none;
+        }
+    }
+}
+
+.cycles {
+    border-right: solid 2px #ccc;
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        font-size: 1.2rem;
+
+        li {
+            color: #999;
+            cursor: pointer;
+            margin: 0;
+            padding: 8px 16px;
+            &:hover {
+                color: #404041;
+            }
+            &.selected {
+                color: #404041;
+                font-weight: bold;
+            }
+            .btn {
+                float: right;
+                padding: 2px;
+                outline: none;
+                box-shadow: none;
+            }
+        }
+    }
+}
+
+.add-edit-ec {
+    position: relative;
+    margin: 64px 24px;
+
+    .action-bar {
+        position: absolute;
+        left: -24px;
+        right: -24px;
+        top: -64px;
+        .btn-toolbar {
+            float: right;
+            margin: 6px 24px 0 0;
+        }
+    }
+}
+.test-runs {
+    background: #fff;
+}

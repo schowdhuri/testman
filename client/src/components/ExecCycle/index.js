@@ -1,25 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Button, Modal } from "react-bootstrap";
 
-import TestCaseSelector from "components/TestDesign/SelectorContainer";
+import ListView from "./ListView";
+// import AddEditView from "./AddEditView";
+
+import "sass/components/ExecCycle.scss";
 
 class ExecCycle extends React.Component {
     render() {
-        return (<div>
-            <Modal show={true} className="test-case-selector-modal">
-                <Modal.Header>
-                    <Modal.Title>Import Test Cases</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <TestCaseSelector />
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button>Close</Button>
-                    <Button bsStyle="primary">Save</Button>
-                </Modal.Footer>
-            </Modal>
-        </div>);
+        const { mode, execCycleID } = this.props;
+        return mode=="list"
+            ? <ListView execCycleID={execCycleID} />
+            : <div>add edit view</div>
     }
 }
 
