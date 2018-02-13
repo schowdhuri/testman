@@ -5,18 +5,20 @@ import request from "utils/request";
 
 import { REQ_IMPORT_TESTS } from "constants/TestCaseSelectorActions";
 import { RCV_TEST_CASES } from "constants/TestDesignActions";
+import { RCV_EC_SAVE } from "constants/ExecCyclesActions";
 
-import { rcvImportTests } from "actions/TestCaseSelector";
+import { rcvImportTests, resetSelection } from "actions/TestCaseSelector";
 import { reqTestCases } from "actions/TestDesign";
+import { reqSaveExecCycle } from "actions/ExecCycle";
 import { setLoading } from "actions/Shared";
 
 function* importTests(action) {
-    const { data } = action;
+    const { execCycle, selectedItems, preSeletedItems } = action;
     yield put(setLoading(REQ_IMPORT_TESTS, true));
     const tests = [];
     try {
-        for(let i=0; i<data.length; i++) {
-            const item = data[i];
+        for(let i=0; i<selectedItems.length; i++) {
+            const item = selectedItems[i];
             if(item.hasChildren) {
                 // testplan
                 yield put(reqTestCases(item.id));
@@ -29,13 +31,20 @@ function* importTests(action) {
                 tests.push(item);
             }
         }
+        yield put(reqSaveExecCycle({
+            ...execCycle,
+            testCases: tests
+        }));
+        yield put(setLoading(REQ_IMPORT_TESTS, false));
+        yield take(RCV_EC_SAVE);
         Alert.success(`Imported ${tests.length} tests`);
         yield put(rcvImportTests(tests));
     } catch(ex) {
+        yield put(resetSelection(preSeletedItems));
         console.log(ex);
         Alert.error("Failed to import test. " + (ex && ex.text || ""));
+        yield put(setLoading(REQ_IMPORT_TESTS, false));
     }
-    yield put(setLoading(REQ_IMPORT_TESTS, false));
 }
 
 export default function* () {

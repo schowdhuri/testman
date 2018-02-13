@@ -5,13 +5,11 @@ import * as actions from "actions/TestCaseSelector";
 
 import testCaseSelector from "selectors/TestDesign";
 
-import {
-    getAllItems,
-    getPath,
-    getSelected
-} from "selectors/TestCaseSelector";
+import { getSelected } from "selectors/TestCaseSelector";
+import { getAddEditState } from "selectors/ExecCycle";
 
 const mapStateToProps = state => ({
+    execCycle: getAddEditState(state),
     selectedItems: getSelected(state)
 });
 
@@ -21,8 +19,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
         if(typeof(ownProps.onClose)==="function")
             ownProps.onClose();
     },
-    onSave(data) {
-        dispatch(actions.reqImportTests(data));
+    onSave(execCycle, selectedItems, preSelectedItems) {
+        dispatch(actions.reqImportTests(execCycle, selectedItems, preSelectedItems));
     }
 });
 

@@ -3,8 +3,8 @@ const buildExecCycle = data => {
     if(data.id)
         execCycle.id = data.id;
     execCycle.name = data.name;
-    execCycle.testRuns = data.testRuns || [];
-
+    execCycle.status = data.status;
+    execCycle.testCases = (data.testCases || []).map(tc => tc.id);
     return execCycle;
 };
 

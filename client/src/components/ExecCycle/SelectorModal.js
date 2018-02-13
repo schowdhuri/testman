@@ -8,21 +8,25 @@ class SelectorModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedItems: []
+            preSelectedItems: []
         };
         this.handleClose = this.handleClose.bind(this);
         this.handleSave = this.handleSave.bind(this);
     }
     componentDidMount() {
         this.setState({
-            selectedItems: this.props.selectedItems
+            preSelectedItems: this.props.selectedItems
         });
     }
     handleClose() {
-        this.props.onClose(this.state.selectedItems);
+        this.props.onClose(this.state.preSelectedItems);
     }
     handleSave() {
-        this.props.onSave(this.props.selectedItems);
+        this.props.onSave(
+            this.props.execCycle,
+            this.props.selectedItems,
+            this.state.preSelectedItems
+        );
     }
     render() {
         const { show } = this.props;

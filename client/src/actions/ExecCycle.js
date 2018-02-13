@@ -34,3 +34,8 @@ export const rcvTestRuns = (execCycleId, testRuns) => ({
     execCycleId,
     testRuns
 });
+
+export const toggleImportDialog = show => ({
+    type: ACTIONS.TOGGLE_IMPORT_DLG,
+    show
+});

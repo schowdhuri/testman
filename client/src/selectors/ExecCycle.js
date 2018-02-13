@@ -9,6 +9,7 @@ export const getExecCycles = createSelector(
         selected: selected ? ec.id==selected.id : false
     }))
 );
+export const getAddEditState = state => state.execCycle.addEdit;
 
 const getTestRunMap = state => state.execCycle.testRuns;
 
@@ -18,3 +19,4 @@ export const getTestRuns = createSelector(
 );
 
 export const getTestRunAddEditState = state=> state.execCycle.addEdit;
+export const showImportDialog = state => state.execCycle.addEdit.showImportDialog;

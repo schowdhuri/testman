@@ -42,9 +42,11 @@ export const resetSelection = selectedItems => ({
     selectedItems
 });
 
-export const reqImportTests = data => ({
+export const reqImportTests = (execCycle, selectedItems, preSelectedItems) => ({
     type: ACTIONS.REQ_IMPORT_TESTS,
-    data
+    execCycle,
+    selectedItems,
+    preSelectedItems
 });
 
 export const rcvImportTests = tests => ({

@@ -1,19 +1,43 @@
+const { ArrayCollection } = require("wetland");
+
 const ExecCycle = require("../models/ExecCycle");
 const TestRun = require("../models/TestRun");
+const TestCase = require("../models/TestCase");
 
 const _getTestRuns = (execCycleId, manager) => {
     const repository = manager.getRepository(TestRun);
     const qb = repository.getQueryBuilder("tr");
+    // return qb
+    //     .leftJoin("tr.execcycle", "ec")
+    //     .select("tr.id", "tr.status")
+    //     .where({ "tr.execcycle_id": execCycleId })
+    //     .getQuery()
+    //     .execute()
+    //     .then(resArr => resArr.map(res => ({
+    //         id: res["tr.id"],
+    //         status: res["tr.status"]
+    //     })));
+
     return qb
         .leftJoin("tr.execcycle", "ec")
-        .select("tr.id", "tr.status")
-        .where({ "tr.execcycle_id": execCycleId })
+        .leftJoin("tr.testcase", "tc")
+        .select("tr.id", "tc.id", "tc.name", "ec.id", "tr.status")
+        .where({ "ec.id": execCycleId })
         .getQuery()
         .execute()
         .then(resArr => resArr.map(res => ({
             id: res["tr.id"],
-            status: res["tr.status"]
+            status: res["tr.status"],
+            execCycle: res["ec.id"],
+            name: res["tc.name"],
+            testCase: res["tc.id"]
         })));
+};
+
+const _getTestCases = (idArr, manager) => {
+    const repository = manager.getRepository(TestCase);
+    const pArr = idArr.map(id => repository.findOne(id));
+    return Promise.all(pArr);
 };
 
 const findAll = wetland => {
@@ -60,8 +84,8 @@ const update = (id, data, wetland) => {
         return Promise.reject("id is required");
     if(!data)
         return Promise.reject("No data provided");
-    if(!data.testRuns)
-        return Promise.reject("testRuns required");
+    if(!data.testCases)
+        return Promise.reject("testCases required");
     if(!data.status)
         return Promise.reject("status is required");
 
@@ -74,14 +98,55 @@ const update = (id, data, wetland) => {
         if(!cycle)
             return Promise.reject(`ExecCycle with id ${id} not found`);
         try {
-            data.testruns = data.testRuns.map(tr => ({
-                id: tr
-            }));
-            populator.assign(ExecCycle, data, cycle, true);
-            uow.registerDirty(cycle, [ "testruns" ]);
-            return manager
-                .flush()
-                .then(() => cycle);
+            return Promise.all([
+                _getTestCases(data.testCases, manager),
+                _getTestRuns(id, manager)
+            ])
+            .then(result => {
+                const testCases = result[0];
+                const testRuns = result[1];
+                const newTestCases = testCases.filter(tc => !testRuns.find(tr => tr.testCase==tc.id));
+                const removedTestRuns = testRuns.filter(tr => !testCases.find(tc => tc.id==tr.testCase));
+
+                // remove unused testRuns
+                const testRunRepo = manager.getRepository(TestRun);
+                removedTestRuns.forEach(tr => manager.remove(tr));
+
+                // create new testRuns
+                const newTestRuns = newTestCases.map(tc => ({
+                    name: tc.name,
+                    testcase: {
+                        id: tc.id
+                    },
+                    execCycle: {
+                        id
+                    }
+                }));
+
+                // retained testRuns
+                const retainedTestRuns = testRuns
+                    .filter(tr => testCases.find(tc => tc.id==tr.testCase))
+                    .map(tr => ({
+                        id: tr.id
+                    }));
+                return [
+                    ...retainedTestRuns,
+                    ...newTestRuns
+                ];
+            })
+            .then(testRuns => {
+                const arrTestRuns = new ArrayCollection();
+                testRuns.forEach(tr => arrTestRuns.push(tr));
+                data = Object.assign({}, data, {
+                    testCases: undefined,
+                    testruns: arrTestRuns
+                });
+                populator.assign(ExecCycle, data, cycle, true);
+                uow.registerDirty(cycle, [ "testruns" ]);
+                return manager
+                    .flush()
+                    .then(() => cycle);
+            });
         } catch(ex) {
             console.log(ex);
             return Promise.reject(ex);

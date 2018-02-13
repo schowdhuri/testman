@@ -11,9 +11,6 @@ import TestRunsToolbar from "./TestRunsToolbar";
 class TestRunList extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            selectorModal: false
-        };
         this.hideSelector = this.hideSelector.bind(this);
         this.importTests = this.importTests.bind(this);
         this.showSelector = this.showSelector.bind(this);
@@ -40,14 +37,14 @@ class TestRunList extends React.Component {
         this.toggleSelector(true);
     }
     toggleSelector(show=false) {
-        this.setState({ selectorModal: show });
+        this.props.onToggleImportDialog(show);
     }
     render() {
         const {
+            execCycle,
             testRuns,
-            execCycle
+            showImportDialog
         } = this.props;
-        const { selectorModal } = this.state;
 
         return (<div className="test-runs-list">
             <TestRunsToolbar execCycle={execCycle} onAdd={this.showSelector} />
@@ -73,7 +70,7 @@ class TestRunList extends React.Component {
                     </tr>))}
                 </tbody>
             </Table>
-            <SelectorModal show={selectorModal} onClose={this.hideSelector} onSave={this.importTests} />
+            <SelectorModal show={showImportDialog} onClose={this.hideSelector} onSave={this.importTests} />
         </div>);
     }
 }
