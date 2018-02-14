@@ -40,8 +40,10 @@ function mapDispatchToProps(dispatch, {
     return function() {
         return {
             onChangePath(path) {
-                if(typeof(onChangePath)==="function")
+                if(typeof(onChangePath)==="function") {
+                    console.log("onChangePath inner")
                     onChangePath(path);
+                }
             },
             onInit(_cid) {
                 cid = _cid;

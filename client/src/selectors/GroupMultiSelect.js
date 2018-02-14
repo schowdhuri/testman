@@ -3,7 +3,10 @@ import shortId from "shortid";
 import { createSelector } from "reselect";
 
 export const getFilterText = state => state.filterText;
-export const getPath = state => state.path;
+export const getPath = state => {
+    console.log(state);
+    return state.path;
+};
 export const getSelectedItems = state =>
     state.selectedItems ? state.selectedItems.filter(s => s.path) : [];
 

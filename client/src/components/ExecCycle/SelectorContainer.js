@@ -6,14 +6,16 @@ import { reqTestCases } from "actions/TestDesign";
 
 import testCaseSelector from "selectors/TestDesign";
 
-import { isLoading } from "selectors/Shared";
 import {
     getAllItems,
     getPath,
     getSelected
 } from "selectors/TestCaseSelector";
+import { isLoading } from "selectors/Shared";
+import { getSelectedExecCycle } from "selectors/ExecCycle";
 
 const mapStateToProps = state => ({
+    execCycle: getSelectedExecCycle(state),
     isLoading: isLoading(state),
     items: getAllItems(state),
     path: getPath(state),
@@ -22,6 +24,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     onChangePath(path) {
+        console.log("onChangePath")
         dispatch(actions.changePath(path));
         dispatch(actions.reqItems(undefined, path));
     },
@@ -31,9 +34,10 @@ const mapDispatchToProps = dispatch => ({
     onDeselectAll() {
         dispatch(actions.deselectAll());
     },
-    onInit(selectedItems) {
-        console.log("reqItems with ", selectedItems);
-        dispatch(actions.reqItems(selectedItems, undefined));
+    onInit(execCycle) {
+        // console.log("reqItems with ", selectedItems);
+        dispatch(actions.reqInitialData(execCycle.id));
+        // dispatch(actions.reqItems(selectedItems, undefined));
     },
     onSelect(item, path) {
         dispatch(actions.select(item, path));

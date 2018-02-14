@@ -2,7 +2,7 @@ import { NAV_DOWN, NAV_TO, NAV_UP } from "constants/GroupMultiSelectActions";
 
 const initialState = [];
 
-const pathReducer = (state=initialState, action) => {
+const pathReducer = (state=initialState, action={}) => {
     const { type } = action;
     let index;
     switch(type) {

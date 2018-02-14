@@ -1,5 +1,10 @@
 import * as ACTIONS from "constants/TestCaseSelectorActions";
 
+export const reqInitialData = execCycleId => ({
+    type: ACTIONS.REQ_INIT_DATA,
+    execCycleId
+});
+
 export const reqItems = (selectedItems=[], path=[]) => ({
     type: ACTIONS.REQ_ITEMS,
     selectedItems,

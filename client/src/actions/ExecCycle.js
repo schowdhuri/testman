@@ -9,6 +9,16 @@ export const rcvExecCycles = execCycles => ({
     execCycles
 });
 
+export const reqExecCycle = id => ({
+    type: ACTIONS.REQ_EXEC_CYCLE,
+    id
+});
+
+export const rcvExecCycle = execCycle => ({
+    type: ACTIONS.RCV_EXEC_CYCLE,
+    execCycle
+});
+
 export const reqSaveExecCycle = execCycle => ({
     type: ACTIONS.REQ_EC_SAVE,
     execCycle
