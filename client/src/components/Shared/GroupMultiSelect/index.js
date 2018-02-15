@@ -41,7 +41,6 @@ function mapDispatchToProps(dispatch, {
         return {
             onChangePath(path) {
                 if(typeof(onChangePath)==="function") {
-                    console.log("onChangePath inner")
                     onChangePath(path);
                 }
             },

@@ -14,6 +14,7 @@ class TestRunList extends React.Component {
         this.hideSelector = this.hideSelector.bind(this);
         this.importTests = this.importTests.bind(this);
         this.showSelector = this.showSelector.bind(this);
+        this.toggleSelect = this.toggleSelect.bind(this);
         this.toggleSelector = this.toggleSelector.bind(this);
     }
     componentDidMount() {
@@ -36,6 +37,9 @@ class TestRunList extends React.Component {
     showSelector() {
         this.toggleSelector(true);
     }
+    toggleSelect(testRun, ev) {
+        this.props.onToggleSelect(this.props.execCycle.id, testRun, ev.target.checked);
+    }
     toggleSelector(show=false) {
         this.props.onToggleImportDialog(show);
     }
@@ -51,6 +55,7 @@ class TestRunList extends React.Component {
             <Table striped condensed hover className="data-grid ">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>ID</th>
                         <th>Name</th>
                         <th>Status</th>
@@ -60,6 +65,9 @@ class TestRunList extends React.Component {
                 </thead>
                 <tbody>
                     {testRuns.map(tr => (<tr key={`tr-${tr.id}`}>
+                        <td>
+                            <input type="checkbox" onChange={(ev) => this.toggleSelect(tr, ev)} />
+                        </td>
                         <td>{`TC-${tr.testCase}`}</td>
                         <td>
                             <Link to={`/exec/${execCycle.id}/test/edit/${tr.id}`}>{tr.name}</Link>

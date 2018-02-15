@@ -24,7 +24,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     onChangePath(path) {
-        console.log("onChangePath")
         dispatch(actions.changePath(path));
         dispatch(actions.reqItems(undefined, path));
     },
@@ -34,10 +33,8 @@ const mapDispatchToProps = dispatch => ({
     onDeselectAll() {
         dispatch(actions.deselectAll());
     },
-    onInit(execCycle) {
-        // console.log("reqItems with ", selectedItems);
-        dispatch(actions.reqInitialData(execCycle.id));
-        // dispatch(actions.reqItems(selectedItems, undefined));
+    onInit() {
+        dispatch(actions.reqItems());
     },
     onSelect(item, path) {
         dispatch(actions.select(item, path));

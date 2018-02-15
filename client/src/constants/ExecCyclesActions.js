@@ -9,3 +9,4 @@ export const RESET_EC_ADD_EDIT   = "RESET_EC_ADD_EDIT";
 export const REQ_TEST_RUNS       = "REQ_TEST_RUNS";
 export const RCV_TEST_RUNS       = "RCV_TEST_RUNS";
 export const TOGGLE_IMPORT_DLG   = "TOGGLE_IMPORT_DLG";
+export const TOGGLE_SELECT_TR    = "TOGGLE_SELECT_TR";

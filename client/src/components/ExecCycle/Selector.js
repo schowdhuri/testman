@@ -9,7 +9,7 @@ import "sass/components/TestCaseSelector.scss";
 
 class Selector extends React.Component {
     componentDidMount() {
-        this.props.onInit(this.props.selectedItems);
+        this.props.onInit();
     }
     render() {
         const {

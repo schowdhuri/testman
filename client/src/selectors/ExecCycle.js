@@ -15,7 +15,15 @@ const getTestRunMap = state => state.execCycle.testRuns;
 
 export const getTestRuns = createSelector(
     [ getTestRunMap, getSelectedExecCycle ],
-    (testRuns, execCycle) => execCycle && testRuns[execCycle.id] || []
+    (trMap, execCycle) => {
+        if(!execCycle || !trMap[execCycle.id] || !trMap[execCycle.id].all)
+            return [];
+        const testRuns = trMap[execCycle.id]
+        return testRuns.all.map(tr => ({
+            ...tr,
+            selected: Boolean(testRuns.selected.find(t => t.id==tr.id))
+        }));
+    }
 );
 
 export const getTestRunAddEditState = state=> state.execCycle.addEdit;

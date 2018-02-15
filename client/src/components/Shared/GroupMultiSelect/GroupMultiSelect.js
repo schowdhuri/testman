@@ -8,16 +8,11 @@ import ListB from "./ListB";
 import "sass/components/shared/GroupMultiSelect.scss";
 
 class GroupMultiSelect extends React.Component {
-    constructor(props) {
-        super(props);
-        console.log("init props: ", props)
-    }
     componentWillMount() {
         this.props.onInit(this.props.cid);
     }
     componentWillReceiveProps(nextProps) {
-        if(!deepEqual(nextProps.path, this.props.path)) {
-            console.log("paths: ", nextProps.path, this.props.path);
+        if(this.props.path && !deepEqual(nextProps.path, this.props.path)) {
             this.props.onChangePath(nextProps.path);
         }
     }

@@ -49,3 +49,10 @@ export const toggleImportDialog = show => ({
     type: ACTIONS.TOGGLE_IMPORT_DLG,
     show
 });
+
+export const toggleSelect = (execCycleId, testRun, status) => ({
+    type: ACTIONS.TOGGLE_SELECT_TR,
+    execCycleId,
+    testRun,
+    status
+});

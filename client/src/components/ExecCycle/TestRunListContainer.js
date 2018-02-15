@@ -24,6 +24,9 @@ const mapDispatchToProps = dispatch => ({
     },
     onToggleImportDialog(show) {
         dispatch(actions.toggleImportDialog(show));
+    },
+    onToggleSelect(execCycleId, testRun, status) {
+        dispatch(actions.toggleSelect(execCycleId, testRun, status));
     }
 });
 
