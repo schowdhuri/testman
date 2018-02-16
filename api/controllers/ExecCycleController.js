@@ -7,16 +7,6 @@ const TestCase = require("../models/TestCase");
 const _getTestRuns = (execCycleId, manager) => {
     const repository = manager.getRepository(TestRun);
     const qb = repository.getQueryBuilder("tr");
-    // return qb
-    //     .leftJoin("tr.execcycle", "ec")
-    //     .select("tr.id", "tr.status")
-    //     .where({ "tr.execcycle_id": execCycleId })
-    //     .getQuery()
-    //     .execute()
-    //     .then(resArr => resArr.map(res => ({
-    //         id: res["tr.id"],
-    //         status: res["tr.status"]
-    //     })));
 
     return qb
         .leftJoin("tr.execcycle", "ec")
