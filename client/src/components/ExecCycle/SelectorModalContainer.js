@@ -19,8 +19,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
         if(typeof(ownProps.onClose)==="function")
             ownProps.onClose();
     },
-    onSave(execCycle, selectedItems, preSelectedItems) {
-        dispatch(actions.reqImportTests(execCycle, selectedItems, preSelectedItems));
+    onSave(execCycle, selectedItems) {
+        dispatch(actions.reqImportTests(execCycle, selectedItems));
     }
 });
 

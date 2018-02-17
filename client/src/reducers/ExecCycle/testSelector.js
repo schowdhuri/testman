@@ -80,14 +80,8 @@ const selectorReducer = (state=initialState, action) => {
                 selected: selectedItems
             };
 
-        // case ACTIONS.INIT_ADD_STATE:
-        //     return initialState;
-
-        // case ACTIONS.INIT_EDIT_STATE:
-        //     return {
-        //         ...initialState,
-        //         ...action.data
-        //     };
+        case ACTIONS.RCV_IMPORT_TESTS:
+            return initialState;
 
     }
     return state;

@@ -1,4 +1,5 @@
 import * as ACTIONS from "constants/ExecCyclesActions";
+import { RCV_IMPORT_TESTS } from "constants/TestCaseSelectorActions";
 
 // testRuns are stored as { [execCycleId]: { all: testRunArr, selected: selectedArr } }
 const initialState = {};
@@ -56,6 +57,30 @@ const testRuns = (state=initialState, action) => {
                                 ...state[action.execCycleId].selected.slice(0, index),
                                 ...state[action.execCycleId].selected.slice(index + 1),
                             ]
+                        }
+                    };
+                }
+            }
+            break;
+        }
+
+        case ACTIONS.TOGGLE_SELECT_TR_ALL: {
+            const testRuns = state[action.execCycleId];
+            if(testRuns) {
+                if(action.status) {
+                    return {
+                        ...state,
+                        [action.execCycleId]: {
+                            ...testRuns,
+                            selected: testRuns.all
+                        }
+                    };
+                } else {
+                    return {
+                        ...state,
+                        [action.execCycleId]: {
+                            ...testRuns,
+                            selected: []
                         }
                     };
                 }

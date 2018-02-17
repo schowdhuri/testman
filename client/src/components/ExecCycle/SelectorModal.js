@@ -29,7 +29,7 @@ class SelectorModal extends React.Component {
         );
     }
     render() {
-        const { show } = this.props;
+        const { show, selectedItems } = this.props;
         return (<Modal show={show} className="test-case-selector-modal">
             <Modal.Header>
                 <Modal.Title>Import Test Cases</Modal.Title>
@@ -39,7 +39,7 @@ class SelectorModal extends React.Component {
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={this.handleClose}>Cancel</Button>
-                <Button bsStyle="success" onClick={this.handleSave}>Import</Button>
+                <Button bsStyle="success" onClick={this.handleSave} disabled={!selectedItems.length}>Import</Button>
             </Modal.Footer>
         </Modal>);
     }

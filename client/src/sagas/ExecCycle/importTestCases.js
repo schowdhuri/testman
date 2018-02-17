@@ -13,7 +13,7 @@ import { reqSaveExecCycle } from "actions/ExecCycle";
 import { setLoading } from "actions/Shared";
 
 function* importTests(action) {
-    const { execCycle, selectedItems, preSeletedItems } = action;
+    const { execCycle, selectedItems } = action;
     yield put(setLoading(REQ_IMPORT_TESTS, true));
     const tests = [];
     try {
@@ -33,14 +33,17 @@ function* importTests(action) {
         }
         yield put(reqSaveExecCycle({
             ...execCycle,
-            testCases: tests
+            testCases: [
+                ...execCycle.testRuns.map(tr => ({ id: tr.testCase })),
+                ...tests
+            ]
         }));
         yield put(setLoading(REQ_IMPORT_TESTS, false));
         yield take(RCV_EC_SAVE);
         Alert.success(`Imported ${tests.length} tests`);
-        yield put(rcvImportTests(tests));
+        yield put(rcvImportTests(execCycle, tests));
     } catch(ex) {
-        yield put(resetSelection(preSeletedItems));
+        yield put(resetSelection(preSelecedItems));
         console.log(ex);
         Alert.error("Failed to import test. " + (ex && ex.text || ""));
         yield put(setLoading(REQ_IMPORT_TESTS, false));

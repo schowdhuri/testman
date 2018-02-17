@@ -57,6 +57,12 @@ export const toggleSelect = (execCycleId, testRun, status) => ({
     status
 });
 
+export const toggleSelectAll = (execCycleId, status) => ({
+    type: ACTIONS.TOGGLE_SELECT_TR_ALL,
+    execCycleId,
+    status
+});
+
 export const reqDeleteTestRuns = (idArr=[]) => ({
     type: ACTIONS.REQ_DEL_TEST_RUNS,
     idArr
@@ -65,4 +71,9 @@ export const reqDeleteTestRuns = (idArr=[]) => ({
 export const rcvDeleteTestRuns = idArr => ({
     type: ACTIONS.RCV_DEL_TEST_RUNS,
     idArr
+});
+
+export const initEditExecCycle = execCycle => ({
+    type: ACTIONS.INIT_EC_EDIT,
+    execCycle
 });

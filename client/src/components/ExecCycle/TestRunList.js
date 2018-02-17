@@ -16,13 +16,14 @@ class TestRunList extends React.Component {
         this.importTests = this.importTests.bind(this);
         this.showSelector = this.showSelector.bind(this);
         this.toggleSelect = this.toggleSelect.bind(this);
+        this.toggleSelectAll = this.toggleSelectAll.bind(this);
         this.toggleSelector = this.toggleSelector.bind(this);
     }
     bulkDelete() {
         this.props.onDeleteTestRuns(this.props.selectedTestRuns.map(tr => tr.id));
     }
     componentDidMount() {
-        if(this.props.execCycle && this.props.eecCycleID == this.props.execCycle.id)
+        if(this.props.execCycle && this.props.execCycleId == this.props.execCycle.id)
             this.props.fetchTestRuns(this.props.execCycle);
     }
     componentWillReceiveProps(nextProps) {
@@ -44,12 +45,16 @@ class TestRunList extends React.Component {
     toggleSelect(testRun, ev) {
         this.props.onToggleSelect(this.props.execCycle.id, testRun, ev.target.checked);
     }
+    toggleSelectAll(ev) {
+        this.props.onToggleSelectAll(this.props.execCycle.id, ev.target.checked);
+    }
     toggleSelector(show=false) {
         this.props.onToggleImportDialog(show);
     }
     render() {
         const {
             allowDeleteTestRuns,
+            allTestRunsSelected,
             execCycle,
             testRuns,
             showImportDialog
@@ -64,7 +69,12 @@ class TestRunList extends React.Component {
             <Table striped condensed hover className="data-grid ">
                 <thead>
                     <tr>
-                        <th></th>
+                        <th>
+                            <input
+                                type="checkbox"
+                                checked={allTestRunsSelected}
+                                onChange={(ev) => this.toggleSelectAll(ev)} />
+                        </th>
                         <th>ID</th>
                         <th>Name</th>
                         <th>Status</th>
@@ -75,7 +85,10 @@ class TestRunList extends React.Component {
                 <tbody>
                     {testRuns.map(tr => (<tr key={`tr-${tr.id}`}>
                         <td>
-                            <input type="checkbox" onChange={(ev) => this.toggleSelect(tr, ev)} />
+                            <input
+                                type="checkbox"
+                                checked={tr.selected}
+                                onChange={(ev) => this.toggleSelect(tr, ev)} />
                         </td>
                         <td>{`TC-${tr.testCase}`}</td>
                         <td>

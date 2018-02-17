@@ -8,9 +8,9 @@ import "sass/components/ExecCycle.scss";
 
 class ExecCycle extends React.Component {
     render() {
-        const { mode, execCycleID } = this.props;
+        const { mode, execCycleId } = this.props;
         return mode=="list"
-            ? <ListView execCycleID={execCycleID} />
+            ? <ListView execCycleId={execCycleId} />
             : <div>add edit view</div>
     }
 }

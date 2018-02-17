@@ -23,6 +23,18 @@ const addEditExecCycle = (state=initialState, action) => {
         case ACTIONS.RESET_EC_ADD_EDIT:
             return initialState;
 
+        case ACTIONS.INIT_EC_EDIT: {
+            const { execCycle } = action;
+            return {
+                ...state,
+                name: execCycle.name,
+                startDate: execCycle.startDate,
+                endDate: execCycle.endDate,
+                testRuns: [ ...execCycle.testRuns ],
+                status: execCycle.status
+            };
+        }
+
         case ACTIONS.RCV_EXEC_CYCLE:
         case ACTIONS.RCV_EC_SAVE:
         case ACTIONS.SELECT_EXEC_CYCLE:

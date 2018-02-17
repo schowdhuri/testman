@@ -8,12 +8,14 @@ import {
     getTestRuns,
     getSelectedExecCycle,
     getSelectedTestRuns,
+    areAllTestRunsSelected,
     showImportDialog
 } from "selectors/ExecCycle";
 import { isLoading } from "selectors/Shared";
 
 const mapStateToProps = state => ({
     allowDeleteTestRuns: allowDeleteTestRun(state),
+    allTestRunsSelected: areAllTestRunsSelected(state),
     isLoading: isLoading(state),
     execCycle: getSelectedExecCycle(state),
     testRuns: getTestRuns(state),
@@ -34,6 +36,9 @@ const mapDispatchToProps = dispatch => ({
     },
     onToggleSelect(execCycleId, testRun, status) {
         dispatch(actions.toggleSelect(execCycleId, testRun, status));
+    },
+    onToggleSelectAll(execCycleId, status) {
+        dispatch(actions.toggleSelectAll(execCycleId, status));
     }
 });
 

@@ -132,7 +132,7 @@ const update = (id, data, wetland) => {
                     testruns: arrTestRuns
                 });
                 populator.assign(ExecCycle, data, cycle, true);
-                uow.registerDirty(cycle, [ "testruns" ]);
+                // uow.registerDirty(cycle, [ "testruns" ]);
                 return manager
                     .flush()
                     .then(() => cycle);
@@ -141,7 +141,7 @@ const update = (id, data, wetland) => {
             console.log(ex);
             return Promise.reject(ex);
         }
-    }).catch(ex => console.log(ex));
+    });
 };
 
 const remove = (id, wetland) => {

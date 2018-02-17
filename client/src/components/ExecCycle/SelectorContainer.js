@@ -3,15 +3,16 @@ import Selector from "./Selector";
 
 import * as actions from "actions/TestCaseSelector";
 import { reqTestCases } from "actions/TestDesign";
-
-import testCaseSelector from "selectors/TestDesign";
+import { initEditExecCycle } from "actions/ExecCycle";
 
 import {
     getAllItems,
     getPath,
     getSelected
 } from "selectors/TestCaseSelector";
+
 import { isLoading } from "selectors/Shared";
+
 import { getSelectedExecCycle } from "selectors/ExecCycle";
 
 const mapStateToProps = state => ({
@@ -33,7 +34,8 @@ const mapDispatchToProps = dispatch => ({
     onDeselectAll() {
         dispatch(actions.deselectAll());
     },
-    onInit() {
+    onInit(execCycle) {
+        dispatch(initEditExecCycle(execCycle));
         dispatch(actions.reqItems());
     },
     onSelect(item, path) {

@@ -17,19 +17,34 @@ class ExecCycleList extends React.Component {
         this.showEditDialog = this.showEditDialog.bind(this);
     }
     componentDidMount() {
+        if(this.props.execCycleId &&
+            (!this.props.selected || this.props.selected.id != this.props.execCycleId)
+        ) {
+            this.handleSelect(this.props.execCycleId);
+        }
         this.props.reqExecCycles();
+    }
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.execCycleId &&
+            (!this.props.selected || this.props.selected.id != nextProps.execCycleId)
+        ) {
+            this.handleSelect(nextProps.execCycleId);
+        }
     }
     handleSave(data) {
         this.props.onSave(data);
         this.hideEditDialog();
     }
-    handleSelect(execCycle) {
-        this.props.onSelect(execCycle);
+    handleSelect(execCycleId) {
+        this.props.onSelect({
+            id: execCycleId
+        });
     }
     hideEditDialog() {
         this.setState({ editDialog: false, execCycle: {} });
     }
-    showEditDialog(execCycle) {
+    showEditDialog(execCycle, ev) {
+        ev.preventDefault();
         this.setState({
             execCycle,
             editDialog: true
@@ -44,12 +59,13 @@ class ExecCycleList extends React.Component {
                 {execCycles.map(ec => (<li
                     className={`${ec.selected ? "bg-success selected" : ""}`}
                     key={ec.id}
-                    onClick={() => this.handleSelect(ec)}
                 >
-                    <span>{ec.name}</span>
-                    <button className="btn btn-link btn-edit" onClick={() => this.showEditDialog(ec)}>
-                        <i className="glyphicon glyphicon-pencil" />
-                    </button>
+                    <Link to={`/execution/${ec.id}`}>
+                        {ec.name}
+                        <button className="btn btn-link btn-edit" onClick={ev => this.showEditDialog(ec, ev)}>
+                            <i className="glyphicon glyphicon-pencil" />
+                        </button>
+                    </Link>
                 </li>))}
             </ul>
             <EditExecCycle

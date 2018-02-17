@@ -54,7 +54,8 @@ export const reqImportTests = (execCycle, selectedItems, preSelectedItems) => ({
     preSelectedItems
 });
 
-export const rcvImportTests = tests => ({
+export const rcvImportTests = (execCycle, tests) => ({
     type: ACTIONS.RCV_IMPORT_TESTS,
+    execCycle,
     tests
 });

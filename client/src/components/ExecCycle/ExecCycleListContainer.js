@@ -4,10 +4,11 @@ import ExecCycleList from "./ExecCycleList";
 import * as actions from "actions/ExecCycle";
 import { redirectToTestPlan } from "actions/Shared";
 
-import { getExecCycles } from "selectors/ExecCycle";
+import { getExecCycles, getSelectedExecCycle } from "selectors/ExecCycle";
 import { isLoading } from "selectors/Shared";
 
 const mapStateToProps = state => ({
+    selected: getSelectedExecCycle(state),
     isLoading: isLoading(state),
     execCycles: getExecCycles(state)
 });
@@ -19,11 +20,17 @@ const mapDispatchToProps = dispatch => ({
     onSave(execCycle) {
         dispatch(actions.reqSaveExecCycle(execCycle));
     },
-    onSelect(execCycleId) {
-        dispatch(actions.selectExecCycle(execCycleId));
+    onSelect(execCycle) {
+        dispatch(actions.selectExecCycle(execCycle));
     }
 });
 
-const ExecCycleListContainer = connect(mapStateToProps, mapDispatchToProps)(ExecCycleList);
+const mergeProps = (stateProps, dispatchProps, ownProps) => ({
+    ...stateProps,
+    ...dispatchProps,
+    ...ownProps
+});
+
+const ExecCycleListContainer = connect(mapStateToProps, mapDispatchToProps, mergeProps)(ExecCycleList);
 
 export default ExecCycleListContainer;

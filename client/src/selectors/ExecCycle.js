@@ -2,6 +2,7 @@ import { createSelector } from "reselect";
 
 const getAllExecCycles = state => state.execCycle.list.all;
 export const getSelectedExecCycle = state => state.execCycle.list.selected;
+
 export const getExecCycles = createSelector(
     [ getAllExecCycles, getSelectedExecCycle ],
     (execCycles, selected) => execCycles.map(ec => ({
@@ -28,6 +29,14 @@ export const getSelectedTestRuns = createSelector(
         if(!execCycle || !trMap[execCycle.id] || !trMap[execCycle.id].selected)
             return [];
         return trMap[execCycle.id].selected;
+    }
+);
+
+export const areAllTestRunsSelected = createSelector(
+    [ getCurrentTestRuns, getSelectedTestRuns ],
+    (all, selected) => {
+        const allInSelected = all.filter(a => selected.find(s => s.id == a.id));
+        return allInSelected.length==all.length;
     }
 );
 
