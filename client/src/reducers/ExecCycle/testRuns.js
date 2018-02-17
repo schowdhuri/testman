@@ -1,5 +1,6 @@
 import * as ACTIONS from "constants/ExecCyclesActions";
 
+// testRuns are stored as { [execCycleId]: { all: testRunArr, selected: selectedArr } }
 const initialState = {};
 
 const testRuns = (state=initialState, action) => {
@@ -13,6 +14,22 @@ const testRuns = (state=initialState, action) => {
                     selected: []
                 }
             };
+
+        case ACTIONS.RCV_DEL_TEST_RUNS: {
+            const { idArr } = action;
+            const execCycleIds = Object.keys(state);
+            return execCycleIds.reduce((acc, execCycleId) => {
+                const testRuns = state[execCycleId].all
+                    .filter(tr => !idArr.find(id => id==tr.id));
+                return {
+                    ...acc,
+                    [execCycleId]: {
+                        all: testRuns,
+                        selected: []
+                    }
+                };
+            }, {});
+        }
 
         case ACTIONS.TOGGLE_SELECT_TR: {
             const testRuns = state[action.execCycleId];

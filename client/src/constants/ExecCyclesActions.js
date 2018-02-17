@@ -10,3 +10,5 @@ export const REQ_TEST_RUNS       = "REQ_TEST_RUNS";
 export const RCV_TEST_RUNS       = "RCV_TEST_RUNS";
 export const TOGGLE_IMPORT_DLG   = "TOGGLE_IMPORT_DLG";
 export const TOGGLE_SELECT_TR    = "TOGGLE_SELECT_TR";
+export const REQ_DEL_TEST_RUNS   = "REQ_DEL_TEST_RUNS";
+export const RCV_DEL_TEST_RUNS   = "RCV_DEL_TEST_RUNS";

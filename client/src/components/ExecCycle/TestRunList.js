@@ -11,11 +11,15 @@ import TestRunsToolbar from "./TestRunsToolbar";
 class TestRunList extends React.Component {
     constructor(props) {
         super(props);
+        this.bulkDelete = this.bulkDelete.bind(this);
         this.hideSelector = this.hideSelector.bind(this);
         this.importTests = this.importTests.bind(this);
         this.showSelector = this.showSelector.bind(this);
         this.toggleSelect = this.toggleSelect.bind(this);
         this.toggleSelector = this.toggleSelector.bind(this);
+    }
+    bulkDelete() {
+        this.props.onDeleteTestRuns(this.props.selectedTestRuns.map(tr => tr.id));
     }
     componentDidMount() {
         if(this.props.execCycle && this.props.eecCycleID == this.props.execCycle.id)
@@ -45,13 +49,18 @@ class TestRunList extends React.Component {
     }
     render() {
         const {
+            allowDeleteTestRuns,
             execCycle,
             testRuns,
             showImportDialog
         } = this.props;
 
         return (<div className="test-runs-list">
-            <TestRunsToolbar execCycle={execCycle} onAdd={this.showSelector} />
+            <TestRunsToolbar
+                allowDelete={allowDeleteTestRuns}
+                execCycle={execCycle}
+                onAdd={this.showSelector}
+                onDelete={this.bulkDelete} />
             <Table striped condensed hover className="data-grid ">
                 <thead>
                     <tr>

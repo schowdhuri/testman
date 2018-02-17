@@ -13,18 +13,36 @@ export const getAddEditState = state => state.execCycle.addEdit;
 
 const getTestRunMap = state => state.execCycle.testRuns;
 
-export const getTestRuns = createSelector(
+const getCurrentTestRuns = createSelector(
     [ getTestRunMap, getSelectedExecCycle ],
     (trMap, execCycle) => {
         if(!execCycle || !trMap[execCycle.id] || !trMap[execCycle.id].all)
             return [];
-        const testRuns = trMap[execCycle.id]
-        return testRuns.all.map(tr => ({
-            ...tr,
-            selected: Boolean(testRuns.selected.find(t => t.id==tr.id))
-        }));
+        return trMap[execCycle.id].all;
     }
+);
+
+export const getSelectedTestRuns = createSelector(
+    [ getTestRunMap, getSelectedExecCycle ],
+    (trMap, execCycle) => {
+        if(!execCycle || !trMap[execCycle.id] || !trMap[execCycle.id].selected)
+            return [];
+        return trMap[execCycle.id].selected;
+    }
+);
+
+export const getTestRuns = createSelector(
+    [ getCurrentTestRuns, getSelectedTestRuns ],
+    (all, selected) => all.map(tr => ({
+            ...tr,
+            selected: Boolean(selected.find(t => t.id==tr.id))
+    }))
 );
 
 export const getTestRunAddEditState = state=> state.execCycle.addEdit;
 export const showImportDialog = state => state.execCycle.addEdit.showImportDialog;
+
+export const allowDeleteTestRun = createSelector(
+    getSelectedTestRuns,
+    selected => Boolean(selected.length)
+);

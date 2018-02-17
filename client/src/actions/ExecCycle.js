@@ -56,3 +56,13 @@ export const toggleSelect = (execCycleId, testRun, status) => ({
     testRun,
     status
 });
+
+export const reqDeleteTestRuns = (idArr=[]) => ({
+    type: ACTIONS.REQ_DEL_TEST_RUNS,
+    idArr
+});
+
+export const rcvDeleteTestRuns = idArr => ({
+    type: ACTIONS.RCV_DEL_TEST_RUNS,
+    idArr
+});

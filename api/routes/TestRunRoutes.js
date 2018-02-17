@@ -30,6 +30,15 @@ const testRunRoutes = app => {
 					console.log(ex)
 					res.status(500).send(ex);
 				});
+		})
+		.delete((req, res) => {
+			controller.bulkRemove(req.body, req.wetland)
+			.then(result => {
+				res.json(result);
+			})
+			.catch(ex => {
+				res.status(500).send(ex);
+			});
 		});
 
 	app.route("/api/testrun/:id")
