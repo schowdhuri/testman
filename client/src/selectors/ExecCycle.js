@@ -35,6 +35,8 @@ export const getSelectedTestRuns = createSelector(
 export const areAllTestRunsSelected = createSelector(
     [ getCurrentTestRuns, getSelectedTestRuns ],
     (all, selected) => {
+        if(!selected.length)
+            return false;
         const allInSelected = all.filter(a => selected.find(s => s.id == a.id));
         return allInSelected.length==all.length;
     }
