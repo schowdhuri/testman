@@ -31,7 +31,6 @@ class TestCaseList extends React.Component {
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Status</th>
                         <th>Defects</th>
                         <th>Comments</th>
                     </tr>
@@ -42,7 +41,6 @@ class TestCaseList extends React.Component {
                         <td>
                             <Link to={`/design/testplan/${testPlan.id}/testcase/edit/${tc.id}`}>{tc.name}</Link>
                         </td>
-                        <td>{tc.status}</td>
                         <td>{tc.defects ? tc.defects.length : 0}</td>
                         <td>{tc.comments ? tc.comments.length : 0}</td>
                     </tr>))}

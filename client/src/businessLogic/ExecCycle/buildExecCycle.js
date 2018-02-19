@@ -4,7 +4,10 @@ const buildExecCycle = data => {
         execCycle.id = data.id;
     execCycle.name = data.name;
     execCycle.status = data.status;
-    execCycle.testCases = (data.testCases || []).map(tc => tc.id);
+    if(data.testCases)
+        execCycle.testCases = data.testCases.map(tc => tc.id);
+    else
+        execCycle.testCases = (data.testRuns || []).map(tr => tr.testCase);
     return execCycle;
 };
 

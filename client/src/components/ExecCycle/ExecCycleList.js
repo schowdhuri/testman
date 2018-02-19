@@ -72,6 +72,7 @@ class ExecCycleList extends React.Component {
                 show={editDialog}
                 execCycle={execCycle}
                 onClose={this.hideEditDialog}
+                onDelete={this.props.onDeleteExecCycle}
                 onSave={this.handleSave} />
         </div>);
     }

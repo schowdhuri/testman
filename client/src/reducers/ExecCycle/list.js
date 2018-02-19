@@ -43,6 +43,28 @@ const execCycleList = (state=initialState, action) => {
                 selected: match
             };
         }
+
+        case ACTIONS.RCV_EC_SAVE: {
+            const { execCycle } = action;
+            let all = state.all;
+            let selected = state.selected;
+            const index = state.all.findIndex(ec => ec.id == execCycle.id);
+            if(index != -1) {
+                all = [
+                    ...state.all.slice(0, index),
+                    execCycle,
+                    ...state.all.slice(index + 1)
+                ];
+            }
+            if(selected && selected.id == execCycle.id)
+                selected = execCycle;
+            return {
+                ...state,
+                all,
+                selected
+            };
+        }
+
     }
     return state;
 };

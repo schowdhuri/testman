@@ -14,3 +14,5 @@ export const TOGGLE_SELECT_TR_ALL   = "TOGGLE_SELECT_TR_ALL";
 export const REQ_DEL_TEST_RUNS      = "REQ_DEL_TEST_RUNS";
 export const RCV_DEL_TEST_RUNS      = "RCV_DEL_TEST_RUNS";
 export const INIT_EC_EDIT           = "INIT_EC_EDIT"
+export const REQ_DEL_EC             = "REQ_DEL_EC";
+export const RCV_DEL_EC             = "RCV_DEL_EC";

@@ -17,6 +17,9 @@ const mapDispatchToProps = dispatch => ({
     reqExecCycles() {
         dispatch(actions.reqExecCycles());
     },
+    onDeleteExecCycle(execCycle) {
+        dispatch(actions.reqDeleteExecCycle(execCycle));
+    },
     onSave(execCycle) {
         dispatch(actions.reqSaveExecCycle(execCycle));
     },

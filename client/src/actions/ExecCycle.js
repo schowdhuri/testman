@@ -77,3 +77,13 @@ export const initEditExecCycle = execCycle => ({
     type: ACTIONS.INIT_EC_EDIT,
     execCycle
 });
+
+export const reqDeleteExecCycle = execCycle => ({
+    type: ACTIONS.REQ_DEL_EC,
+    execCycle
+});
+
+export const rcvDeleteExecCycle = execCycle => ({
+    type: ACTIONS.RCV_DEL_EC,
+    execCycle
+});
