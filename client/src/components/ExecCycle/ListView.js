@@ -9,9 +9,11 @@ class ListView extends React.Component {
         const { mode, execCycleId } = this.props;
         return (<div className="exec-cycles list">
             <ExecCycles execCycleId={execCycleId} />
-            <div className="test-runs">
-                <TestRunList />
-            </div>
+            {execCycleId
+                ? <div className="test-runs">
+                    <TestRunList />
+                </div>
+                : null}
         </div>);
     }
 }

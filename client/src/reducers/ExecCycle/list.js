@@ -90,6 +90,39 @@ const execCycleList = (state=initialState, action) => {
             };
         }
 
+        case ACTIONS.RCV_END_EC:
+        case ACTIONS.RCV_START_EC: {
+            const { execCycle } = action;
+            let all = state.all;
+            let selected = state.selected;
+            const index = state.all.findIndex(ec => ec.id == execCycle.id);
+            if(index != -1) {
+                all = [
+                    ...state.all.slice(0, index),
+                    {
+                        ...state.all[index],
+                        status: execCycle.status
+                    },
+                    ...state.all.slice(index + 1)
+                ];
+            } else {
+                all = [
+                    ...state.all,
+                    execCycle
+                ];
+            }
+            if(selected && selected.id == execCycle.id)
+                selected = {
+                    ...selected,
+                    status: execCycle.status
+                };
+            return {
+                ...state,
+                all,
+                selected
+            };
+        }
+
     }
     return state;
 };

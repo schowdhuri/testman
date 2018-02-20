@@ -5,9 +5,12 @@ import * as actions from "actions/ExecCycle";
 
 import {
     allowDeleteTestRun,
+    allowEndExec,
+    allowStartExec,
     getTestRuns,
     getSelectedExecCycle,
     getSelectedTestRuns,
+    isInProgress,
     areAllTestRunsSelected,
     showImportDialog
 } from "selectors/ExecCycle";
@@ -15,7 +18,10 @@ import { isLoading } from "selectors/Shared";
 
 const mapStateToProps = state => ({
     allowDeleteTestRuns: allowDeleteTestRun(state),
+    allowEndExec: allowEndExec(state),
+    allowStartExec: allowStartExec(state),
     allTestRunsSelected: areAllTestRunsSelected(state),
+    isInProgress: isInProgress(state),
     isLoading: isLoading(state),
     execCycle: getSelectedExecCycle(state),
     testRuns: getTestRuns(state),
@@ -28,8 +34,20 @@ const mapDispatchToProps = dispatch => ({
         if(execCycle)
             dispatch(actions.reqTestRuns(execCycle.id));
     },
+    onChangeTestRunStatus(testRun, status) {
+        dispatch(actions.reqSaveTestRun({
+            ...testRun,
+            status
+        }));
+    },
     onDeleteTestRuns(idArr) {
         dispatch(actions.reqDeleteTestRuns(idArr));
+    },
+    onEndExec(execCycle) {
+        dispatch(actions.reqEndExecCycle(execCycle));
+    },
+    onStartExec(execCycle) {
+        dispatch(actions.reqStartExecCycle(execCycle));
     },
     onToggleImportDialog(show) {
         dispatch(actions.toggleImportDialog(show));

@@ -73,6 +73,17 @@ export const rcvDeleteTestRuns = idArr => ({
     idArr
 });
 
+export const reqSaveTestRun = testRun => ({
+    type: ACTIONS.REQ_SAVE_TR,
+    testRun
+});
+
+export const rcvSaveTestRun = (testRun, execCycleId) => ({
+    type: ACTIONS.RCV_SAVE_TR,
+    testRun,
+    execCycleId
+});
+
 export const initEditExecCycle = execCycle => ({
     type: ACTIONS.INIT_EC_EDIT,
     execCycle
@@ -87,3 +98,24 @@ export const rcvDeleteExecCycle = execCycle => ({
     type: ACTIONS.RCV_DEL_EC,
     execCycle
 });
+
+export const reqStartExecCycle = execCycle => ({
+    type: ACTIONS.REQ_START_EC,
+    execCycle
+});
+
+export const rcvStartExecCycle = execCycle => ({
+    type: ACTIONS.RCV_START_EC,
+    execCycle
+});
+
+export const reqEndExecCycle = execCycle => ({
+    type: ACTIONS.REQ_END_EC,
+    execCycle
+});
+
+export const rcvEndExecCycle = execCycle => ({
+    type: ACTIONS.RCV_END_EC,
+    execCycle
+});
+

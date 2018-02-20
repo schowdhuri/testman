@@ -18,11 +18,7 @@ const testRunRoutes = app => {
 				});
 		})
 		.post((req, res) => {
-			const execCycleId = req.query.execCycle;
-			if(!execCycleId) {
-				res.status(400).send("execCycle is required");
-			}
-			controller.create(execCycleId, req.body, req.wetland)
+			controller.create(req.body, req.wetland)
 				.then(result => {
 					res.json(result);
 				})

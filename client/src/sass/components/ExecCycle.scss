@@ -79,4 +79,10 @@
 }
 .test-runs {
     background: #fff;
+
+    .btn-xs {
+        font-weight: 400;
+        text-transform: none;
+        width: 50px;
+    }
 }

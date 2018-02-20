@@ -46,21 +46,25 @@ const findById = (id, wetland) => {
             populate: [ "testcase", "execcycle" ]
         })
         .then(testRun => Object.assign({}, testRun, {
+            execcycle: undefined,
             testcase: undefined,
+            execCycle: testRun.execcycle,
             testCase: testRun.testcase
         }));
 };
 
-const create = (execCycleId, obj, wetland) => {
-    if(!obj.testCase)
+const create = (data, wetland) => {
+    if(!data.execCycle)
+        return Promise.reject("execCycle is required");
+    if(!data.testCase)
         return Promise.reject("testCase is required");
-    const data = {
-        name: obj.name,
+    const obj = {
+        name: data.name,
         testcase: {
-            id: obj.testCase
+            id: data.testCase
         },
         execCycle: {
-            id: execCycleId
+            id: data.execCycle
         }
     };
     const manager  = wetland.getManager();
@@ -86,22 +90,27 @@ const update = (id, data, wetland) => {
     const repository = manager.getRepository(TestRun);
     const populator = wetland.getPopulator(manager);
 
-    return repository.findOne(id).then(testRun => {
-        if(!testRun)
-            return Promise.reject(`TestRun with id ${id} not found`);
-        try {
+    return repository.findOne(id, { populate: [ "testcase", "execcycle" ] })
+        .then(testRun => {
+            if(!testRun)
+                return Promise.reject(`TestRun with id ${id} not found`);
             data.testcase = {
                 id: data.testCase
             };
-            populator.assign(TestRun, data, testRun, true);
+            const updated = populator.assign(TestRun, data, testRun, true);
             return manager
                 .flush()
-                .then(() => testRun);
-        } catch(ex) {
-            console.log(ex);
+                .then(() => Object.assign({}, updated, {
+                    execcycle: undefined,
+                    testcase: undefined,
+                    execCycle: updated.execcycle,
+                    testCase: updated.testcase
+                }));
+        })
+        .catch(ex => {
+            console.log(ex)
             return Promise.reject(ex);
-        }
-    }).catch(ex => console.log(ex));
+        });
 };
 
 const remove = (id, wetland) => {

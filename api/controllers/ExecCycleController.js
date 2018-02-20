@@ -165,10 +165,52 @@ const remove = (id, wetland) => {
         });
 };
 
+const startExec = (id, wetland) => {
+    if(!id)
+        return Promise.reject("id is required");
+
+    const manager = wetland.getManager();
+    const repository = manager.getRepository(ExecCycle);
+
+    return repository.findOne(id)
+        .then(cycle => {
+            if(!cycle)
+                return Promise.reject(`ExecCycle with id ${id} not found`);
+            if(cycle.status != "New")
+                return Promise.reject("Execution can't be started");
+            cycle.status = "In Progress";
+            return manager
+                .flush()
+                .then(() => cycle);
+        });
+};
+
+const endExec = (id, wetland) => {
+    if(!id)
+        return Promise.reject("id is required");
+
+    const manager = wetland.getManager();
+    const repository = manager.getRepository(ExecCycle);
+
+    return repository.findOne(id)
+        .then(cycle => {
+            if(!cycle)
+                return Promise.reject(`ExecCycle with id ${id} not found`);
+            if(cycle.status != "In Progress")
+                return Promise.reject("Execution can't be stopped");
+            cycle.status = "Completed";
+            return manager
+                .flush()
+                .then(() => cycle);
+        });
+};
+
 module.exports = {
     findAll,
     findById,
     create,
     update,
-    remove
+    remove,
+    startExec,
+    endExec
 };

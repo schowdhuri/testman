@@ -1,21 +1,67 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Button } from "react-bootstrap";
+import {
+    Button,
+    OverlayTrigger,
+    Tooltip
+} from "react-bootstrap";
+
+const addTooltip = <Tooltip id="add-tooltip">Add Tests</Tooltip>;
+const deleteTooltip = <Tooltip id="delete-tooltip">Delete Tests</Tooltip>;
+const startTooltip = <Tooltip id="start-tooltip">Start</Tooltip>;
+const endTooltip = <Tooltip id="end-tooltip">End</Tooltip>;
 
 class TestRunToolbar extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleEnd = this.handleEnd.bind(this);
+        this.handleStart = this.handleStart.bind(this);
+    }
+    handleEnd() {
+        this.props.onEnd(this.props.execCycle);
+    }
+    handleStart() {
+        this.props.onStart(this.props.execCycle);
+    }
     render() {
-        const { allowDelete, execCycle, onAdd, onDelete } = this.props;
+        const {
+            allowDelete,
+            allowEnd,
+            allowStart,
+            execCycle,
+            onAdd,
+            onDelete
+        } = this.props;
         return (<div className="toolbar">
             {execCycle
-                ? <Button bsStyle="link" onClick={onAdd}>
-                    <i className="glyphicon glyphicon-plus" />
-                </Button>
+                ? <OverlayTrigger placement="bottom" overlay={addTooltip}>
+                    <Button bsStyle="link" onClick={onAdd}>
+                        <i className="glyphicon glyphicon-plus text-info" />
+                    </Button>
+                </OverlayTrigger>
+                : null}
+            {execCycle && allowStart
+                ? <OverlayTrigger placement="bottom" overlay={startTooltip}>
+                    <Button bsStyle="link" onClick={this.handleStart}>
+                        <i className="glyphicon glyphicon-play" />
+                    </Button>
+                </OverlayTrigger>
+                : null}
+            {execCycle && allowEnd
+                ? <OverlayTrigger placement="bottom" overlay={endTooltip}>
+                    <Button bsStyle="link" onClick={this.handleEnd}>
+                        <i className="glyphicon glyphicon-stop text-warning" />
+                    </Button>
+                </OverlayTrigger>
                 : null}
             {execCycle && allowDelete
-                ? <Button bsStyle="link" onClick={onDelete}>
-                    <i className="glyphicon glyphicon-trash text-danger" />
-                </Button>
+                ? <OverlayTrigger placement="bottom" overlay={deleteTooltip}>
+                    <Button bsStyle="link" onClick={onDelete}>
+                        <i className="glyphicon glyphicon-trash text-danger" />
+                    </Button>
+                </OverlayTrigger>
                 : null}
+
             <h3 className="header-gradient-1">
                 Tests
                 {execCycle ? " - " + execCycle.name : ""}

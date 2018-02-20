@@ -52,6 +52,28 @@ const execCycleRoutes = app => {
 				res.status(500).send(ex);
 			});
 		});
+
+	app.route("/api/exec/:id/start")
+		.post((req, res) => {
+			controller.startExec(req.params.id, req.wetland)
+				.then(result => {
+					res.json(result);
+				})
+				.catch(ex => {
+					res.status(500).send(ex);
+				});
+		});
+
+	app.route("/api/exec/:id/end")
+		.post((req, res) => {
+			controller.endExec(req.params.id, req.wetland)
+				.then(result => {
+					res.json(result);
+				})
+				.catch(ex => {
+					res.status(500).send(ex);
+				});
+		});
 };
 
 module.exports = execCycleRoutes;

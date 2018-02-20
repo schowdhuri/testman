@@ -2,25 +2,28 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
+    DropdownButton,
+    MenuItem,
     Table
 } from "react-bootstrap";
 
 import SelectorModal from "./SelectorModalContainer";
 import TestRunsToolbar from "./TestRunsToolbar";
 
+import TR_STATES from "constants/TestRunStates";
+import TR_COLORS from "constants/TestRunStateColors";
+
 class TestRunList extends React.Component {
     constructor(props) {
         super(props);
         this.bulkDelete = this.bulkDelete.bind(this);
+
         this.hideSelector = this.hideSelector.bind(this);
         this.importTests = this.importTests.bind(this);
         this.showSelector = this.showSelector.bind(this);
         this.toggleSelect = this.toggleSelect.bind(this);
         this.toggleSelectAll = this.toggleSelectAll.bind(this);
         this.toggleSelector = this.toggleSelector.bind(this);
-    }
-    bulkDelete() {
-        this.props.onDeleteTestRuns(this.props.selectedTestRuns.map(tr => tr.id));
     }
     componentDidMount() {
         if(this.props.execCycle && this.props.execCycleId == this.props.execCycle.id)
@@ -32,6 +35,12 @@ class TestRunList extends React.Component {
         ) {
             this.props.fetchTestRuns(nextProps.execCycle);
         }
+    }
+    bulkDelete() {
+        this.props.onDeleteTestRuns(this.props.selectedTestRuns.map(tr => tr.id));
+    }
+    handleChangeStatus(testRun, status) {
+        this.props.onChangeTestRunStatus(testRun, status);
     }
     hideSelector() {
         this.toggleSelector(false);
@@ -54,8 +63,13 @@ class TestRunList extends React.Component {
     render() {
         const {
             allowDeleteTestRuns,
+            allowEndExec,
+            allowStartExec,
             allTestRunsSelected,
             execCycle,
+            isInProgress,
+            onEndExec,
+            onStartExec,
             testRuns,
             showImportDialog
         } = this.props;
@@ -63,9 +77,13 @@ class TestRunList extends React.Component {
         return (<div className="test-runs-list">
             <TestRunsToolbar
                 allowDelete={allowDeleteTestRuns}
+                allowEnd={allowEndExec}
+                allowStart={allowStartExec}
                 execCycle={execCycle}
                 onAdd={this.showSelector}
-                onDelete={this.bulkDelete} />
+                onDelete={this.bulkDelete}
+                onEnd={onEndExec}
+                onStart={onStartExec} />
             <Table striped condensed hover className="data-grid ">
                 <thead>
                     <tr>
@@ -92,9 +110,23 @@ class TestRunList extends React.Component {
                         </td>
                         <td>{`TC-${tr.testCase}`}</td>
                         <td>
-                            <Link to={`/exec/${execCycle.id}/test/edit/${tr.id}`}>{tr.name}</Link>
+                            <Link to={`/execution/${execCycle.id}/test/edit/${tr.id}`}>{tr.name}</Link>
                         </td>
-                        <td>{tr.status}</td>
+                        <td>
+                            {isInProgress
+                                ? <DropdownButton
+                                    bsStyle={TR_COLORS[tr.status]}
+                                    bsSize="xsmall"
+                                    title={tr.status}
+                                    id={`tr-${tr.id}-status-dd`}
+                                >
+                                    {TR_STATES.map(s => (<MenuItem
+                                        key={s}
+                                        onSelect={() => this.handleChangeStatus(tr, s)}
+                                    >{s}</MenuItem>))}
+                                </DropdownButton>
+                                : tr.status}
+                        </td>
                         <td>{tr.defects ? tr.defects.length : 0}</td>
                         <td>{tr.comments ? tr.comments.length : 0}</td>
                     </tr>))}

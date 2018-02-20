@@ -26,9 +26,9 @@ class ExecCycleToolbar extends React.Component {
         const { show } = this.state;
         return (<div className="toolbar">
             <button className="btn btn-link" onClick={this.showDialog}>
-                <i className="glyphicon glyphicon-plus" />
+                <i className="glyphicon glyphicon-plus text-info" />
                 {" "}
-                New
+                <span className="text-info">New</span>
             </button>
             <h3 className="header-gradient-1">Execution Cycles</h3>
             <AddEditExecCycle
