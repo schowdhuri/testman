@@ -55,9 +55,34 @@ const execCycleList = (state=initialState, action) => {
                     execCycle,
                     ...state.all.slice(index + 1)
                 ];
+            } else {
+                all = [
+                    ...state.all,
+                    execCycle
+                ];
             }
             if(selected && selected.id == execCycle.id)
                 selected = execCycle;
+            return {
+                ...state,
+                all,
+                selected
+            };
+        }
+
+        case ACTIONS.RCV_DEL_EC: {
+            const { execCycle } = action;
+            let all = state.all;
+            let selected = state.selected;
+            const index = state.all.findIndex(ec => ec.id == execCycle.id);
+            if(index != -1) {
+                all = [
+                    ...state.all.slice(0, index),
+                    ...state.all.slice(index + 1)
+                ];
+            }
+            if(selected && selected.id == execCycle.id)
+                selected = null;
             return {
                 ...state,
                 all,

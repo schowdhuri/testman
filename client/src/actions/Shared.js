@@ -13,3 +13,7 @@ export const redirectToTestDesign = () => ({
 export const redirectToDefects = () => ({
     type: ACTIONS.REDIRECT_DEFECTS
 });
+
+export const redirectToExecCycle = () => ({
+    type: ACTIONS.REDIRECT_EXEC_CYCLE
+});

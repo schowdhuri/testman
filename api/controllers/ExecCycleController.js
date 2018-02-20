@@ -51,7 +51,11 @@ const findById = (id, wetland) => {
     return repository
         .findOne(id, {
             populate: "testruns"
-        });
+        })
+        .then(execCycle => Object.assign({}, execCycle, {
+            testruns: undefined,
+            testRuns: execCycle.testruns
+        }));
 };
 
 const create = (obj, wetland) => {

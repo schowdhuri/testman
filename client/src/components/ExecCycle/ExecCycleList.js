@@ -11,6 +11,7 @@ class ExecCycleList extends React.Component {
         this.state = {
             editDialog: false
         };
+        this.handleDelete = this.handleDelete.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
         this.hideEditDialog = this.hideEditDialog.bind(this);
@@ -30,6 +31,10 @@ class ExecCycleList extends React.Component {
         ) {
             this.handleSelect(nextProps.execCycleId);
         }
+    }
+    handleDelete(execCycle) {
+        this.props.onDeleteExecCycle(execCycle);
+        this.hideEditDialog();
     }
     handleSave(data) {
         this.props.onSave(data);
@@ -72,7 +77,7 @@ class ExecCycleList extends React.Component {
                 show={editDialog}
                 execCycle={execCycle}
                 onClose={this.hideEditDialog}
-                onDelete={this.props.onDeleteExecCycle}
+                onDelete={this.handleDelete}
                 onSave={this.handleSave} />
         </div>);
     }

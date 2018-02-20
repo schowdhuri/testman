@@ -5,7 +5,7 @@ import request from "utils/request";
 
 import { REQ_DEL_EC } from "constants/ExecCyclesActions";
 import { rcvDeleteExecCycle } from "actions/ExecCycle";
-import { setLoading } from "actions/Shared";
+import { redirectToExecCycle, setLoading } from "actions/Shared";
 
 function* deleteExecCycles(action) {
     const { execCycle } = action;
@@ -16,6 +16,9 @@ function* deleteExecCycles(action) {
             type: "delete"
         });
         yield put(rcvDeleteExecCycle(response.json));
+        if(execCycle.selected) {
+            yield put(redirectToExecCycle());
+        }
     } catch(ex) {
         console.log(ex);
         Alert.error("Failed to delete execution cycle. " + (ex && ex.text || ""));
