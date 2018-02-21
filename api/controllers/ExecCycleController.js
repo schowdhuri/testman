@@ -86,7 +86,6 @@ const update = (id, data, wetland) => {
     const manager  = wetland.getManager();
     const repository = manager.getRepository(ExecCycle);
     const populator = wetland.getPopulator(manager);
-    const uow = manager.getUnitOfWork();
 
     return repository.findOne(id).then(cycle => {
         if(!cycle)
@@ -135,11 +134,10 @@ const update = (id, data, wetland) => {
                     testCases: undefined,
                     testruns: arrTestRuns
                 });
-                populator.assign(ExecCycle, data, cycle, true);
-                // uow.registerDirty(cycle, [ "testruns" ]);
+                const updated = populator.assign(ExecCycle, data, cycle, true);
                 return manager
                     .flush()
-                    .then(() => cycle);
+                    .then(() => updated);
             });
         } catch(ex) {
             console.log(ex);

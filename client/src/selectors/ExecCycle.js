@@ -78,3 +78,5 @@ export const allowEndExec = createSelector(
         return true;
     }
 );
+
+export const getTestRun = state => state.execCycle.testRun;

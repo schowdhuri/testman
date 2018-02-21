@@ -22,3 +22,6 @@ export const REQ_START_EC           = "REQ_START_EC";
 export const RCV_START_EC           = "RCV_START_EC";
 export const REQ_END_EC             = "REQ_END_EC";
 export const RCV_END_EC             = "RCV_END_EC";
+export const REQ_TEST_RUN           = "REQ_TEST_RUN";
+export const RCV_TEST_RUN           = "RCV_TEST_RUN";
+export const RESET_TR_ADD_EDIT      = "RESET_TR_ADD_EDIT";

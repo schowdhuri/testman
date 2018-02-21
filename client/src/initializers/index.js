@@ -95,6 +95,24 @@ ExecCyclePage.propTypes = {
     }).isRequired
 };
 
+const TestRunPage = props => {
+    const { execCycleId, testRunId } = props.match.params;
+    return (<App navId="execution">
+        <ExecCycle
+            mode="testrun"
+            execCycleId={parseInt(execCycleId)}
+            testRunId={parseInt(testRunId)} />
+    </App>);
+};
+TestRunPage.propTypes = {
+    match: PropTypes.shape({
+        params: PropTypes.shape({
+            execCycleId: PropTypes.string.isRequired,
+            testRunId: PropTypes.string.isRequired
+        }).isRequired
+    }).isRequired
+};
+
 const DefectsPage = () => {
     return (<App navId="defects">
         <Defects mode="list" />
@@ -136,7 +154,8 @@ ReactDOM.render(
                 <Route path="/design/testplan/:testPlanID/testcase/add" exact component={AddTestPage} />
                 <Route path="/design/testplan/:testPlanID/testcase/edit/:testID" exact component={EditTestPage} />
                 <Route path="/execution" exact component={ExecCyclesPage} />
-                <Route path="/execution/:execCycleId" component={ExecCyclePage} />
+                <Route path="/execution/:execCycleId" exact component={ExecCyclePage} />
+                <Route path="/execution/:execCycleId/test/:testRunId" component={TestRunPage} />
                 <Route path="/defects" exact component={DefectsPage} />
                 <Route path="/defects/add" component={AddDefectPage} />
                 <Route path="/defects/edit/:defectID" component={EditDefectPage} />

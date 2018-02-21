@@ -119,3 +119,16 @@ export const rcvEndExecCycle = execCycle => ({
     execCycle
 });
 
+export const resetTRAddEdit = () => ({
+    type: ACTIONS.RESET_TR_ADD_EDIT
+});
+
+export const reqTestRun = id => ({
+    type: ACTIONS.REQ_TEST_RUN,
+    id
+});
+
+export const rcvTestRun = testRun => ({
+    type: ACTIONS.RCV_TEST_RUN,
+    testRun
+});

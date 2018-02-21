@@ -7,6 +7,7 @@ import reqDeleteTestRuns from "./reqDeleteTestRuns";
 import reqExecCycles from "./reqExecCycles";
 import reqInitialSelectorData from "./reqInitialSelectorData";
 import reqSelectorItems from "./reqSelectorItems";
+import reqTestRun from "./reqTestRun";
 import reqTestRuns from "./reqTestRuns";
 import saveExecCycle from "./saveExecCycle";
 import saveTestRun from "./saveTestRun";
@@ -20,6 +21,7 @@ function* execCyclesSaga() {
     yield spawn(reqExecCycles);
     yield spawn(reqInitialSelectorData);
     yield spawn(reqSelectorItems);
+    yield spawn(reqTestRun);
     yield spawn(reqTestRuns);
     yield spawn(saveExecCycle);
     yield spawn(saveTestRun);

@@ -86,3 +86,18 @@
         width: 50px;
     }
 }
+.edit-tr {
+    position: relative;
+    margin: 64px 24px;
+
+    .action-bar {
+        position: absolute;
+        left: -24px;
+        right: -24px;
+        top: -64px;
+        .btn-toolbar {
+            float: right;
+            margin: 6px 24px 0 0;
+        }
+    }
+}

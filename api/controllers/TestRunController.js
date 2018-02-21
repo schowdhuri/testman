@@ -45,6 +45,11 @@ const findById = (id, wetland) => {
         .findOne(id, {
             populate: [ "testcase", "execcycle" ]
         })
+        .then(testRun => {
+            if(testRun)
+                return testRun;
+            return Promise.reject("Not found");
+        })
         .then(testRun => Object.assign({}, testRun, {
             execcycle: undefined,
             testcase: undefined,
