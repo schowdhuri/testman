@@ -6,7 +6,7 @@ import {
     MenuItem
 } from "react-bootstrap";
 
-import TR_STATES from "constants/TestRunStates";
+import TR_STATES from "common/constants/TestRunStates";
 import TR_COLORS from "constants/TestRunStateColors";
 
 const TestRun = props => {

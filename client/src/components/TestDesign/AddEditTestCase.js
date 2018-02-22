@@ -28,9 +28,7 @@ class AddEditTestCase extends React.Component {
         this.handleUpdateComment = this.handleUpdateComment.bind(this);
     }
     componentDidMount() {
-        if(this.props.testID) {
-            this.props.onInit(this.props.testID);
-        }
+        this.props.onInit(this.props.testID);
     }
     handleCancel() {
         this.props.onCancel();

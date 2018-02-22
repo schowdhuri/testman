@@ -1,4 +1,4 @@
-import STATES from "./TestRunStates";
+import STATES from "common/constants/TestRunStates";
 
 export default {
     [STATES[0]]: "info",

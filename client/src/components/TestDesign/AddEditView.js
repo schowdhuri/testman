@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 import AddEditTestCase from "./AddEditTestCaseContainer";
 import TestPlans from "./TestPlansContainer";
 
-// import "sass/components/TestDesign.scss";
-
 class AddEditView extends React.Component {
     render() {
         const { mode, testID, testPlanID } = this.props;

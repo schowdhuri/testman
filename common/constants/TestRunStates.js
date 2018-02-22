@@ -1,4 +1,4 @@
-export default [
+module.exports = [
     "New",
     "Pass",
     "Fail"

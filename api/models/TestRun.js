@@ -1,5 +1,7 @@
 "use strict";
 
+const STATES = require("../../common/constants/TestRunStates");
+
 class TestRun {
     static setMapping(mapping) {
         mapping.field("created", {
@@ -18,7 +20,7 @@ class TestRun {
         mapping.field("status", {
             type: "enumeration",
             nullable: false,
-            enumeration: ["New", "Pass", "Fail"]
+            enumeration: STATES
         });
         mapping.manyToOne("execcycle", { targetEntity: "ExecCycle", inversedBy: "testruns" });
         mapping.oneToOne("testcase", { targetEntity: "TestCase" });
@@ -29,7 +31,7 @@ class TestRun {
         const datetime = new Date();
         this.modified = datetime;
         this.created = datetime;
-        this.status = "New";
+        this.status = STATES[0];
     }
 
     beforeUpdate(values) {

@@ -1,5 +1,7 @@
 "use strict";
 
+const STATES = require("../../common/constants/DefectStates");
+
 class Defect {
     static setMapping(mapping) {
         mapping.field("created", {
@@ -19,7 +21,7 @@ class Defect {
         mapping.field("status", {
             type: "enumeration",
             nullable: false,
-            enumeration: ["Open", "WIP", "Closed"]
+            enumeration: STATES
         });
         mapping.oneToMany("comments", { targetEntity: "Comment", mappedBy: "defects" });
         mapping.manyToMany("testcases", { targetEntity: "TestCase", inversedBy: "defects" })
@@ -29,7 +31,7 @@ class Defect {
         const datetime = new Date();
         this.modified = datetime;
         this.created = datetime;
-        this.status = "Open";
+        this.status = STATES[0];
     }
 
     beforeUpdate(values) {

@@ -34,7 +34,8 @@ const mapDispatchToProps = dispatch => ({
     },
     onInit(id) {
         dispatch(actions.resetAddEdit());
-        dispatch(actions.reqTestCase(id));
+        if(id)
+            dispatch(actions.reqTestCase(id));
     },
     onSave(testPlanID, testCase) {
         dispatch(actions.reqSaveTestCase(testPlanID, testCase));

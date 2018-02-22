@@ -102,24 +102,25 @@ const _assignComments = (defectData, comments, manager) => {
     });
 };
 
-const create = (obj, wetland) => {
-    if(!obj.name)
+const create = (data, wetland) => {
+    if(!data.name)
         return Promise.reject("name is required");
-    if(!obj.testCases || !obj.testCases.length)
+    if(!data.testCases || !data.testCases.length)
         return Promise.reject("Defect must be tagged to one or more tests");
-    const data = {
-        name: obj.name,
+    const obj = {
+        name: data.name,
         description: {
-            value: obj.description || ""
-        },
-        status: obj.status || "Open", // TODO: use model lifecycle hooks
+            value: data.description || ""
+        }
     };
+    if(data.status)
+        obj.status = data.status;
     const manager  = wetland.getManager();
     const populator = wetland.getPopulator(manager);
 
-    return _assignTestCases(data, obj.testCases, manager)
+    return _assignTestCases(obj, data.testCases, manager)
         .then(data => {
-            const defect = populator.assign(Defect, data, null, true);
+            const defect = populator.assign(Defect, obj, null, true);
             return manager
                 .persist(defect)
                 .flush()

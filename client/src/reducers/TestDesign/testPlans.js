@@ -55,12 +55,20 @@ const testCases = (state=initialState, action) => {
 
         case ACTIONS.RCV_TC_SAVE: {
             const { testPlanId, testCase } = action;
-            const testCases = state.testCases[testPlanId]
-                ? [
-                    ...state.testCases[testPlanId],
+            let testCases = state.testCases[testPlanId] || [];
+            const index = testCases.findIndex(tc => tc.id == testCase.id);
+            if(index == -1) {
+                testCases = [
+                    ...testCases,
                     testCase
-                ]
-                : [ testCase ];
+                ];
+            } else {
+                testCases = [
+                    ...testCases.slice(0, index),
+                    testCase,
+                    ...testCases.slice(index + 1)
+                ];
+            }
             return {
                 ...state,
                 testCases: {

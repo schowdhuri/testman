@@ -12,6 +12,7 @@ const GLOBALS = {
 // directories
 const NODE_DIR = path.join(__dirname, "node_modules");
 const CLIENT_ROOT = path.join(__dirname, "client");
+const COMMON_DIR = path.join(__dirname, "common");
 const STATIC_ROOT = path.join(CLIENT_ROOT, "src");
 const INITIALIZERS_DIR = path.join(STATIC_ROOT, "initializers");
 const DIST_DIR = path.join(CLIENT_ROOT, "dist");
@@ -41,6 +42,7 @@ module.exports = {
             NODE_DIR
         ],
         alias: {
+            common: COMMON_DIR,
             node_modules: NODE_DIR
         }
     },

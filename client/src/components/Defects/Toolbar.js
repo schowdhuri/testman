@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 class DefectToolbar extends React.Component {
     render() {
         return (<div className="toolbar">
-            <Link to={`/defect/add`} className="btn btn-link">
+            <Link to={`/defects/add`} className="btn btn-link">
                 <i className="glyphicon glyphicon-plus" />
                 {" "}
                 New
