@@ -2,6 +2,10 @@ const TestRun = require("../models/TestRun");
 const TestCase = require("../models/TestCase");
 const ExecCycle = require("../models/ExecCycle");
 
+const getTestCase = require("./TestCaseController").findById;
+
+const dateFormat = require("../../common/utils/dateFormat");
+
 const _getTestCases = (testRunId, manager) => {
     const repository = manager.getRepository(TestCase);
     const qb = repository.getQueryBuilder("tr");
@@ -54,8 +58,15 @@ const findById = (id, wetland) => {
             execcycle: undefined,
             testcase: undefined,
             execCycle: testRun.execcycle,
-            testCase: testRun.testcase
-        }));
+            testCase: testRun.testcase,
+            created: dateFormat(testRun.created),
+            modified: dateFormat(testRun.modified)
+        }))
+        .then(testRun => getTestCase(testRun.testCase.id, wetland)
+            .then(testCase => Object.assign({}, testRun, {
+                testCase: testCase
+            }))
+        );
 };
 
 const create = (data, wetland) => {

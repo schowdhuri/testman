@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { Modal } from "react-bootstrap";
 
-import GroupMultiSelect from "components/shared/GroupMultiSelect";
+import GroupMultiSelect from "components/Shared/GroupMultiSelect";
 
 import "sass/components/TestCaseSelector.scss";
 

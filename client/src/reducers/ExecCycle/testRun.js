@@ -16,6 +16,8 @@ const addEditExecCycle = (state=initialState, action) => {
         case ACTIONS.RCV_TEST_RUN:
             return {
                 ...initialState,
+                created: action.testRun.created,
+                modified:action.testRun.modified,
                 name: action.testRun.testCase.name,
                 testCase: action.testRun.testCase
             };
@@ -78,7 +80,7 @@ const addEditExecCycle = (state=initialState, action) => {
         }
 
         case ACTIONS.RESET_TR_ADD_EDIT:
-        return initialState;
+            return initialState;
     }
     return state;
 };

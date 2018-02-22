@@ -3,6 +3,8 @@ const TestPlan = require("../models/TestPlan");
 const Comment = require("../models/Comment");
 const Defect = require("../models/Defect");
 
+const dateFormat = require("../../common/utils/dateFormat");
+
 const _getComments = (testCaseID, manager) => {
     const repository = manager.getRepository(Comment);
     return repository
@@ -75,6 +77,10 @@ const findById = (id, wetland) => {
         .findOne(id, {
             populate: [ "description", "testplan", "defects" ]
         })
+        .then(testCase => Object.assign({}, testCase, {
+            created: dateFormat(testCase.created),
+            modified: dateFormat(testCase.modified)
+        }))
         .then(testCase => _getComments(testCase.id, manager)
             .then(comments => Object.assign({}, testCase, {
                 comments
