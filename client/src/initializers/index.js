@@ -1,4 +1,3 @@
-/* eslint-disable react/no-multi-comp */
 import React from "react";
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
@@ -11,139 +10,23 @@ import configureStore from "utils/store"; // eslint-disable-line import/default
 import reducer from "reducers/index";
 import sagas from "sagas/index";
 
-import App from "components/AppContainer";
-import Dashboard from "components/Dashboard";
-import Design from "components/TestDesign";
-import ExecCycle from "components/ExecCycle";
-import Defects from "components/Defects";
-import Documents from "components/Documents";
+import HomePage from "pages/Home";
+import DesignPage from "pages/Design";
+import AddTestPage from "pages/AddTest";
+import EditTestPage from "pages/EditTest";
+import ExecCyclesPage from "pages/ExecCycles";
+import ExecCyclePage from "pages/ExecCycle";
+import TestRunPage from "pages/TestRun";
+import DefectsPage from "pages/Defects";
+import AddDefectPage from "pages/AddDefect";
+import EditDefectPage from "pages/EditDefect";
+import DocsPage from "pages/Docs";
 
 import "sass/index.scss";
 
 const sagaMiddleware = createMiddleware();
-
 const store = configureStore(reducer, sagaMiddleware);
-
 sagaMiddleware.run(sagas);
-
-const HomePage = () => {
-    return (<App navId="dashboard">
-        <Dashboard />
-    </App>);
-};
-HomePage.propTypes = {
-
-};
-
-const DesignPage = () => {
-    return (<App navId="design">
-        <Design mode="list" />
-    </App>);
-};
-
-const AddTestPage = props => {
-    const { testPlanID } = props.match.params;
-    return (<App navId="design">
-        <Design
-            mode="add"
-            testPlanID={parseInt(testPlanID)} />
-    </App>);
-};
-AddTestPage.propTypes = {
-    match: PropTypes.shape({
-        params: PropTypes.shape({
-            testPlanID: PropTypes.string.isRequired
-        }).isRequired
-    }).isRequired
-};
-
-const EditTestPage = props => {
-    const { testPlanID, testID } = props.match.params;
-    return (<App navId="design">
-        <Design
-            mode="edit"
-            testPlanID={parseInt(testPlanID)}
-            testID={parseInt(testID)} />
-    </App>);
-};
-EditTestPage.propTypes = {
-    match: PropTypes.shape({
-        params: PropTypes.shape({
-            testID: PropTypes.string.isRequired,
-            testPlanID: PropTypes.string.isRequired
-        }).isRequired
-    }).isRequired
-};
-
-const ExecCyclesPage = () => {
-    return (<App navId="execution">
-        <ExecCycle mode="list" />
-    </App>);
-};
-
-const ExecCyclePage = props => {
-    const { execCycleId } = props.match.params;
-    return (<App navId="execution">
-        <ExecCycle mode="list" execCycleId={parseInt(execCycleId)} />
-    </App>);
-};
-ExecCyclePage.propTypes = {
-    match: PropTypes.shape({
-        params: PropTypes.shape({
-            execCycleId: PropTypes.string.isRequired
-        }).isRequired
-    }).isRequired
-};
-
-const TestRunPage = props => {
-    const { execCycleId, testRunId } = props.match.params;
-    return (<App navId="execution">
-        <ExecCycle
-            mode="testrun"
-            execCycleId={parseInt(execCycleId)}
-            testRunId={parseInt(testRunId)} />
-    </App>);
-};
-TestRunPage.propTypes = {
-    match: PropTypes.shape({
-        params: PropTypes.shape({
-            execCycleId: PropTypes.string.isRequired,
-            testRunId: PropTypes.string.isRequired
-        }).isRequired
-    }).isRequired
-};
-
-const DefectsPage = () => {
-    return (<App navId="defects">
-        <Defects mode="list" />
-    </App>);
-};
-
-const AddDefectPage = () => {
-    return (<App navId="defects">
-        <Defects mode="add" />
-    </App>);
-};
-
-const EditDefectPage = props => {
-    const defectID = parseInt(props.match.params.defectID);
-    return (<App navId="defects">
-        <Defects mode="edit" defectID={defectID} />
-    </App>);
-};
-EditDefectPage.propTypes = {
-    match: PropTypes.shape({
-        params: PropTypes.shape({
-            defectID: PropTypes.string.isRequired
-        }).isRequired
-    }).isRequired
-};
-
-const DocsPage = () => {
-    return (<App navId="docs">
-        <Documents />
-    </App>);
-};
 
 ReactDOM.render(
     <Provider store={store}>
