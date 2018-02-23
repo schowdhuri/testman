@@ -2,10 +2,14 @@ const buildTestRun = data => {
     const testRun = {};
     if(data.id)
         testRun.id = data.id;
-    testRun.execCycle = data.execCycle;
+    testRun.execCycle = data.execCycle && data.execCycle.id
+        ? data.execCycle.id
+        : data.execCycle;
     testRun.name = data.name;
     testRun.status = data.status;
-    testRun.testCase = data.testCase;
+    testRun.testCase = data.testCase && data.testCase.id
+        ? data.testCase.id
+        : data.testCase;
 
     return testRun;
 };

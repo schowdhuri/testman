@@ -4,6 +4,7 @@ const ExecCycle = require("../models/ExecCycle");
 
 const getTestCase = require("./TestCaseController").findById;
 
+const STATES = require("../../common/constants/TestRunStates");
 const dateFormat = require("../../common/utils/dateFormat");
 
 const _getTestCases = (testRunId, manager) => {
@@ -60,7 +61,8 @@ const findById = (id, wetland) => {
             execCycle: testRun.execcycle,
             testCase: testRun.testcase,
             created: dateFormat(testRun.created),
-            modified: dateFormat(testRun.modified)
+            modified: dateFormat(testRun.modified),
+            runDate: testRun.runDate && dateFormat(testRun.runDate) || null
         }))
         .then(testRun => getTestCase(testRun.testCase.id, wetland)
             .then(testCase => Object.assign({}, testRun, {
@@ -101,6 +103,8 @@ const update = (id, data, wetland) => {
         return Promise.reject("testCase is required");
     if(!data.status)
         return Promise.reject("status is required");
+    if(!STATES.find(s => s==data.status))
+        return Promise.reject("Invalid status");
 
     const manager  = wetland.getManager();
     const repository = manager.getRepository(TestRun);
@@ -113,6 +117,12 @@ const update = (id, data, wetland) => {
             data.testcase = {
                 id: data.testCase
             };
+            if(data.status != testRun.status) {
+                if(data.status==STATES[0])
+                    testRun.runDate = null;
+                else
+                    testRun.runDate = new Date();
+            }
             const updated = populator.assign(TestRun, data, testRun, true);
             return manager
                 .flush()

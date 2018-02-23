@@ -11,7 +11,8 @@ import validateTestRun from "businessLogic/ExecCycle/validateTestRun";
 import buildTestRun from "businessLogic/ExecCycle/buildTestRun";
 
 function* saveTestRun(action) {
-    const { testRun, execCycleId } = action;
+    const { testRun } = action;
+    const execCycleId = testRun.execCycle.id;
     if(!testRun.id && !execCycleId) {
         console.log("execCycleId required to create new TestRun");
         return;

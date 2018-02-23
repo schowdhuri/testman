@@ -23,24 +23,3 @@
 .tests-list {
     background: #fff;
 }
-.toolbar,
-.action-bar {
-    overflow: auto;
-    h3 {
-        font-size: 1.2rem;
-        font-weight: bold;
-        margin: 0;
-        padding: 16px;
-        text-transform: uppercase;
-    }
-}
-.toolbar .btn {
-    float: right;
-    &, &:focus {
-        outline: none;
-        box-shadow: none;
-    }
-}
-.action-bar {
-
-}

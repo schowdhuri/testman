@@ -5,10 +5,11 @@ import { redirectToExecCycle } from "actions/Shared";
 
 import TestRun from "./TestRun";
 
-import { getTestRun } from "selectors/ExecCycle";
+import { getTestRun, isInProgress } from "selectors/ExecCycle";
 import { isLoading } from "selectors/Shared";
 
 const mapStateToProps = state => ({
+    isInProgress: isInProgress(state),
     isLoading: isLoading(state),
     testRun: getTestRun(state)
 });
@@ -18,24 +19,19 @@ const mapDispatchToProps = dispatch => ({
         dispatch(actions.resetTRAddEdit());
         dispatch(redirectToExecCycle());
     },
-    onChangeComment(value) {
-        dispatch(actions.changeTRComment(value));
+    onChangeStatus(testRun, status) {
+        dispatch(actions.reqSaveTestRun({
+            ...testRun,
+            status
+        }));
     },
-    onChangeDescription(val) {
-        dispatch(actions.changeTRDescription(val));
-    },
-    onChangeName(val) {
-        dispatch(actions.changeTRName(val));
-    },
-    onDeleteComment(id) {
-        dispatch(actions.reqDeleteComment(id));
-    },
-    onInit(id) {
+    onInit(execCycleId, id) {
         dispatch(actions.resetTRAddEdit());
+        dispatch(actions.selectExecCycle({
+            id: execCycleId
+        }));
+        dispatch(actions.reqExecCycles());
         dispatch(actions.reqTestRun(id));
-    },
-    onSaveComment(testCaseId, value, id) {
-        dispatch(actions.reqSaveTCComment(testCaseId, value, id));
     }
 });
 

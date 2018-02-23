@@ -4,25 +4,6 @@
     &.list {
         grid-template-columns: 280px auto;
     }
-
-    .toolbar,
-    .action-bar {
-        overflow: auto;
-        h3 {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin: 0;
-            padding: 16px;
-            text-transform: uppercase;
-        }
-    }
-    .toolbar .btn {
-        float: right;
-        &, &:focus {
-            outline: none;
-            box-shadow: none;
-        }
-    }
 }
 
 .cycles {
@@ -99,5 +80,8 @@
             float: right;
             margin: 6px 24px 0 0;
         }
+    }
+    #status-dd {
+        line-height: 22px;
     }
 }

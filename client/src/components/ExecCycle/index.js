@@ -11,7 +11,7 @@ class ExecCycle extends React.Component {
         const { mode, execCycleId, testRunId } = this.props;
         return mode=="list"
             ? <ListView execCycleId={execCycleId} />
-            : <TestRun testRunId={testRunId} />
+            : <TestRun execCycleId={execCycleId} testRunId={testRunId} />
     }
 }
 

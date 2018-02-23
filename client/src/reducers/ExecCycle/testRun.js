@@ -14,12 +14,11 @@ const addEditExecCycle = (state=initialState, action) => {
     const { type } = action;
     switch(type) {
         case ACTIONS.RCV_TEST_RUN:
+        case ACTIONS.RCV_SAVE_TR:
             return {
                 ...initialState,
-                created: action.testRun.created,
-                modified:action.testRun.modified,
-                name: action.testRun.testCase.name,
-                testCase: action.testRun.testCase
+                ...action.testRun,
+                name: action.testRun.testCase.name
             };
 
         case ACTIONS.RCV_TR_COMMENTS:

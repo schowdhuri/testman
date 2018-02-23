@@ -60,7 +60,7 @@ export const allowDeleteTestRun = createSelector(
 
 export const isInProgress = createSelector(
     [ getSelectedExecCycle ],
-    execCycle => (execCycle && execCycle.status == "In Progress")
+    execCycle => Boolean(execCycle && execCycle.status == "In Progress")
 );
 
 export const allowStartExec = createSelector(
