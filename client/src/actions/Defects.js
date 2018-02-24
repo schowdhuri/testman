@@ -69,3 +69,34 @@ export const rcvSaveDefect = defect => ({
     type: ACTIONS.RCV_SAVE_DEFECT,
     defect
 });
+
+export const toggleSelect = (defect, status) => ({
+    type: ACTIONS.TOGGLE_SELECT_DEF,
+    defect,
+    status
+});
+
+export const toggleSelectAll = status => ({
+    type: ACTIONS.TOGGLE_SELECT_DEF_ALL,
+    status
+});
+
+export const reqDeleteDefect = id => ({
+    type: ACTIONS.REQ_DELETE_DEFECT,
+    id
+});
+
+export const rcvDeleteDefect = id => ({
+    type: ACTIONS.RCV_DELETE_DEFECT,
+    id
+});
+
+export const reqDeleteDefects = (idArr=[]) => ({
+    type: ACTIONS.REQ_DELETE_DEFECTS,
+    idArr
+});
+
+export const rcvDeleteDefects = idArr => ({
+    type: ACTIONS.RCV_DELETE_DEFECTS,
+    idArr
+});

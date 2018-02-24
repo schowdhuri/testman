@@ -27,6 +27,9 @@ const mapDispatchToProps = dispatch => ({
     onChangeName(val) {
         dispatch(actions.changeDefectName(val));
     },
+    onDelete(id) {
+        dispatch(actions.reqDeleteDefect(id));
+    },
     onDeleteComment(id) {
         dispatch(actions.reqDeleteComment(id));
     },

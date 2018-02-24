@@ -191,10 +191,28 @@ const remove = (id, wetland) => {
         });
 };
 
+const bulkRemove = (payload, wetland) => {
+    if(!payload.ids || !payload.ids.length)
+        return Promise.reject("ids required");
+    const ids = payload.ids;
+    const manager = wetland.getManager();
+    const repository = manager.getRepository(Defect);
+
+    const pArrDelete = ids.map(id => repository.findOne(id)
+        .then(testRun => {
+            if(!testRun)
+                return Promise.reject(`Defect #${id} not found`);
+            manager.remove(testRun);
+        }));
+    return Promise.all(pArrDelete)
+        .then(() => manager.flush().then(() => ids));
+};
+
 module.exports = {
     findAll,
     findById,
     create,
     update,
-    remove
+    remove,
+    bulkRemove
 };

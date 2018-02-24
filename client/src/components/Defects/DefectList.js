@@ -5,19 +5,48 @@ import {
     Table
 } from "react-bootstrap";
 
+import ListItem from "./DefectListItem";
 import Toolbar from "./Toolbar";
 
 class DefectList extends React.Component {
+    constructor(props) {
+        super(props);
+        this.bulkDelete = this.bulkDelete.bind(this);
+        this.toggleSelect = this.toggleSelect.bind(this);
+        this.toggleSelectAll = this.toggleSelectAll.bind(this);
+    }
     componentDidMount() {
         this.props.fetchDefects();
+
+    }
+    bulkDelete() {
+        if(confirm(`Delete ${this.props.selected.length} defects?`))
+            this.props.onDelete(this.props.selected.map(d => d.id));
+    }
+    toggleSelect(defect, status) {
+        this.props.onToggleSelect(defect, status);
+    }
+    toggleSelectAll(ev) {
+        this.props.onToggleSelectAll(ev.target.checked);
     }
     render() {
-        const { defects } = this.props;
+        const {
+            allowDelete,
+            allSelected,
+            defects,
+            selected
+        } = this.props;
         return (<div className="defects-list">
-            <Toolbar />
+            <Toolbar allowDelete={allowDelete} onDelete={this.bulkDelete} />
             <Table striped condensed hover className="data-grid ">
                 <thead>
                     <tr>
+                        <th>
+                            <input
+                                type="checkbox"
+                                checked={allSelected}
+                                onChange={(ev) => this.toggleSelectAll(ev)} />
+                        </th>
                         <th>ID</th>
                         <th>Name</th>
                         <th>Status</th>
@@ -26,15 +55,10 @@ class DefectList extends React.Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {defects.map(d => (<tr key={`d-${d.id}`}>
-                        <td>{d.id}</td>
-                        <td>
-                            <Link to={`/defects/edit/${d.id}`}>{d.name}</Link>
-                        </td>
-                        <td>{d.status}</td>
-                        <td>{d.testCases ? d.testCases.length : 0}</td>
-                        <td>{d.comments ? d.comments.length : 0}</td>
-                    </tr>))}
+                    {defects.map(d => (<ListItem
+                        key={`defect-${d.id}`}
+                        defect={d}
+                        onToggle={this.toggleSelect} />))}
                 </tbody>
             </Table>
         </div>);

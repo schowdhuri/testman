@@ -46,7 +46,8 @@ class AddEditDefect extends React.Component {
         this.props.onChangeName(value);
     }
     handleDelete() {
-
+        if(confirm(`Delete this defect?`))
+            this.props.onDelete(this.props.defect.id);
     }
     handleDeleteComment(commentId) {
         this.props.onDeleteComment(commentId);
