@@ -15,17 +15,24 @@ import {
 } from "react-bootstrap";
 
 import TR_STATES from "common/constants/TestRunStates";
-import dateFormat from "common/utils/dateFormat";
-
 import TR_COLORS from "constants/TestRunStateColors";
 
+import dateFormat from "common/utils/dateFormat";
+
+import DefectModal from "./AddDefectModal";
 
 class TestRun extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            showDefectModal: false
+        };
         this.handleCancel = this.handleCancel.bind(this);
         this.handleChangeStatus = this.handleChangeStatus.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
+        this.handleSaveDefect = this.handleSaveDefect.bind(this);
+        this.hideDefectModal = this.hideDefectModal.bind(this);
+        this.showDefectModal = this.showDefectModal.bind(this);
+
     }
     componentDidMount() {
         this.props.onInit(this.props.execCycleId, this.props.testRunId);
@@ -36,12 +43,26 @@ class TestRun extends React.Component {
     handleChangeStatus(newStatus) {
         this.props.onChangeStatus(this.props.testRun, newStatus);
     }
-    handleDelete() {
-
+    handleSaveDefect(defect) {
+        this.props.onSaveDefect({
+            ...defect,
+            testCases: [ this.props.testRun.testCase.id ]
+        });
+    }
+    hideDefectModal() {
+        this.setState({
+            showDefectModal: false
+        });
+    }
+    showDefectModal() {
+        this.setState({
+            showDefectModal: true
+        });
     }
     render() {
         const { isInProgress, mode, testRunId, testRun } = this.props;
         const { defects=[], comments=[], testCase } = testRun;
+        const { showDefectModal } = this.state;
 
         return (<div className="edit-tr">
             <div className="action-bar header-gradient-1">
@@ -60,7 +81,7 @@ class TestRun extends React.Component {
                         </DropdownButton>
                         : <Button bsSize="small" bsStyle="warning" disabled>{testRun.status}</Button>}
                     {testRun.state == TR_STATES[2]
-                        ? <Button bsSize="small" bsStyle="warning" onClick={this.handleAddDefect}>handleAddDefect
+                        ? <Button bsSize="small" bsStyle="warning">
                             <i className="glyphicon glyphicon-plus" />
                             {" "}
                             Defect
@@ -72,37 +93,34 @@ class TestRun extends React.Component {
                 <h3>{testRun.name || ""}</h3>
             </div>
             <div className="container">
-                <Panel bsStyle="warning">
+                <Panel bsStyle="info">
                     <Panel.Heading>Info</Panel.Heading>
                     <Panel.Body>
-                        <Row>
-                            <Col md={6}>Status</Col>
-                            <Col md={6}>
-                                
-                            </Col>
-                        </Row>
                         {testCase && testCase.description && testCase.description.value
-                            ? <Row>
-                                <Col md={12}>{testCase.description.value}</Col>
-                            </Row>
+                            ? <p className="description">{testCase.description.value}</p>
                             : null}
                         {testRun.runDate
-                            ? <Row>
-                                <Col md={6}>Last run: {dateFormat(testRun.runDate)}</Col>
-                            </Row>
+                            ? <p className="run-date">{dateFormat(testRun.runDate)}</p>
                             : null}
                     </Panel.Body>
                 </Panel>
                 
-                <Panel bsStyle="danger">
+                <Panel bsStyle="danger" className="defects">
                     <Panel.Heading>
+                        <Button bsStyle="link" className="btn-add-defect" onClick={this.showDefectModal}>
+                            <i className="glyphicon glyphicon-plus" />
+                            {" "}
+                            New
+                        </Button>
                         <Panel.Title componentClass="h3">Defects</Panel.Title>
                     </Panel.Heading>
                     <Panel.Body>
-                        defects...
+                        {defects.map(defect => <div>{defect.name}</div>)}
+                        
                     </Panel.Body>
                 </Panel>
             </div>
+            <DefectModal show={showDefectModal} onSave={this.handleSaveDefect} onClose={this.hideDefectModal} />
         </div>);
     }
 }

@@ -12,6 +12,7 @@ import {
     Well
 } from "react-bootstrap";
 
+import DefectForm from "./AddEditDefectForm";
 import Comment from "components/Shared/Comment";
 
 class AddEditDefect extends React.Component {
@@ -38,11 +39,11 @@ class AddEditDefect extends React.Component {
     handleChangeComment(ev) {
         this.props.onChangeComment(ev.target.value);
     }
-    handleChangeDescr(ev) {
-        this.props.onChangeDescription(ev.target.value);
+    handleChangeDescr(value) {
+        this.props.onChangeDescription(value);
     }
-    handleChangeName(ev) {
-        this.props.onChangeName(ev.target.value);
+    handleChangeName(value) {
+        this.props.onChangeName(value);
     }
     handleDelete() {
 
@@ -77,20 +78,11 @@ class AddEditDefect extends React.Component {
                     <Col md={12}>
                         <Panel>
                             <Panel.Body>
-                                <FormGroup controlId="name">
-                                    <ControlLabel>Name</ControlLabel>
-                                    <FormControl
-                                        value={defect.name}
-                                        onChange={this.handleChangeName}
-                                        type="text" />
-                                </FormGroup>
-                                <FormGroup controlId="description">
-                                    <ControlLabel>Description</ControlLabel>
-                                    <FormControl
-                                        value={defect.description.value}
-                                        onChange={this.handleChangeDescr}
-                                        componentClass="textarea" />
-                                </FormGroup>
+                                <DefectForm
+                                    name={defect.name}
+                                    description={defect.description.value}
+                                    onChangeName={this.handleChangeName}
+                                    onChangeDescription={this.handleChangeDescr} />
                             </Panel.Body>
                         </Panel>
                     </Col>

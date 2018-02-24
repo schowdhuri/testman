@@ -6,7 +6,11 @@ const buildDefect = data => {
         defect.status = data.status;
 
     defect.name = data.name;
-    defect.description = data.description.value;
+    if(data.description.value)
+        defect.description = data.description.value;
+    else
+        defect.description = data.description;
+    defect.testCases = data.testCases;
 
     return defect;
 };

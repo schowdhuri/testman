@@ -1,6 +1,7 @@
 import { connect } from "react-redux";
 
 import * as actions from "actions/ExecCycle";
+import { reqSaveDefect } from "actions/Defects";
 import { redirectToExecCycle } from "actions/Shared";
 
 import TestRun from "./TestRun";
@@ -32,6 +33,9 @@ const mapDispatchToProps = dispatch => ({
         }));
         dispatch(actions.reqExecCycles());
         dispatch(actions.reqTestRun(id));
+    },
+    onSaveDefect(testCaseId, defect) {
+        dispatch(reqSaveDefect(testCaseId, defect));
     }
 });
 

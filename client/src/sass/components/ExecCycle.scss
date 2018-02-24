@@ -85,3 +85,13 @@
         line-height: 22px;
     }
 }
+
+.panel.defects {
+    .btn-add-defect {
+        color: #fff;
+        margin-top: -9px;
+        position: absolute;
+        right: 80px;
+        text-decoration: none;
+    }
+}

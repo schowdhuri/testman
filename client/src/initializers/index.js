@@ -40,7 +40,8 @@ ReactDOM.render(
                 <Route path="/execution/:execCycleId" exact component={ExecCyclePage} />
                 <Route path="/execution/:execCycleId/test/:testRunId" component={TestRunPage} />
                 <Route path="/defects" exact component={DefectsPage} />
-                <Route path="/defects/add" component={AddDefectPage} />
+                <Route path="/defects/add" exact component={AddDefectPage} />
+                <Route path="/defects/testcase/:testCaseId/add" exact component={AddDefectPage} />
                 <Route path="/defects/edit/:defectID" component={EditDefectPage} />
                 <Route path="/docs" component={DocsPage} />
             </Switch>

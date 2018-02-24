@@ -37,7 +37,7 @@ const findAll = wetland => {
             name: res["d.name"],
             status: res["d.status"],
             description: res["desc.value"],
-            testCases: res["tc.id"]
+            testCases: res["tc.id"] ? [ res["tc.id"] ] : null
         }))))
         .then(resArr => Promise.all(resArr.map(res =>  _getComments(res.id, manager)
             .then(comments => Promise.resolve(Object.assign({}, res, {
@@ -62,16 +62,16 @@ const findById = (id, wetland) => {
         });
 };
 
-const _assignTestCases = (defectData, tcIDs, manager) => {
+const _getTestCases = (tcIDs, manager) => {
     const repository = manager.getRepository(TestCase);
-    return Promise.all(tcIDs.map(tcID => repository.findOne(tcId)))
+    const arrTestCases = new ArrayCollection();
+    return Promise.all(tcIDs.map(tcID => repository.findOne(tcID)))
         .then(testCases => {
             testCases = testCases.filter(tc => tc);
             if(!testCases.length)
                 return Promise.reject("No valid tests found");
-            return Promise.resolve(Object.assign({}, data, {
-                testCases
-            }));
+            testCases.forEach(tc => arrTestCases.push(tc));
+            return Promise.resolve(arrTestCases);
         });
 };
 
@@ -105,6 +105,8 @@ const _assignComments = (defectData, comments, manager) => {
 const create = (data, wetland) => {
     if(!data.name)
         return Promise.reject("name is required");
+    if(!data.description)
+        return Promise.reject("description is required");
     if(!data.testCases || !data.testCases.length)
         return Promise.reject("Defect must be tagged to one or more tests");
     const obj = {
@@ -118,13 +120,18 @@ const create = (data, wetland) => {
     const manager  = wetland.getManager();
     const populator = wetland.getPopulator(manager);
 
-    return _assignTestCases(obj, data.testCases, manager)
-        .then(data => {
+    return _getTestCases(data.testCases, manager)
+        .then(testCases => {
+            obj.testcases = testCases;
+            console.log("obj: ", obj)
             const defect = populator.assign(Defect, obj, null, true);
             return manager
                 .persist(defect)
                 .flush()
-                .then(() => defect);
+                .then(() => Object.assign({}, defect, {
+                    testCases: defect.testCases,
+                    testcases: undefined
+                }));
         });
 };
 
