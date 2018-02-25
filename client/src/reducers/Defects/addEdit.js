@@ -28,6 +28,12 @@ const addEditDefect = (state=initialState, action) => {
                 name: action.value
             };
 
+        case ACTIONS.CHANGE_DF_STATUS:
+            return {
+                ...state,
+                status: action.value
+            };
+
         case ACTIONS.CHANGE_DF_COMMENT:
             return {
                 ...state,

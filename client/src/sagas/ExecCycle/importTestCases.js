@@ -43,7 +43,6 @@ function* importTests(action) {
         Alert.success(`Imported ${tests.length} tests`);
         yield put(rcvImportTests(execCycle, tests));
     } catch(ex) {
-        yield put(resetSelection(preSelecedItems));
         console.log(ex);
         Alert.error("Failed to import test. " + (ex && ex.text || ""));
         yield put(setLoading(REQ_IMPORT_TESTS, false));

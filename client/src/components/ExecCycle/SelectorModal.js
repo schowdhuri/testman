@@ -29,13 +29,22 @@ class SelectorModal extends React.Component {
         );
     }
     render() {
-        const { show, selectedItems } = this.props;
+        const {
+            allowAdd,
+            allowAddFolder,
+            readOnly,
+            show,
+            selectedItems
+        } = this.props;
         return (<Modal show={show} className="test-case-selector-modal">
             <Modal.Header>
                 <Modal.Title>Import Test Cases</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <TestCaseSelector />
+                <TestCaseSelector
+                    allowAdd={allowAdd}
+                    allowAddFolder={allowAddFolder}
+                    readOnly={readOnly} />
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={this.handleClose}>Cancel</Button>

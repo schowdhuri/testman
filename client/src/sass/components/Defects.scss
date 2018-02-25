@@ -26,6 +26,9 @@
                 margin: 6px 24px 0 0;
             }
         }
+        .defect-status {
+            margin-right: 15px;
+        }
     }
     .defect-list {
         background: #fff;
@@ -33,5 +36,31 @@
 
     .toolbar .btn-link {
         text-decoration: none;
+    }
+
+    .panel.testcases {
+        .panel-body {
+            padding: 0;
+        }
+        .table {
+            td:first-child {
+                padding-left: 15px;
+                width: 80px;
+            }
+            td:last-child {
+                padding-right: 15px;
+                text-align: right;
+                width: 80px;
+            }
+            .btn {
+                padding: 0;
+            }
+        }
+        .btn-add-test {
+            margin-top: -9px;
+            position: absolute;
+            right: 80px;
+            text-decoration: none;
+        }
     }
 }

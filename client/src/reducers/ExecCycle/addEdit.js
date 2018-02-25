@@ -25,6 +25,8 @@ const addEditExecCycle = (state=initialState, action) => {
 
         case ACTIONS.INIT_EC_EDIT: {
             const { execCycle } = action;
+            if(!execCycle)
+                return initialState;
             return {
                 ...state,
                 name: execCycle.name,

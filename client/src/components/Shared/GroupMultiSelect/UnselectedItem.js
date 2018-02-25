@@ -9,19 +9,22 @@ class UnselectedItem extends React.Component {
         this.hasChildren = this.hasChildren.bind(this);
     }
     handleAdd(ev) {
+        ev.stopPropagation();
+        if(!this.props.allowAdd) {
+            return;
+        }
         if(this.hasChildren()) {
-            if(this.props.item.selectable) {
+            if(this.props.allowAddFolder && this.props.item.selectable) {
                 this.props.onSelectItem(this.props.item);
             }
         } else {
             this.props.onSelectItem(this.props.item);
         }
-        ev.stopPropagation();
     }
     handleClick() {
         if(this.hasChildren()) {
             this.props.onNavDown(this.props.item);
-        } else {
+        } else if(this.props.allowAdd) {
             this.props.onSelectItem(this.props.item);
         }
     }

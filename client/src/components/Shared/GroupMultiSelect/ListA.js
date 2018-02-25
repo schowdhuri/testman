@@ -21,6 +21,8 @@ class ListA extends React.Component {
     }
     render() {
         const {
+            allowAdd,
+            allowAddFolder,
             filterText,
             onFilter,
             onNav,
@@ -46,6 +48,8 @@ class ListA extends React.Component {
                 <ul className="items">
                     {unselectedItems ? unselectedItems.map(item => (<UnselectedItem
                         key={item.id}
+                        allowAdd={allowAdd}
+                        allowAddFolder={allowAddFolder}
                         item={item}
                         onSelectItem={this.handleSelectItem}
                         onNavDown={onNavDown} />)) : null}

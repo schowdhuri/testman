@@ -4,21 +4,26 @@ const Defect = require("../models/Defect");
 const TestCase = require("../models/TestCase");
 const Comment = require("../models/Comment");
 
+const dateFormat = require("../../common/utils/dateFormat");
+
 const _getComments = (defectID, manager) => {
     const repository = manager.getRepository(Comment);
     return repository
         .find({
-            "def.id": defectID
+            "c.defects_id": defectID
         }, {
-            alias: "def",
-            populate: [ "defects", "content"]
+            alias: "c",
+            populate: [ "content" ]
         })
         .then(comments => Promise.resolve(comments
             ? comments.map(c => Object.assign({}, {
                 id: c.id,
-                content: c.content && c.content.value
+                content: c.content && c.content.value,
+                created: dateFormat(c.created),
+                modified :dateFormat(c.modified)
             })).filter(c => c.content)
-            : []));
+            : [])
+        );
 };
 
 const findAll = wetland => {
@@ -49,10 +54,34 @@ const findAll = wetland => {
 const findById = (id, wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(Defect);
+    const qb = repository.getQueryBuilder("d");
 
-    return repository
-        .findOne(id, {
-            populate: [ "description", "testcases" ]
+    return qb
+        .leftJoin("d.description", "desc")
+        .leftJoin("d.testcases", "tc")
+        .leftJoin("tc.testplan", "tp")
+        .select("d", "tc.id", "tc.name", "tp.id", "desc.id", "desc.value")
+        .where({ "d.id": id })
+        .getQuery()
+        .execute()
+        .then(resArr => {
+            const res = resArr[0];
+            return Object.assign({}, {
+                id: res["d.id"],
+                name: res["d.name"],
+                created: dateFormat(res["d.created"]),
+                modified: dateFormat(res["d.modified"]),
+                status: res["d.status"],
+                description: {
+                    id: res["desc.id"],
+                    value: res["desc.value"]
+                },
+                testCases: [{
+                    id: res["tc.id"],
+                    name: res["tc.name"],
+                    testPlan: res["tp.id"]
+                }]
+            })
         })
         .then(defect => {
             return _getComments(defect.id, manager)

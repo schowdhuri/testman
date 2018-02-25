@@ -21,6 +21,8 @@ class GroupMultiSelect extends React.Component {
     }
     render() {
         const {
+            allowAdd=true,
+            allowAddFolder=true,
             filterText,
             unselectedItems,
             onDeselectAll,
@@ -38,6 +40,8 @@ class GroupMultiSelect extends React.Component {
         } = this.props;
 
         const listAProps = {
+            allowAdd,
+            allowAddFolder,
             filterText,
             onFilter,
             onNav,

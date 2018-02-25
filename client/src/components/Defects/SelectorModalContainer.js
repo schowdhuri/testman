@@ -1,15 +1,14 @@
 import { connect } from "react-redux";
-import SelectorModal from "./SelectorModal";
+
+import SelectorModal from "components/ExecCycle/SelectorModal";
 
 import * as actions from "actions/TestCaseSelector";
 
 import testCaseSelector from "selectors/TestDesign";
 
 import { getSelected } from "selectors/TestCaseSelector";
-import { getAddEditState } from "selectors/ExecCycle";
 
 const mapStateToProps = state => ({
-    execCycle: getAddEditState(state),
     selectedItems: getSelected(state)
 });
 
@@ -31,6 +30,9 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
         show: ownProps.show,
         allowAdd: ownProps.allowAdd !== undefined
             ? ownProps.allowAdd
+            : true,
+        allowAddFolder: ownProps.allowAddFolder !== undefined
+            ? ownProps.allowAddFolder
             : true,
         readOnly: ownProps.readOnly !== undefined
             ? ownProps.readOnly

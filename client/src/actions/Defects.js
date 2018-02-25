@@ -33,6 +33,11 @@ export const changeDefectDescription = value => ({
     value
 });
 
+export const changeDefectStatus = value => ({
+    type: ACTIONS.CHANGE_DF_STATUS,
+    value
+});
+
 export const changeDefectComment = value => ({
     type: ACTIONS.CHANGE_DF_COMMENT,
     value

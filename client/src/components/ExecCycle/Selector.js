@@ -13,24 +13,29 @@ class Selector extends React.Component {
     }
     render() {
         const {
+            allowAdd,
+            allowAddFolder,
             items,
             onChangePath,
             onDeselect,
             onDeselectAll,
             onSelect,
             onSelectAll,
+            readOnly,
             selectedItems
         } = this.props;
         return (<div className="test-case-selector">
             <GroupMultiSelect
                 items={items}
+                allowAdd={allowAdd}
+                allowAddFolder={allowAddFolder}
                 onChangePath={onChangePath}
                 onDeselectAll={onDeselectAll}
                 onDeselectItem={onDeselect}
                 onSelectItem={onSelect}
                 onSelectAll={onSelectAll}
                 selectedItems={selectedItems}
-                readOnly={false} />
+                readOnly={readOnly} />
         </div>);
     }
 }

@@ -46,6 +46,20 @@ const mapDispatchToProps = dispatch => ({
     }
 });
 
-const SelectorContainer = connect(mapStateToProps, mapDispatchToProps)(Selector);
+const mergeProps = (stateProps, dispatchProps, ownProps) => ({
+    ...stateProps,
+    ...dispatchProps,
+    allowAdd: ownProps.allowAdd !== undefined
+        ? ownProps.allowAdd
+        : true,
+    allowAddFolder: ownProps.allowAddFolder !== undefined
+        ? ownProps.allowAddFolder
+        : true,
+    readOnly: ownProps.readOnly !== undefined
+        ? ownProps.readOnly
+        : false
+});
+
+const SelectorContainer = connect(mapStateToProps, mapDispatchToProps, mergeProps)(Selector);
 
 export default SelectorContainer;

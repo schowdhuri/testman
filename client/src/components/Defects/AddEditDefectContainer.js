@@ -6,11 +6,13 @@ import { redirectToDefects } from "actions/Shared";
 import AddEditDefect from "./AddEditDefect";
 
 import { getDefectAddEditState } from "selectors/Defects";
+import { getSelected } from "selectors/TestCaseSelector";
 import { isLoading } from "selectors/Shared";
 
 const mapStateToProps = state => ({
     isLoading: isLoading(state),
-    defect: getDefectAddEditState(state)
+    defect: getDefectAddEditState(state),
+    selectedTestCases: getSelected(state)
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -26,6 +28,9 @@ const mapDispatchToProps = dispatch => ({
     },
     onChangeName(val) {
         dispatch(actions.changeDefectName(val));
+    },
+    onChangeStatus(val) {
+        dispatch(actions.changeDefectStatus(val));
     },
     onDelete(id) {
         dispatch(actions.reqDeleteDefect(id));

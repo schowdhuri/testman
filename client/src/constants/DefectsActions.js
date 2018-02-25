@@ -5,6 +5,7 @@ export const RCV_DEFECT             = "RCV_DEFECT";
 export const RESET_DF_ADD_EDIT      = "RESET_DF_ADD_EDIT";
 export const CHANGE_DF_NAME         = "CHANGE_DF_NAME";
 export const CHANGE_DF_DESCR        = "CHANGE_DF_DESCR";
+export const CHANGE_DF_STATUS       = "CHANGE_DF_STATUS";
 export const CHANGE_DF_COMMENT      = "CHANGE_DF_COMMENT";
 export const REQ_SAVE_DF_COMMENT    = "REQ_SAVE_DF_COMMENT";
 export const RCV_SAVE_DF_COMMENT    = "RCV_SAVE_DF_COMMENT";

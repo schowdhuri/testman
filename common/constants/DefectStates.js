@@ -1,5 +1,5 @@
 module.exports = [
     "Open",
     "WIP",
-    "Closed"
+    "Resolved"
 ];
