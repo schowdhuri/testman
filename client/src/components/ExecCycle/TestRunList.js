@@ -4,7 +4,7 @@ import {
     Table
 } from "react-bootstrap";
 
-import SelectorModal from "./SelectorModalContainer";
+import TestImporter from "./TestImporterContainer";
 import TestRunListItem from "./TestRunListItem";
 import TestRunsToolbar from "./TestRunsToolbar";
 
@@ -105,7 +105,10 @@ class TestRunList extends React.Component {
                         onToggle={this.toggleSelect} />)}
                 </tbody>
             </Table>
-            <SelectorModal show={showImportDialog} onClose={this.hideSelector} onSave={this.importTests} />
+            <TestImporter
+                show={showImportDialog}
+                onClose={this.hideSelector}
+                onSave={this.importTests} />
         </div>);
     }
 }

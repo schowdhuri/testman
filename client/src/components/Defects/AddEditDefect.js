@@ -13,7 +13,7 @@ import {
 import Comment from "components/Shared/Comment";
 import DefectForm from "./AddEditDefectForm";
 import LinkedTest from "./LinkedTest";
-import SelectorModal from "./SelectorModalContainer";
+import TestSelector from "components/TestSelector";
 
 class AddEditDefect extends React.Component {
     constructor(props) {
