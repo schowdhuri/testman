@@ -51,7 +51,7 @@ export const getTestRuns = createSelector(
 );
 
 export const getTestRunAddEditState = state=> state.execCycle.addEdit;
-export const showImportDialog = state => state.execCycle.addEdit.showImportDialog;
+export const showImportDialog = state => state.execCycle.importTestDialog;
 
 export const allowDeleteTestRun = createSelector(
     getSelectedTestRuns,

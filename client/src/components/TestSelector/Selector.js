@@ -15,15 +15,18 @@ class Selector extends React.Component {
         };
         this.handleClose = this.handleClose.bind(this);
         this.handleSave = this.handleSave.bind(this);
+        this.handleEnter = this.handleEnter.bind(this);
     }
     componentDidMount() {
         this.setState({
             preSelectedItems: this.props.selectedItems
         });
-        this.props.onInit();
     }
     handleClose() {
         this.props.onClose(this.state.preSelectedItems);
+    }
+    handleEnter() {
+        this.props.onInit();
     }
     handleSave() {
         this.props.onSave(
@@ -52,7 +55,7 @@ class Selector extends React.Component {
         //     show,
         //     selectedItems
         // } = this.props;
-        return (<Modal show={show} className="test-case-selector-modal">
+        return (<Modal show={show} onEnter={this.handleEnter} className="test-case-selector-modal">
             <Modal.Header>
                 <Modal.Title>Import Test Cases</Modal.Title>
             </Modal.Header>

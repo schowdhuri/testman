@@ -5,8 +5,7 @@ const initialState = {
     startDate: null,
     endDate: null,
     testRuns: [],
-    status: "New",
-    showImportDialog: false
+    status: "New"
 };
 
 const addEditExecCycle = (state=initialState, action) => {
@@ -41,12 +40,6 @@ const addEditExecCycle = (state=initialState, action) => {
             return {
                 ...initialState,
                 ...action.execCycle
-            };
-
-        case ACTIONS.TOGGLE_IMPORT_DLG:
-            return {
-                ...state,
-                showImportDialog: action.show
             };
 
     }

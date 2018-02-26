@@ -33,7 +33,8 @@ function* importTests(action) {
         if(importActionContract) {
             yield put({
                 type: importActionContract.type,
-                [importActionContract.key]: tests
+                [importActionContract.key]: tests,
+                ...importActionContract.extra
             });
         }
         yield put(rcvImportTests(tests));

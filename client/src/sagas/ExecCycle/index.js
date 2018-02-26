@@ -1,8 +1,9 @@
 import { spawn } from "redux-saga/effects";
 
-// import onImportTestCases from "./onImportTestCases";
+import importTests from "./importTests";
 import reqDeleteExecCycle from "./reqDeleteExecCycle";
 import reqDeleteTestRuns from "./reqDeleteTestRuns";
+import reqExecCycle from "./reqExecCycle";
 import reqExecCycles from "./reqExecCycles";
 // import reqInitialSelectorData from "./reqInitialSelectorData";
 import reqTestRun from "./reqTestRun";
@@ -12,9 +13,10 @@ import saveTestRun from "./saveTestRun";
 import startStopExec from "./startStopExec";
 
 function* execCyclesSaga() {
-    // yield spawn(onImportTestCases);
+    yield spawn(importTests);
     yield spawn(reqDeleteExecCycle);
     yield spawn(reqDeleteTestRuns);
+    yield spawn(reqExecCycle);
     yield spawn(reqExecCycles);
     // yield spawn(reqInitialSelectorData);
     yield spawn(reqTestRun);

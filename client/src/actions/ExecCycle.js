@@ -133,7 +133,7 @@ export const rcvTestRun = testRun => ({
     testRun
 });
 
-export const rcvImportedTests = tests => ({
-    type: ACTIONS.RCV_IMPORTED_TESTS,
+export const rcvImportTests = tests => ({
+    type: ACTIONS.RCV_IMPORT_TESTS,
     tests
 });
