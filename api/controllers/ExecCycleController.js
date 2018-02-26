@@ -49,13 +49,14 @@ const findById = (id, wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(ExecCycle);
     return repository
-        .findOne(id, {
-            populate: "testruns"
-        })
-        .then(execCycle => Object.assign({}, execCycle, {
-            testruns: undefined,
-            testRuns: execCycle.testruns
-        }));
+        .findOne(id)
+        .then(execCycle => {
+            return _getTestRuns(execCycle.id, manager)
+                .then(testRuns => Object.assign({}, execCycle, {
+                    testruns: undefined,
+                    testRuns: testRuns
+                }))
+        });
 };
 
 const create = (obj, wetland) => {

@@ -61,4 +61,15 @@
 
 .toolbar .btn {
     float: right;
+    outline: none;
+    box-shadow: none;
+}
+
+.btn.btn-link {
+    outline: none !important;
+    box-shadow: none;
+}
+
+.panel {
+    position: relative;
 }

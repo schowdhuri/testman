@@ -16,6 +16,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+    onAddTests(testCases) {
+        dispatch(actions.addTests(testCases));
+    },
     onCancel() {
         dispatch(actions.resetAddEdit());
         dispatch(redirectToDefects());
@@ -37,6 +40,9 @@ const mapDispatchToProps = dispatch => ({
     },
     onDeleteComment(id) {
         dispatch(actions.reqDeleteComment(id));
+    },
+    onDeleteTestCase(id) {
+        dispatch(actions.deleteTestCase(id));
     },
     onInit(id) {
         dispatch(actions.resetAddEdit());

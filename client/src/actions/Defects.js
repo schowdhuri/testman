@@ -105,3 +105,13 @@ export const rcvDeleteDefects = idArr => ({
     type: ACTIONS.RCV_DELETE_DEFECTS,
     idArr
 });
+
+export const addTests = testCases => ({
+    type: ACTIONS.ADD_TESTS_TO_DEFECT,
+    testCases
+});
+
+export const deleteTestCase = id => ({
+    type: ACTIONS.DEL_TEST_FRM_DEFECT,
+    id
+});

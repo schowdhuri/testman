@@ -13,7 +13,7 @@ import {
 import Comment from "components/Shared/Comment";
 import DefectForm from "./AddEditDefectForm";
 import LinkedTest from "./LinkedTest";
-import TestSelector from "components/TestSelector";
+import SelectorModal from "./SelectorModalContainer";
 
 class AddEditDefect extends React.Component {
     constructor(props) {
@@ -21,12 +21,13 @@ class AddEditDefect extends React.Component {
         this.state = {
             showImportDialog: false
         };
-        this.handleAddTest = this.handleAddTest.bind(this);
+        this.handleAddTests = this.handleAddTests.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleChangeComment = this.handleChangeComment.bind(this);
         this.handleChangeName = this.handleChangeName.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleDeleteComment = this.handleDeleteComment.bind(this);
+        this.handleDeleteTestCase = this.handleDeleteTestCase.bind(this);
         this.handleChangeDescr = this.handleChangeDescr.bind(this);
         this.handleChangeStatus = this.handleChangeStatus.bind(this);
         this.handleSave = this.handleSave.bind(this);
@@ -40,8 +41,9 @@ class AddEditDefect extends React.Component {
             this.props.onInit(this.props.defectID);
         }
     }
-    handleAddTest(val) {
-        console.log("selected test: ", val);
+    handleAddTests(testCases) {
+        this.props.onAddTests(testCases);
+        this.hideSelector();
     }
     handleCancel() {
         this.props.onCancel();
@@ -64,6 +66,9 @@ class AddEditDefect extends React.Component {
     }
     handleDeleteComment(commentId) {
         this.props.onDeleteComment(commentId);
+    }
+    handleDeleteTestCase(testCaseId) {
+        this.props.onDeleteTestCase(testCaseId);
     }
     handleSave() {
         this.props.onSave(this.props.defect);
@@ -125,7 +130,8 @@ class AddEditDefect extends React.Component {
                                 {defect.testCases.map(tc =>
                                     <LinkedTest
                                         key={`tc-${tc.id}`}
-                                        testCase={tc} />)}
+                                        testCase={tc}
+                                        onDelete={this.handleDeleteTestCase} />)}
                             </tbody>
                         </Table>
                     </Panel.Body>
@@ -162,7 +168,11 @@ class AddEditDefect extends React.Component {
                     </Panel>
                     : null}
             </div>
-
+            <SelectorModal
+                allowAddFolder={false}
+                show={showImportDialog}
+                onClose={this.hideSelector}
+                onSave={this.handleAddTests} />
         </div>);
     }
 }
@@ -171,12 +181,3 @@ AddEditDefect.propTypes = {
 };
 
 export default AddEditDefect;
-
-/*
-SelectorModal
-                allowAdd={!selectedTestCases.length}
-                allowAddFolder={false}
-                show={showImportDialog}
-                onClose={this.hideSelector}
-                onSave={this.handleAddTest} />
-                */

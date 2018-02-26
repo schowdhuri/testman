@@ -16,6 +16,7 @@ const parseSelectorData = (arr, path) => {
         return arr.map(tc => ({
             id: tc.id,
             name: tc.name,
+            testPlan: tc.testPlan,
             path
         }));
     }

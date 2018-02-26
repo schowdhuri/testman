@@ -34,21 +34,20 @@ const findAll = wetland => {
     return qb
         .leftJoin("d.description", "desc")
         .leftJoin("d.testcases", "tc")
-        .select("d", "tc.id", "desc.value")
+        .select("d", "tc", "desc")
         .getQuery()
-        .execute()
-        .then(resArr => Promise.resolve(resArr.map(res => ({
-            id: res["d.id"],
-            name: res["d.name"],
-            status: res["d.status"],
-            description: res["desc.value"],
-            testCases: res["tc.id"] ? [ res["tc.id"] ] : null
+        .getResult()
+        .then(defects => Promise.resolve(defects.map(defect => Object.assign({}, defect, {
+            description: defect.description.value,
+            testCases: defect.testcases,
+            testcases: undefined
         }))))
-        .then(resArr => Promise.all(resArr.map(res =>  _getComments(res.id, manager)
-            .then(comments => Promise.resolve(Object.assign({}, res, {
+        .then(defects => Promise.all(defects.map(defect => _getComments(defect.id, manager)
+            .then(comments => Promise.resolve(Object.assign({}, defect, {
                 comments: comments.map(c => c.content)
             })))
-        )));
+        )))
+        .catch(ex => console.log(ex));
 };
 
 const findById = (id, wetland) => {
@@ -63,32 +62,28 @@ const findById = (id, wetland) => {
         .select("d", "tc.id", "tc.name", "tp.id", "desc.id", "desc.value")
         .where({ "d.id": id })
         .getQuery()
-        .execute()
-        .then(resArr => {
-            const res = resArr[0];
-            return Object.assign({}, {
-                id: res["d.id"],
-                name: res["d.name"],
-                created: dateFormat(res["d.created"]),
-                modified: dateFormat(res["d.modified"]),
-                status: res["d.status"],
-                description: {
-                    id: res["desc.id"],
-                    value: res["desc.value"]
-                },
-                testCases: [{
-                    id: res["tc.id"],
-                    name: res["tc.name"],
-                    testPlan: res["tp.id"]
-                }]
-            })
+        .getResult()
+        .then(defects => {
+            const defect = defects[0];
+            return Object.assign({}, defects[0], {
+                testCases: defect.testcases.map(tc => Object.assign({}, tc, {
+                    testPlan: tc.testplan && tc.testplan.id,
+                    testplan: undefined,
+                    defects: undefined,
+                    comments: undefined
+                })),
+                created: defect.created && dateFormat(defect.created),
+                modified: defect.modified && dateFormat(defect.modified),
+                testcases: undefined
+            });
         })
         .then(defect => {
             return _getComments(defect.id, manager)
                 .then(comments => Promise.resolve(Object.assign({}, defect, {
                     comments: comments
                 })));
-        });
+        })
+        .catch(ex => console.log(ex));
 };
 
 const _getTestCases = (tcIDs, manager) => {
@@ -176,31 +171,32 @@ const update = (id, data, wetland) => {
     // const uow = manager.getUnitOfWork();
 
     return repository.findOne(id, {
-        populate: ["description"]
+        populate: [ "description", "testcases" ]
     }).then(defect => {
         if(!defect)
             return Promise.reject(`Defect with id ${id} not found`);
-        try {
-            if(defect.description) {
-                data.description = {
-                    id: defect.description.id,
-                    value: data.description
-                };
-            } else if(data.description) {
-                data.description = {
-                    value: data.description
-                };
-            }
-            populator.assign(Defect, data, defect, true);
-            // uow.registerDirty(comment, [ "description" ]);
-            return manager
-                .flush()
-                .then(() => defect);
-        } catch(ex) {
-            console.log(ex);
-            return Promise.reject(ex);
+        const arrTestCases = new ArrayCollection();
+
+        if(defect.description) {
+            data.description = {
+                id: defect.description.id,
+                value: data.description
+            };
+        } else if(data.description) {
+            data.description = {
+                value: data.description
+            };
         }
-    });
+
+        data.testCases.forEach(tc => arrTestCases.push({ id: tc.id }));
+        data.testcases = arrTestCases;
+
+        const updated = populator.assign(Defect, data, defect, true);
+        return manager
+            .flush()
+            .then(() => updated);
+    })
+    .catch(ex => console.log(ex));
 };
 
 const remove = (id, wetland) => {

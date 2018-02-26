@@ -5,16 +5,17 @@ import { Button } from "react-bootstrap";
 
 const LinkedTest = props => {
     const {
-        testCase
+        testCase,
+        onDelete
     } = props;
-    
+
     const {
         id,
         name,
         testPlan
     } = testCase;
 
-    const deleteTestCase = () => {};
+    const deleteTestCase = () => onDelete(id);
 
     return (<tr className="test-case">
         <td className="test-id">

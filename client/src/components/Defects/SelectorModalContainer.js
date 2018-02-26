@@ -1,25 +1,25 @@
 import { connect } from "react-redux";
 
-import SelectorModal from "components/ExecCycle/SelectorModal";
+import SelectorModal from "./SelectorModal";
 
-import * as actions from "actions/TestCaseSelector";
+import * as actions from "actions/Defects";
 
-import testCaseSelector from "selectors/TestDesign";
-
-import { getSelected } from "selectors/TestCaseSelector";
+// import { getAddEditState, showImportDialog } from "selectors/ExecCycle";
 
 const mapStateToProps = state => ({
-    selectedItems: getSelected(state)
+
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-    onClose(preSelectedItems) {
-        dispatch(actions.resetSelection(preSelectedItems));
+    onClose() {
         if(typeof(ownProps.onClose)==="function")
             ownProps.onClose();
     },
+    onInit() {
+
+    },
     onSave(execCycle, selectedItems) {
-        dispatch(actions.reqImportTests(execCycle, selectedItems));
+        console.log("save: ", selectedItems)
     }
 });
 
@@ -27,16 +27,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     return {
         ...stateProps,
         ...dispatchProps,
-        show: ownProps.show,
-        allowAdd: ownProps.allowAdd !== undefined
-            ? ownProps.allowAdd
-            : true,
-        allowAddFolder: ownProps.allowAddFolder !== undefined
-            ? ownProps.allowAddFolder
-            : true,
-        readOnly: ownProps.readOnly !== undefined
-            ? ownProps.readOnly
-            : false
+        ...ownProps
     };
 };
 

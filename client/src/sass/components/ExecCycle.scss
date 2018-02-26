@@ -57,6 +57,7 @@
             margin: 6px 24px 0 0;
         }
     }
+
 }
 .test-runs {
     background: #fff;
@@ -88,10 +89,9 @@
 
 .panel.defects {
     .btn-add-defect {
-        color: #fff;
         margin-top: -9px;
         position: absolute;
-        right: 80px;
+        right: 0;
         text-decoration: none;
     }
 }

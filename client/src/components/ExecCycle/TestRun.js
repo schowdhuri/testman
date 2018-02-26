@@ -93,7 +93,7 @@ class TestRun extends React.Component {
                 <h3>{testRun.name || ""}</h3>
             </div>
             <div className="container">
-                <Panel bsStyle="info">
+                <Panel>
                     <Panel.Heading>Info</Panel.Heading>
                     <Panel.Body>
                         {testCase && testCase.description && testCase.description.value
@@ -104,8 +104,8 @@ class TestRun extends React.Component {
                             : null}
                     </Panel.Body>
                 </Panel>
-                
-                <Panel bsStyle="danger" className="defects">
+
+                <Panel className="defects">
                     <Panel.Heading>
                         <Button bsStyle="link" className="btn-add-defect" onClick={this.showDefectModal}>
                             <i className="glyphicon glyphicon-plus" />
@@ -116,7 +116,7 @@ class TestRun extends React.Component {
                     </Panel.Heading>
                     <Panel.Body>
                         {defects.map(defect => <div>{defect.name}</div>)}
-                        
+
                     </Panel.Body>
                 </Panel>
             </div>
