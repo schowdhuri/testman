@@ -1,13 +1,18 @@
 import { connect } from "react-redux";
 import TestImporter from "./TestImporter";
 
+import { RCV_IMPORTED_TESTS } from "constants/ExecCyclesActions";
 import * as actions from "actions/ExecCycle";
 
 import { getAddEditState, showImportDialog } from "selectors/ExecCycle";
 
 const mapStateToProps = state => ({
     execCycle: getAddEditState(state),
-    show: showImportDialog(state)
+    show: showImportDialog(state),
+    importActionContract: {
+        type: RCV_IMPORTED_TESTS,
+        key: "tests"
+    }
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

@@ -1,5 +1,4 @@
 import * as ACTIONS from "constants/ExecCyclesActions";
-import { RCV_EC_SAVE, RCV_IMPORT_TESTS } from "constants/TestCaseSelectorActions";
 
 const initialState = {
     name: "",

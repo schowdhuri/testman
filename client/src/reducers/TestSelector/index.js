@@ -1,4 +1,4 @@
-import * as ACTIONS from "constants/TestCaseSelectorActions";
+import * as ACTIONS from "constants/TestSelectorActions";
 
 import isChildOf from "businessLogic/shared/GroupMultiSelect/isChildOf";
 
@@ -6,7 +6,8 @@ const initialState = {
     all: [],
     isReady: false,
     path: [],
-    selected: []
+    selected: [],
+    flatList: []
 };
 
 const selectorReducer = (state=initialState, action) => {
@@ -81,7 +82,10 @@ const selectorReducer = (state=initialState, action) => {
             };
 
         case ACTIONS.RCV_IMPORT_TESTS:
-            return initialState;
+            return {
+                ...initialState,
+                flatList: [ ...action.tests ]
+            };
 
     }
     return state;

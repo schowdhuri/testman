@@ -1,10 +1,9 @@
 import Alert from "react-s-alert";
 import { put, take, takeEvery } from "redux-saga/effects";
 
-// import DEVICE_OS_TARGETS from "constants/campaignDeviceOSTargets";
-import { REQ_ITEMS } from "constants/TestCaseSelectorActions";
+import { REQ_ITEMS } from "constants/TestSelectorActions";
 import { RCV_TEST_PLANS, RCV_TEST_CASES } from "constants/TestDesignActions";
-import { rcvItems } from "actions/TestCaseSelector";
+import { rcvItems } from "actions/TestSelector";
 import { reqTestPlans, reqTestCases } from "actions/TestDesign";
 import { setLoading } from "actions/Shared";
 import parseSelectorData from "businessLogic/TestDesign/parseSelectorData";

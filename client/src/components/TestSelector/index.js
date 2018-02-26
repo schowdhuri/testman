@@ -1,14 +1,14 @@
 import { connect } from "react-redux";
 import Selector from "./Selector";
 
-import * as actions from "actions/TestCaseSelector";
+import * as actions from "actions/TestSelector";
 import { reqTestCases } from "actions/TestDesign";
 
 import {
     getAllItems,
     getPath,
     getSelected
-} from "selectors/TestCaseSelector";
+} from "selectors/TestSelector";
 
 import { isLoading } from "selectors/Shared";
 
@@ -35,7 +35,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     onDeselectAll() {
         dispatch(actions.deselectAll());
     },
-    onInit(execCycle) {
+    onInit() {
         dispatch(actions.reqItems());
         if(typeof(ownProps.onInit)=="function")
             ownProps.onInit();
@@ -46,8 +46,8 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     onSelectAll(items) {
         dispatch(actions.selectAll(items));
     },
-    onSave(selectedItems) {
-        dispatch(actions.reqImportTests(selectedItems));
+    onSave(selectedItems, importActionContract) {
+        dispatch(actions.reqImportTests(selectedItems, importActionContract));
         if(typeof(ownProps.onSave)=="function")
             ownProps.onSave(selectedItems);
     }
@@ -57,6 +57,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => ({
     ...stateProps,
     ...dispatchProps,
     show: Boolean(ownProps.show),
+    importActionContract: ownProps.importActionContract,
     allowAdd: ownProps.allowAdd !== undefined
         ? ownProps.allowAdd
         : true,

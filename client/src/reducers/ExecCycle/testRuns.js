@@ -1,5 +1,4 @@
 import * as ACTIONS from "constants/ExecCyclesActions";
-import { RCV_IMPORT_TESTS } from "constants/TestCaseSelectorActions";
 
 // testRuns are stored as { [execCycleId]: { all: testRunArr, selected: selectedArr } }
 const initialState = {};

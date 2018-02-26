@@ -20,9 +20,10 @@ class TestImporter extends React.Component {
         );
     }
     render() {
-        const { show, onClose } = this.props;
+        const { show, onClose, importActionContract } = this.props;
         return (<Selector
             show={show}
+            importActionContract={importActionContract}
             onInit={this.handleInit}
             onClose={onClose}
             onSave={this.handleSave} />);

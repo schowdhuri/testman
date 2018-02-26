@@ -6,7 +6,7 @@ import { redirectToDefects } from "actions/Shared";
 import AddEditDefect from "./AddEditDefect";
 
 import { getDefectAddEditState } from "selectors/Defects";
-import { getSelected } from "selectors/TestCaseSelector";
+import { getSelected } from "selectors/TestSelector";
 import { isLoading } from "selectors/Shared";
 
 const mapStateToProps = state => ({

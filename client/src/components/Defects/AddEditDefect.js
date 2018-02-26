@@ -162,12 +162,7 @@ class AddEditDefect extends React.Component {
                     </Panel>
                     : null}
             </div>
-            <SelectorModal
-                allowAdd={!selectedTestCases.length}
-                allowAddFolder={false}
-                show={showImportDialog}
-                onClose={this.hideSelector}
-                onSave={this.handleAddTest} />
+
         </div>);
     }
 }
@@ -176,3 +171,12 @@ AddEditDefect.propTypes = {
 };
 
 export default AddEditDefect;
+
+/*
+SelectorModal
+                allowAdd={!selectedTestCases.length}
+                allowAddFolder={false}
+                show={showImportDialog}
+                onClose={this.hideSelector}
+                onSave={this.handleAddTest} />
+                */

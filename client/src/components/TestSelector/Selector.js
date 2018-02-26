@@ -28,7 +28,7 @@ class Selector extends React.Component {
     handleSave() {
         this.props.onSave(
             this.props.selectedItems,
-            this.state.preSelectedItems
+            this.props.importActionContract
         );
     }
     render() {

@@ -1,8 +1,7 @@
-import * as ACTIONS from "constants/TestCaseSelectorActions";
+import * as ACTIONS from "constants/TestSelectorActions";
 
-export const reqInitialData = execCycleId => ({
-    type: ACTIONS.REQ_INIT_DATA,
-    execCycleId
+export const reqInitialData = () => ({
+    type: ACTIONS.REQ_INIT_DATA
 });
 
 export const reqItems = (selectedItems=[], path=[]) => ({
@@ -47,15 +46,13 @@ export const resetSelection = selectedItems => ({
     selectedItems
 });
 
-export const reqImportTests = (execCycle, selectedItems, preSelectedItems) => ({
+export const reqImportTests = (selectedItems, importActionContract) => ({
     type: ACTIONS.REQ_IMPORT_TESTS,
-    execCycle,
     selectedItems,
-    preSelectedItems
+    importActionContract
 });
 
-export const rcvImportTests = (execCycle, tests) => ({
+export const rcvImportTests = tests => ({
     type: ACTIONS.RCV_IMPORT_TESTS,
-    execCycle,
     tests
 });

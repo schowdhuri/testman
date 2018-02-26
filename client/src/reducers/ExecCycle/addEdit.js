@@ -1,5 +1,4 @@
 import * as ACTIONS from "constants/ExecCyclesActions";
-import { RCV_EC_SAVE, RCV_IMPORT_TESTS } from "constants/TestCaseSelectorActions";
 
 const initialState = {
     name: "",
@@ -38,7 +37,6 @@ const addEditExecCycle = (state=initialState, action) => {
         }
 
         case ACTIONS.RCV_EXEC_CYCLE:
-        case ACTIONS.RCV_EC_SAVE:
         case ACTIONS.SELECT_EXEC_CYCLE:
             return {
                 ...initialState,
@@ -49,12 +47,6 @@ const addEditExecCycle = (state=initialState, action) => {
             return {
                 ...state,
                 showImportDialog: action.show
-            };
-
-        case RCV_IMPORT_TESTS:
-            return {
-                ...state,
-                showImportDialog: false
             };
 
     }
