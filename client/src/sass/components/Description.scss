@@ -1,0 +1,34 @@
+.editable-description {
+    margin-bottom: 10px;
+    textarea {
+        box-sizing: padding-box;
+        font-size: 1.3rem;
+        margin: 0;
+        padding: 10px;
+        resize: none;
+
+        &.static {
+            border: solid 1px transparent;
+            cursor: pointer;
+            outline: none;
+            &:hover {
+                background-color: #f2f2f2;
+            }
+        }
+    }
+
+    .controls {
+        color: #999;
+        font-size: 1rem;
+        margin-top: 10px;
+        padding-left: 10px;
+        span, a {
+            display: inline-block;
+            margin: 0 5px;
+
+            &:first-child {
+                margin-left: 0;
+            }
+        }
+    }
+}

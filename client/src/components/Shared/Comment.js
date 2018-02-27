@@ -67,8 +67,14 @@ class Comment extends React.Component {
                 </Well>}
             {editMode
                 ? <div className="controls">
-                    <a href="#" onClick={this.handleSave}>Save</a> |
-                    <a href="#" onClick={this.handleCancel}>Cancel</a>
+                    <a href="#" onClick={this.handleSave}>
+                        <i className="glyphicon glyphicon-ok text-success" />
+                        <span className="text-success">Save</span>
+                    </a> |
+                    <a href="#" onClick={this.handleCancel}>
+                        <i className="glyphicon glyphicon-remove text-warning" />
+                        <span className="text-warning">Cancel</span>
+                    </a>
                 </div>
                 : <div className="controls">
                     <span className="modified">Last updated: {moment(modified).format("DD MMM, HH:mm")}</span> |

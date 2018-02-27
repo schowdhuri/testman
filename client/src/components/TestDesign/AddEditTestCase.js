@@ -13,16 +13,16 @@ import {
 } from "react-bootstrap";
 
 import Comment from "components/Shared/Comment";
+import Description from "components/Shared/Description";
+import Title from "components/Shared/Title";
 
 class AddEditTestCase extends React.Component {
     constructor(props) {
         super(props);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleChangeComment = this.handleChangeComment.bind(this);
-        this.handleChangeName = this.handleChangeName.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleDeleteComment = this.handleDeleteComment.bind(this);
-        this.handleChangeDescr = this.handleChangeDescr.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleSaveComment = this.handleSaveComment.bind(this);
         this.handleUpdateComment = this.handleUpdateComment.bind(this);
@@ -35,12 +35,6 @@ class AddEditTestCase extends React.Component {
     }
     handleChangeComment(ev) {
         this.props.onChangeComment(ev.target.value);
-    }
-    handleChangeDescr(ev) {
-        this.props.onChangeDescription(ev.target.value);
-    }
-    handleChangeName(ev) {
-        this.props.onChangeName(ev.target.value);
     }
     handleDelete() {
 
@@ -58,7 +52,13 @@ class AddEditTestCase extends React.Component {
         this.props.onSaveComment(this.props.testCase.id, value, id);
     }
     render() {
-        const { mode, testID, testCase } = this.props;
+        const {
+            mode,
+            onChangeDescription,
+            onChangeName,
+            testID,
+            testCase
+        } = this.props;
         const { newComment, defects=[], comments=[] } = testCase;
 
         return (<div className="add-edit-tc">
@@ -75,20 +75,14 @@ class AddEditTestCase extends React.Component {
                     <Col md={12}>
                         <Panel>
                             <Panel.Body>
-                                <FormGroup controlId="name">
-                                    <ControlLabel>Name</ControlLabel>
-                                    <FormControl
-                                        value={testCase.name}
-                                        onChange={this.handleChangeName}
-                                        type="text" />
-                                </FormGroup>
-                                <FormGroup controlId="description">
-                                    <ControlLabel>Description</ControlLabel>
-                                    <FormControl
-                                        value={testCase.description.value}
-                                        onChange={this.handleChangeDescr}
-                                        componentClass="textarea" />
-                                </FormGroup>
+                                <Title
+                                    value={testCase.name}
+                                    placeholder="Name"
+                                    onUpdate={onChangeName} />
+                                <Description
+                                    value={testCase.description.value}
+                                    placeholder="Describe this test"
+                                    onUpdate={onChangeDescription} />
                             </Panel.Body>
                         </Panel>
                     </Col>
