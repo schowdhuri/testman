@@ -29,18 +29,29 @@ class TestCaseList extends React.Component {
             <Table striped condensed hover className="data-grid ">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Comments</th>
+                        <th className="test-id">ID</th>
+                        <th>Test Case</th>
+                        <th className="stats"></th>
                     </tr>
                 </thead>
                 <tbody>
                     {testCases.map(tc => (<tr key={`tc-${tc.id}`}>
-                        <td>{tc.id}</td>
+                        <td>TC-{tc.id}</td>
                         <td>
                             <Link to={`/design/testplan/${testPlan.id}/testcase/edit/${tc.id}`}>{tc.name}</Link>
                         </td>
-                        <td>{tc.comments ? tc.comments.length : 0}</td>
+                        <td>
+                            <div className={`test-stat ${!tc.defects.length ? "invisible" : ""}`} title="Defects">
+                                <i className="glyphicon glyphicon-exclamation-sign text-danger" />
+                                {" "}
+                                {tc.defects.length}
+                            </div>
+                            <div className={`test-stat ${!tc.comments.length ? "invisible": ""}`} title="Comments">
+                                <i className="glyphicon glyphicon-comment text-info" />
+                                {" "}
+                                {tc.comments.length}
+                            </div>
+                        </td>
                     </tr>))}
                 </tbody>
             </Table>

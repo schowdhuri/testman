@@ -126,15 +126,17 @@ class AddEditDefect extends React.Component {
                         <Panel.Title componentClass="h3">Linked Test Cases</Panel.Title>
                     </Panel.Heading>
                     <Panel.Body>
-                        <Table hover>
-                            <tbody>
-                                {defect.testCases.map(tc =>
-                                    <LinkedTest
-                                        key={`tc-${tc.id}`}
-                                        testCase={tc}
-                                        onDelete={this.handleDeleteTestCase} />)}
-                            </tbody>
-                        </Table>
+                        {defect.testCases
+                            ? <Table hover>
+                                <tbody>
+                                    {defect.testCases.map(tc =>
+                                        <LinkedTest
+                                            key={`tc-${tc.id}`}
+                                            testCase={tc}
+                                            onDelete={this.handleDeleteTestCase} />)}
+                                </tbody>
+                            </Table>
+                            : "No linked tests"}
                     </Panel.Body>
                 </Panel>
 

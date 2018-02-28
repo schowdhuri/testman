@@ -46,28 +46,24 @@ const findAll = (testPlanId, wetland) => {
     const repository = manager.getRepository(TestCase);
 
     const qb = repository.getQueryBuilder("tc");
-    return qb.
-        leftJoin("tc.testplan", "tp")
-        .select("tc.name", "tp.id", "tc.status")
+    return qb
+        .leftJoin("tc.testplan", "tp")
+        .leftJoin("tc.defects", "def")
+        .select("tc", "tp.id", "def")
         .where({ "tp.id": testPlanId })
         .getQuery()
-        .execute()
-        .then(resArr => resArr.map(res => ({
-            id: res["tc.id"],
-            name: res["tc.name"],
-            status: res["tc.status"],
-            testPlan: res["tp.id"]
+        .getResult()
+        .then(testCases => testCases.map(tc => Object.assign({}, tc, {
+            created: dateFormat(tc.created),
+            modified: dateFormat(tc.modified),
+            testPlan: tc.testplan.id,
+            testplan: undefined
         })))
         .then(testCases => Promise.all(testCases.map(tc => _getComments(tc.id, manager)
             .then(comments => Object.assign({}, tc, {
                 comments: comments.map(c => c.content)
             })))
-        ))
-        .then(testCases => Promise.all(testCases.map(tc => _getDefects(tc.id, manager)
-            .then(defects => Object.assign({}, tc, {
-                defects: defects.map(d => d && d.id)
-            }))
-        )));
+        ));
 };
 
 const findById = (id, wetland) => {

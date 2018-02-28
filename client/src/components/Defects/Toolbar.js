@@ -14,6 +14,11 @@ class DefectToolbar extends React.Component {
     render() {
         const { allowDelete, onDelete } = this.props;
         return (<div className="toolbar">
+            <OverlayTrigger placement="bottom" overlay={addTooltip}>
+                <Link to={`/defects/add`} className="btn btn-link">
+                    <i className="glyphicon glyphicon-plus text-info" />
+                </Link>
+            </OverlayTrigger>
             {allowDelete
                 ? <OverlayTrigger placement="bottom" overlay={deleteTooltip}>
                     <Button bsStyle="link" onClick={onDelete}>
@@ -21,11 +26,6 @@ class DefectToolbar extends React.Component {
                     </Button>
                 </OverlayTrigger>
                 : null}
-            <OverlayTrigger placement="bottom" overlay={addTooltip}>
-                <Link to={`/defects/add`} className="btn btn-link">
-                    <i className="glyphicon glyphicon-plus text-info" />
-                </Link>
-            </OverlayTrigger>
             <h3 className="header-gradient-1">Defects</h3>
         </div>);
     }

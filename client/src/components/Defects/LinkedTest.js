@@ -19,7 +19,15 @@ const LinkedTest = props => {
 
     return (<tr className="test-case">
         <td className="test-id">
-            <Link to={`/design/testplan/${testPlan}/testcase/edit/${id}`}>TC-{id}</Link>
+            <Link
+                to={`/design/testplan/${testPlan}/testcase/edit/${id}`}
+                target="_blank"
+                className="text-info"
+            >
+                TC-{id}
+                {" "}
+                <i className="glyphicon glyphicon-share-alt" />
+            </Link>
         </td>
         <td className="test-name">{name}</td>
         <td>

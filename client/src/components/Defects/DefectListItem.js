@@ -7,7 +7,7 @@ const DefectListItem = props => {
         defect,
         onToggle
     } = props;
-    
+
     const {
         id,
         name,
@@ -28,7 +28,7 @@ const DefectListItem = props => {
                 checked={selected}
                 onChange={handleToggle} />
         </td>
-        <td>{id}</td>
+        <td>DF-{id}</td>
         <td>
             <Link to={`/defects/edit/${id}`}>{name}</Link>
         </td>

@@ -19,7 +19,31 @@
             margin: 6px 24px 0 0;
         }
     }
+
+    .panel.defects {
+        .panel-body {
+            padding: 0;
+        }
+        .table {
+            td:first-child {
+                padding-left: 15px;
+                width: 80px;
+            }
+        }
+    }
 }
 .tests-list {
     background: #fff;
+    .test-id,
+    .stats {
+        width: 100px;
+    }
+    .test-stat {
+        display: inline-block;
+        margin: 0 4px;
+
+        &.invisible {
+            visibility: hidden;
+        }
+    }
 }

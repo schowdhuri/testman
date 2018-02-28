@@ -8,9 +8,9 @@ class TestCasesToolbar extends React.Component {
         return (<div className="toolbar">
             {testPlan
                 ? <Link to={`/design/testplan/${testPlan.id}/testcase/add`} className="btn btn-link">
-                    <i className="glyphicon glyphicon-plus" />
+                    <i className="glyphicon glyphicon-plus text-info" />
                     {" "}
-                    New
+                    <span className="text-info">New</span>
                 </Link>
                 : null}
             <h3 className="header-gradient-1">

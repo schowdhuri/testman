@@ -3,18 +3,19 @@ import PropTypes from "prop-types";
 import {
     Button,
     ButtonToolbar,
-    Col,
     ControlLabel,
     FormControl,
     FormGroup,
     Panel,
-    Row,
+    Table,
     Well
 } from "react-bootstrap";
 
 import Comment from "components/Shared/Comment";
 import Description from "components/Shared/Description";
 import Title from "components/Shared/Title";
+
+import LinkedDefect from "./LinkedDefect";
 
 class AddEditTestCase extends React.Component {
     constructor(props) {
@@ -71,70 +72,68 @@ class AddEditTestCase extends React.Component {
                 {testID ? <h3>Edit Test Case</h3> : <h3>Add Test Case</h3>}
             </div>
             <div className="container">
-                <Row>
-                    <Col md={12}>
-                        <Panel>
-                            <Panel.Body>
-                                <Title
-                                    value={testCase.name}
-                                    placeholder="Name"
-                                    onUpdate={onChangeName} />
-                                <Description
-                                    value={testCase.description.value}
-                                    placeholder="Describe this test"
-                                    onUpdate={onChangeDescription} />
-                            </Panel.Body>
-                        </Panel>
-                    </Col>
-                </Row>
-                {testCase.defects && testCase.defects.length
-                    ? <Row>
-                        <Col md={12}>
-                            <Panel bsStyle="danger">
-                                <Panel.Heading>
-                                    <Panel.Title componentClass="h3">Defects</Panel.Title>
-                                </Panel.Heading>
-                                <Panel.Body>
-                                    defects...
-                                </Panel.Body>
-                            </Panel>
-                        </Col>
-                    </Row>
+                <Panel>
+                    <Panel.Body>
+                        <Title
+                            value={testCase.name}
+                            placeholder="Name"
+                            onUpdate={onChangeName} />
+                        <Description
+                            value={testCase.description.value}
+                            placeholder="Describe this test"
+                            onUpdate={onChangeDescription} />
+                    </Panel.Body>
+                </Panel>
+
+                {testCase.id
+                    ? <Panel className="defects">
+                        <Panel.Heading>
+                            <Panel.Title componentClass="h3">Linked Defects</Panel.Title>
+                        </Panel.Heading>
+                        <Panel.Body>
+                            {testCase.defects
+                                ? <Table hover>
+                                    <tbody>
+                                        {testCase.defects.map(defect =>
+                                            <LinkedDefect
+                                                key={`def-${defect.id}`}
+                                                defect={defect} />)}
+                                    </tbody>
+                                </Table>
+                                : "No linked defects"}
+                        </Panel.Body>
+                    </Panel>
                     : null}
 
                 {testCase.id
-                    ? <Row>
-                        <Col md={12}>
-                            <Panel bsStyle="info">
-                                <Panel.Heading>
-                                    <Panel.Title componentClass="h3">Comments</Panel.Title>
-                                </Panel.Heading>
-                                <Panel.Body>
-                                    <FormGroup controlId="newComment">
-                                        <FormControl
-                                            placeholder="Add Comment"
-                                            value={newComment}
-                                            onChange={this.handleChangeComment}
-                                            componentClass="textarea" />
-                                    </FormGroup>
-                                    <ButtonToolbar>
-                                        <Button
-                                            bsSize="small"
-                                            bsStyle="success"
-                                            onClick={this.handleSaveComment}
-                                            disabled={!newComment}
-                                        >Save</Button>
-                                    </ButtonToolbar>
-                                    <hr />
-                                    {comments.map(comment => <Comment
-                                        key={comment.id}
-                                        {...comment}
-                                        onUpdate={this.handleUpdateComment}
-                                        onDelete={this.handleDeleteComment} />)}
-                                </Panel.Body>
-                            </Panel>
-                        </Col>
-                    </Row>
+                    ? <Panel>
+                        <Panel.Heading>
+                            <Panel.Title componentClass="h3">Comments</Panel.Title>
+                        </Panel.Heading>
+                        <Panel.Body>
+                            <FormGroup controlId="newComment">
+                                <FormControl
+                                    placeholder="Add Comment"
+                                    value={newComment}
+                                    onChange={this.handleChangeComment}
+                                    componentClass="textarea" />
+                            </FormGroup>
+                            <ButtonToolbar>
+                                <Button
+                                    bsSize="small"
+                                    bsStyle="success"
+                                    onClick={this.handleSaveComment}
+                                    disabled={!newComment}
+                                >Save</Button>
+                            </ButtonToolbar>
+                            <hr />
+                            {comments.map(comment => <Comment
+                                key={comment.id}
+                                {...comment}
+                                onUpdate={this.handleUpdateComment}
+                                onDelete={this.handleDeleteComment} />)}
+                        </Panel.Body>
+                    </Panel>
                     : null}
             </div>
         </div>);
