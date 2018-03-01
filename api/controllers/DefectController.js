@@ -229,10 +229,14 @@ const bulkRemove = (payload, wetland) => {
     const repository = manager.getRepository(Defect);
 
     const pArrDelete = ids.map(id => repository.findOne(id)
-        .then(testRun => {
-            if(!testRun)
+        .then(defect => {
+            if(!defect) {
                 return Promise.reject(`Defect #${id} not found`);
-            manager.remove(testRun);
+            }
+            if(defect.status != STATES[3]) {
+                return Promise.reject(`Can only delete Non-Issue defects`);
+            }
+            manager.remove(defect);
         }));
     return Promise.all(pArrDelete)
         .then(() => manager.flush().then(() => ids));

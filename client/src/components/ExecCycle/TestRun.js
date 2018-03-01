@@ -136,16 +136,19 @@ class TestRun extends React.Component {
                         <Panel.Title componentClass="h3">Defects</Panel.Title>
                     </Panel.Heading>
                     <Panel.Body>
-                        <Table hover>
-                            <tbody>
-                                {defects.map(defect =>
-                                    <LinkedDefect
-                                        allowDelete={true}
-                                        onDelete={onDeleteDefect}
-                                        key={`defect-${defect.id}`}
-                                        defect={defect} />)}
-                            </tbody>
-                        </Table>
+                        {defects.length
+                            ? <Table hover>
+                                <tbody>
+                                    {defects.map(defect =>
+                                        <LinkedDefect
+                                            allowDelete={true}
+                                            onDelete={onDeleteDefect}
+                                            key={`defect-${defect.id}`}
+                                            defect={defect} />)}
+                                </tbody>
+                            </Table>
+                            : <p className="empty-message">No defects tagged</p>}
+
                     </Panel.Body>
                 </Panel>
             </div>
