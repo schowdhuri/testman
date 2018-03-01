@@ -1,7 +1,10 @@
 import { connect } from "react-redux";
 
 import * as actions from "actions/ExecCycle";
-import { reqSaveDefect } from "actions/Defects";
+import {
+    reqDeleteDefect,
+    reqSaveDefect
+} from "actions/Defects";
 import { redirectToExecCycle } from "actions/Shared";
 
 import TestRun from "./TestRun";
@@ -25,6 +28,9 @@ const mapDispatchToProps = dispatch => ({
             ...testRun,
             status
         }));
+    },
+    onDeleteDefect(defect) {
+        dispatch(reqDeleteDefect(defect.id));
     },
     onInit(execCycleId, id) {
         dispatch(actions.resetTRAddEdit());

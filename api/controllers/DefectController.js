@@ -4,6 +4,7 @@ const Defect = require("../models/Defect");
 const TestCase = require("../models/TestCase");
 const Comment = require("../models/Comment");
 
+const STATES = require("../../common/constants/DefectStates");
 const dateFormat = require("../../common/utils/dateFormat");
 
 const _getComments = (defectID, manager) => {
@@ -188,7 +189,7 @@ const update = (id, data, wetland) => {
             };
         }
 
-        data.testCases.forEach(tc => arrTestCases.push({ id: tc.id }));
+        data.testCases.forEach(tc => arrTestCases.push({ id: tc }));
         data.testcases = arrTestCases;
 
         const updated = populator.assign(Defect, data, defect, true);
@@ -208,8 +209,12 @@ const remove = (id, wetland) => {
 
     return repository.findOne(id)
         .then(defect => {
-            if(!defect)
+            if(!defect) {
                 return Promise.reject(`Defect with id ${id} not found`);
+            }
+            if(defect.status != STATES[3]) {
+                return Promise.reject(`Can only delete Non-Issue defects`);
+            }
             return manager.remove(defect)
                 .flush()
                 .then(() => defect);

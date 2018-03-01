@@ -57,16 +57,19 @@ const findById = (id, wetland) => {
         })
         .then(testRun => Object.assign({}, testRun, {
             execcycle: undefined,
-            testcase: undefined,
             execCycle: testRun.execcycle,
             testCase: testRun.testcase,
+            testcase: undefined,
             created: dateFormat(testRun.created),
             modified: dateFormat(testRun.modified),
             runDate: testRun.runDate && dateFormat(testRun.runDate) || null
         }))
         .then(testRun => getTestCase(testRun.testCase.id, wetland)
             .then(testCase => Object.assign({}, testRun, {
-                testCase: testCase
+                testCase: Object.assign({}, testCase, {
+                    testPlan: testCase.testplan,
+                    testplan: undefined
+                })
             }))
         );
 };

@@ -10,7 +10,7 @@ const buildDefect = data => {
         defect.description = data.description.value;
     else
         defect.description = data.description;
-    defect.testCases = data.testCases;
+    defect.testCases = data.testCases.map(tc => tc.id);
 
     return defect;
 };

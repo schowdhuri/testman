@@ -5,6 +5,7 @@ import { Button } from "react-bootstrap";
 
 const LinkedTest = props => {
     const {
+        allowDelete=true,
         testCase,
         onDelete
     } = props;
@@ -26,19 +27,27 @@ const LinkedTest = props => {
             >
                 TC-{id}
                 {" "}
-                <i className="glyphicon glyphicon-share-alt" />
+                <i className="glyphicon glyphicon-share" />
             </Link>
         </td>
         <td className="test-name">{name}</td>
-        <td>
-            <Button bsStyle="link" className="btn-delete-test" onClick={deleteTestCase}>
-                <i className="glyphicon glyphicon-trash text-danger" />
-            </Button>
-        </td>
+        {allowDelete
+            ? <td>
+                <Button bsStyle="link" className="btn-delete-test" onClick={deleteTestCase}>
+                    <i className="glyphicon glyphicon-trash text-danger" />
+                </Button>
+            </td>
+            : null}
     </tr>);
 };
 LinkedTest.propTypes = {
-
+    allowDelete: PropTypes.bool,
+    onDelete: PropTypes.func,
+    testCase: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        testPlan: PropTypes.number.isRequired
+    }).isRequired
 };
 
 export default LinkedTest;

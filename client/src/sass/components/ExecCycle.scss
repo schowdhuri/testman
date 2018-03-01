@@ -82,8 +82,28 @@
             margin: 6px 24px 0 0;
         }
     }
-    #status-dd {
+    .defect-id {
+        width: 80px;
+    }
+    .status-dd {
         line-height: 22px;
+        width: 55px;
+    }
+
+    .test-link {
+        float: right;
+    }
+    .btn-delete-defect {
+        padding: 0;
+    }
+    .panel.defects .panel-body {
+        padding: 0;
+    }
+    .defect-status {
+        width: 100px;
+    }
+    .del-defect {
+        width: 40px;
     }
 }
 

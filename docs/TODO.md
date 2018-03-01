@@ -5,6 +5,9 @@
 - Defect-TestRun or Defect-ExecCycle relation ?
 - Attachments
 - CSV upload for test cases
+- Clone Exec Cycle
+    - All tests
+    - Only failed tests
 - Users
     - OAuth
     - User Roles

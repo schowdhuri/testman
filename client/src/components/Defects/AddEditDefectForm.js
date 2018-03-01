@@ -34,10 +34,10 @@ const AddEditDefectForm = props => {
 
     return (<React.Fragment>
         <Row>
-            <Col md={11}>
+            <Col md={10}>
                 <Title placeholder="Name" onUpdate={onChangeName} value={name} />
             </Col>
-            <Col md={1}>
+            <Col md={2} className="text-right">
                 {defectId
                     ? <DropdownButton
                         bsStyle={DEF_COLORS[status]}

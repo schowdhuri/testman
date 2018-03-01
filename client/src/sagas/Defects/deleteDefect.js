@@ -9,13 +9,14 @@ import { redirectToDefects, setLoading } from "actions/Shared";
 
 function* delDefect(action) {
     const { id } = action;
+    console.log("ssfsdfsdfds")
     yield put(setLoading(REQ_DELETE_DEFECT, true));
     try {
         const response = yield call(request, {
             url: `/api/defect/${id}`,
             type: "delete"
         });
-        Alert.success(`Deleted`);
+        Alert.success("Deleted");
         yield put(rcvDeleteDefect(response.json));
         yield put(redirectToDefects());
     } catch(ex) {

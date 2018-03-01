@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import {
     Button,
     ButtonToolbar,
@@ -11,7 +12,7 @@ import {
     MenuItem,
     Panel,
     Row,
-    Well
+    Table
 } from "react-bootstrap";
 
 import TR_STATES from "common/constants/TestRunStates";
@@ -20,6 +21,7 @@ import TR_COLORS from "constants/TestRunStateColors";
 import dateFormat from "common/utils/dateFormat";
 
 import DefectModal from "./AddDefectModal";
+import LinkedDefect from "components/TestDesign/LinkedDefect";
 
 class TestRun extends React.Component {
     constructor(props) {
@@ -60,8 +62,15 @@ class TestRun extends React.Component {
         });
     }
     render() {
-        const { isInProgress, mode, testRunId, testRun } = this.props;
-        const { defects=[], comments=[], testCase } = testRun;
+        const {
+            isInProgress,
+            mode,
+            onDeleteDefect,
+            testRunId,
+            testRun
+        } = this.props;
+        const { testCase } = testRun;
+        const { defects=[] } = testCase;
         const { showDefectModal } = this.state;
 
         return (<div className="edit-tr">
@@ -94,7 +103,19 @@ class TestRun extends React.Component {
             </div>
             <div className="container">
                 <Panel>
-                    <Panel.Heading>Info</Panel.Heading>
+                    <Panel.Heading>
+                        {testCase && testCase.testPlan
+                            ? <Link to={`/design/testplan/${testCase.testPlan.id}/testcase/edit/${testCase.id}`}
+                                target="_blank"
+                                className="test-link"
+                            >
+                                <span className="text-info">TC-{testCase.id}</span>
+                                {" "}
+                                <i className="glyphicon glyphicon-share text-info" />
+                            </Link>
+                            : null}
+                        Execution Details
+                    </Panel.Heading>
                     <Panel.Body>
                         {testCase && testCase.description && testCase.description.value
                             ? <p className="description">{testCase.description.value}</p>
@@ -108,15 +129,23 @@ class TestRun extends React.Component {
                 <Panel className="defects">
                     <Panel.Heading>
                         <Button bsStyle="link" className="btn-add-defect" onClick={this.showDefectModal}>
-                            <i className="glyphicon glyphicon-plus" />
+                            <i className="glyphicon glyphicon-plus text-danger" />
                             {" "}
-                            New
+                            <span className="text-danger">New</span>
                         </Button>
                         <Panel.Title componentClass="h3">Defects</Panel.Title>
                     </Panel.Heading>
                     <Panel.Body>
-                        {defects.map(defect => <div>{defect.name}</div>)}
-
+                        <Table hover>
+                            <tbody>
+                                {defects.map(defect =>
+                                    <LinkedDefect
+                                        allowDelete={true}
+                                        onDelete={onDeleteDefect}
+                                        key={`defect-${defect.id}`}
+                                        defect={defect} />)}
+                            </tbody>
+                        </Table>
                     </Panel.Body>
                 </Panel>
             </div>
