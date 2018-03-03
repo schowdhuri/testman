@@ -77,11 +77,9 @@ class Migration {
       table.integer('content_id').unsigned().nullable();
       table.integer('testcases_id').unsigned().nullable();
       table.integer('defects_id').unsigned().nullable();
-      table.integer('testrun_id').unsigned().nullable();
       table.foreign('content_id').references('id').inTable('richtext');
       table.foreign('testcases_id').references('id').inTable('testcase');
       table.foreign('defects_id').references('id').inTable('defect');
-      table.foreign('testrun_id').references('id').inTable('testrun');
     });
 
     builder.schema.createTable('user', table => {

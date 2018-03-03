@@ -23,8 +23,8 @@ class Defect {
             nullable: false,
             enumeration: STATES
         });
-        mapping.oneToMany("comments", { targetEntity: "Comment", mappedBy: "defects" });
-        mapping.manyToMany("testcases", { targetEntity: "TestCase", inversedBy: "defects" })
+        mapping.manyToMany("testcases", { targetEntity: "TestCase", inversedBy: "defects" });
+        mapping.manyToMany("testruns", { targetEntity: "TestRun", mappedBy: "defects" });
     }
 
     beforeCreate() {

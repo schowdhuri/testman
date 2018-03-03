@@ -14,7 +14,6 @@ class Comment {
         mapping.oneToOne("content", { targetEntity: "RichText" });
         mapping.manyToOne("testcases", { targetEntity: "TestCase", inversedBy: "testcases" });
         mapping.manyToOne("defects", { targetEntity: "Defect", inversedBy: "defects" });
-        mapping.manyToOne("testrun", { targetEntity: "TestRun", inversedBy: "testrun" });
     }
 
     beforeCreate() {
