@@ -65,9 +65,10 @@ export const rcvDeleteComment = id => ({
     id
 });
 
-export const reqSaveDefect = defect => ({
+export const reqSaveDefect = (defect, redirect=false) => ({
     type: ACTIONS.REQ_SAVE_DEFECT,
-    defect
+    defect,
+    redirect
 });
 
 export const rcvSaveDefect = defect => ({
@@ -86,9 +87,10 @@ export const toggleSelectAll = status => ({
     status
 });
 
-export const reqDeleteDefect = id => ({
+export const reqDeleteDefect = (id, redirect=false) => ({
     type: ACTIONS.REQ_DELETE_DEFECT,
-    id
+    id,
+    redirect
 });
 
 export const rcvDeleteDefect = id => ({

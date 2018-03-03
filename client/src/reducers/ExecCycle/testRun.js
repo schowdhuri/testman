@@ -1,4 +1,5 @@
 import * as ACTIONS from "constants/ExecCyclesActions";
+import { RCV_DELETE_DEFECT } from "constants/DefectsActions";
 
 const initialState = {
     name: "",
@@ -17,20 +18,57 @@ const addEditExecCycle = (state=initialState, action) => {
             return {
                 ...initialState,
                 ...action.testRun,
-                name: action.testRun.testCase.name
+                name: action.testRun.testCase.name,
+                defects: action.testRun.testCase.defects || []
             };
+        
+        case ACTIONS.RCV_ADD_NEW_DEFECT: {
+            const { defect } = action;
+            if(!state.defects.find(d => d.id==defect.id)) {
+                return {
+                    ...state,
+                    defects: [
+                        ...state.defects,
+                        defect
+                    ]
+                };
+            }
+            break;
+        }
 
-        case ACTIONS.RCV_TR_COMMENTS:
+        case ACTIONS.RCV_LINK_DEFECTS: {
+            const { defects } = action;
+            const newDefects = [];
+            defects.forEach(defect => {
+                if(!state.defects.find(d => d.id==defect.id)) {
+                    newDefects.push(defect)
+                }
+            });
             return {
                 ...state,
-                comments: action.comments
+                defects: [
+                    ...state.defects,
+                    ...newDefects
+                ]
             };
+            break;
+        }
 
-        case ACTIONS.RCV_TR_DEFECTS:
-            return {
-                ...state,
-                defects: action.defects
-            };
+        case RCV_DELETE_DEFECT:
+        case ACTIONS.RCV_UNLINK_DEFECT: {
+            const { defect } = action;
+            const index = state.defects.findIndex(d => d.id==defect.id);
+            if(index != -1) {
+                return {
+                    ...state,
+                    defects: [
+                        ...state.defects.slice(0, index),
+                        ...state.defects.slice(index + 1)
+                    ]
+                };
+            }
+            break;
+        }
 
         case ACTIONS.CHANGE_TR_COMMENT:
             return {

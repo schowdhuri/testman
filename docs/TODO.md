@@ -2,7 +2,9 @@
 
 ## Core Features
 
-- Defect-TestRun or Defect-ExecCycle relation ?
+- Defect-TestRun relation
+    - linking/unlinking defect -> testrun
+
 - Attachments
 - CSV upload for test cases
 - Clone Exec Cycle

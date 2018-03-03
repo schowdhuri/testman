@@ -5,7 +5,7 @@ import { Button, Modal } from "react-bootstrap";
 
 import GroupMultiSelect from "components/Shared/GroupMultiSelect";
 
-import "sass/components/TestCaseSelector.scss";
+import "sass/components/DefectSelector.scss";
 
 class Selector extends React.Component {
     constructor(props) {
@@ -48,13 +48,13 @@ class Selector extends React.Component {
             selectedItems,
             show
         } = this.props;
-        
-        return (<Modal show={show} onEnter={this.handleEnter} className="test-case-selector-modal">
+
+        return (<Modal show={show} onEnter={this.handleEnter} className="defect-selector-modal">
             <Modal.Header>
-                <Modal.Title>Import Test Cases</Modal.Title>
+                <Modal.Title>Select Defects</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <div className="test-case-selector">
+                <div className="defect-selector">
                     <GroupMultiSelect
                         items={items}
                         allowAdd={allowAdd}
@@ -70,7 +70,7 @@ class Selector extends React.Component {
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={this.handleClose}>Cancel</Button>
-                <Button bsStyle="success" onClick={this.handleSave} disabled={!selectedItems.length}>Import</Button>
+                <Button bsStyle="success" onClick={this.handleSave} disabled={!selectedItems.length}>Ok</Button>
             </Modal.Footer>
         </Modal>);
     }

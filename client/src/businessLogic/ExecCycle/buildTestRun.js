@@ -10,7 +10,9 @@ const buildTestRun = data => {
     testRun.testCase = data.testCase && data.testCase.id
         ? data.testCase.id
         : data.testCase;
-
+    if(data.defects) {
+        testRun.defects = data.defects.map(def => def.id);
+    }
     return testRun;
 };
 

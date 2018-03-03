@@ -59,8 +59,9 @@ const findById = (id, wetland) => {
     return qb
         .leftJoin("d.description", "desc")
         .leftJoin("d.testcases", "tc")
+        .leftJoin("d.testruns", "tr")
         .leftJoin("tc.testplan", "tp")
-        .select("d", "tc.id", "tc.name", "tp.id", "desc.id", "desc.value")
+        .select("d", "tc.id", "tc.name", "tp.id", "tr.id", "desc.id", "desc.value")
         .where({ "d.id": id })
         .getQuery()
         .getResult()
@@ -73,9 +74,11 @@ const findById = (id, wetland) => {
                     defects: undefined,
                     comments: undefined
                 })),
+                testcases: undefined,
+                testRuns: defect.testruns,
+                testruns: undefined,
                 created: defect.created && dateFormat(defect.created),
-                modified: defect.modified && dateFormat(defect.modified),
-                testcases: undefined
+                modified: defect.modified && dateFormat(defect.modified)
             });
         })
         .then(defect => {
@@ -90,6 +93,7 @@ const findById = (id, wetland) => {
 const _getTestCases = (tcIDs, manager) => {
     const repository = manager.getRepository(TestCase);
     const arrTestCases = new ArrayCollection();
+    tcIDs = tcIDs.filter(tcID => tcID);
     return Promise.all(tcIDs.map(tcID => repository.findOne(tcID)))
         .then(testCases => {
             testCases = testCases.filter(tc => tc);
@@ -142,13 +146,20 @@ const create = (data, wetland) => {
     };
     if(data.status)
         obj.status = data.status;
+
+    const arrTestRuns = new ArrayCollection();
+    data.testRuns.forEach(tr => arrTestRuns.push({
+        id: tr
+    }));
+    obj.testruns = arrTestRuns;
+
     const manager  = wetland.getManager();
     const populator = wetland.getPopulator(manager);
 
     return _getTestCases(data.testCases, manager)
         .then(testCases => {
             obj.testcases = testCases;
-            console.log("obj: ", obj)
+            console.log(obj);
             const defect = populator.assign(Defect, obj, null, true);
             return manager
                 .persist(defect)
@@ -172,7 +183,7 @@ const update = (id, data, wetland) => {
     // const uow = manager.getUnitOfWork();
 
     return repository.findOne(id, {
-        populate: [ "description", "testcases" ]
+        populate: [ "description", "testcases", "defects" ]
     }).then(defect => {
         if(!defect)
             return Promise.reject(`Defect with id ${id} not found`);

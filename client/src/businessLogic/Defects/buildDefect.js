@@ -11,7 +11,9 @@ const buildDefect = data => {
     else
         defect.description = data.description;
     defect.testCases = data.testCases.map(tc => tc.id);
-
+    defect.testRuns = data.testRuns
+        ? data.testRuns.map(tr => tr.id)
+        : [];
     return defect;
 };
 

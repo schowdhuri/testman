@@ -137,3 +137,38 @@ export const rcvImportTests = tests => ({
     type: ACTIONS.RCV_IMPORT_TESTS,
     tests
 });
+
+export const reqLinkDefects = (testRun, defects) => ({
+    type: ACTIONS.REQ_LINK_DEFECTS,
+    defects,
+    testRun
+});
+
+export const rcvLinkDefects = (defects, testRun) => ({
+    type: ACTIONS.RCV_LINK_DEFECTS,
+    defects,
+    testRun
+});
+
+export const reqAddNewDefect = (defect, testRun) => ({
+    type: ACTIONS.REQ_ADD_NEW_DEFECT,
+    defect,
+    testRun
+});
+
+export const rcvAddNewDefect = defect => ({
+    type: ACTIONS.RCV_ADD_NEW_DEFECT,
+    defect
+});
+
+export const reqUnlinkDefect = (testRun, defect) => ({
+    type: ACTIONS.REQ_UNLINK_DEFECT,
+    testRun,
+    defect
+});
+
+export const rcvUnlinkDefect = (testRun, defect) => ({
+    type: ACTIONS.RCV_UNLINK_DEFECT,
+    testRun,
+    defect
+});

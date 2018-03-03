@@ -36,7 +36,7 @@ const mapDispatchToProps = dispatch => ({
         dispatch(actions.changeDefectStatus(val));
     },
     onDelete(id) {
-        dispatch(actions.reqDeleteDefect(id));
+        dispatch(actions.reqDeleteDefect(id, true));
     },
     onDeleteComment(id) {
         dispatch(actions.reqDeleteComment(id));

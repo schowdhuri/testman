@@ -8,7 +8,7 @@ import { rcvDeleteDefect } from "actions/Defects";
 import { redirectToDefects, setLoading } from "actions/Shared";
 
 function* delDefect(action) {
-    const { id } = action;
+    const { id, redirect } = action;
     console.log("ssfsdfsdfds")
     yield put(setLoading(REQ_DELETE_DEFECT, true));
     try {
@@ -18,7 +18,8 @@ function* delDefect(action) {
         });
         Alert.success("Deleted");
         yield put(rcvDeleteDefect(response.json));
-        yield put(redirectToDefects());
+        if(redirect)
+            yield put(redirectToDefects());
     } catch(ex) {
         console.log(ex);
         Alert.error("Failed to delete defect. " + (ex && ex.text || ""));

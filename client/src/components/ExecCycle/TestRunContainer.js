@@ -1,15 +1,14 @@
 import { connect } from "react-redux";
 
 import * as actions from "actions/ExecCycle";
-import {
-    reqDeleteDefect,
-    reqSaveDefect
-} from "actions/Defects";
 import { redirectToExecCycle } from "actions/Shared";
 
 import TestRun from "./TestRun";
 
-import { getTestRun, isInProgress } from "selectors/ExecCycle";
+import {
+    getTestRun,
+    isInProgress
+} from "selectors/ExecCycle";
 import { isLoading } from "selectors/Shared";
 
 const mapStateToProps = state => ({
@@ -19,6 +18,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+    onLinkDefects(defects, testRun) {
+        dispatch(actions.reqLinkDefects(testRun, defects));
+    },
     onCancel() {
         dispatch(actions.resetTRAddEdit());
         dispatch(redirectToExecCycle());
@@ -29,9 +31,6 @@ const mapDispatchToProps = dispatch => ({
             status
         }));
     },
-    onDeleteDefect(defect) {
-        dispatch(reqDeleteDefect(defect.id));
-    },
     onInit(execCycleId, id) {
         dispatch(actions.resetTRAddEdit());
         dispatch(actions.selectExecCycle({
@@ -40,8 +39,11 @@ const mapDispatchToProps = dispatch => ({
         dispatch(actions.reqExecCycles());
         dispatch(actions.reqTestRun(id));
     },
-    onSaveDefect(testCaseId, defect) {
-        dispatch(reqSaveDefect(testCaseId, defect));
+    onSaveDefect(defect, testRun) {
+        dispatch(actions.reqAddNewDefect(defect, testRun));
+    },
+    onUnlinkDefect(testRun, defect) {
+        dispatch(actions.reqUnlinkDefect(testRun, defect));
     }
 });
 

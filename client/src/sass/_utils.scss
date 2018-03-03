@@ -72,4 +72,20 @@
 
 .panel {
     position: relative;
+    
+    .header-buttons {
+        position: absolute;
+        right: 15px;
+        top: 7px;
+
+        .btn, a {
+            text-decoration: none;
+
+            &:last-child {
+                padding-right: 0;
+            }
+        }
+        
+
+    }
 }

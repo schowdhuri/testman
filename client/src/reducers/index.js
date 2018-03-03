@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 
 import defects from "./Defects";
+import defectSelector from "./DefectSelector";
 import execCycle from "./ExecCycle";
 import isLoading from "./Shared/isLoading";
 import testDesign from "./TestDesign";
@@ -10,6 +11,7 @@ import groupMultiSelect from "reducers/Shared/GroupMultiSelect";
 
 const rootReducer = combineReducers({
     defects,
+    defectSelector,
     execCycle,
     isLoading,
     testDesign,

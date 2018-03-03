@@ -90,9 +90,8 @@
         line-height: 22px;
         width: 55px;
     }
-
     .test-link {
-        float: right;
+        margin-right: 20px;
     }
     .btn-delete-defect {
         padding: 0;
@@ -114,10 +113,9 @@
 }
 
 .panel.defects {
-    .btn-add-defect {
-        margin-top: -9px;
-        position: absolute;
-        right: 0;
+    
+    .btn-add-defect,
+    .btn-link-defect {
         text-decoration: none;
     }
 }

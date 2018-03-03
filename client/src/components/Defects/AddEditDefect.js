@@ -119,14 +119,14 @@ class AddEditDefect extends React.Component {
                 <Panel className="testcases">
                     <Panel.Heading>
                         <Button bsStyle="link" className="btn-add-test" onClick={this.showSelector}>
-                            <i className="glyphicon glyphicon-plus" />
+                            <i className="glyphicon glyphicon-plus text-info" />
                             {" "}
-                            New
+                            <span className="text-info">New</span>
                         </Button>
                         <Panel.Title componentClass="h3">Linked Test Cases</Panel.Title>
                     </Panel.Heading>
                     <Panel.Body>
-                        {defect.testCases
+                        {defect.testCases.length
                             ? <Table hover>
                                 <tbody>
                                     {defect.testCases.map(tc =>
@@ -136,7 +136,7 @@ class AddEditDefect extends React.Component {
                                             onDelete={this.handleDeleteTestCase} />)}
                                 </tbody>
                             </Table>
-                            : "No linked tests"}
+                            : <p className="empty-message">No linked tests</p>}
                     </Panel.Body>
                 </Panel>
 

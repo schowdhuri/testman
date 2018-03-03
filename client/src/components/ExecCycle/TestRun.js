@@ -20,21 +20,27 @@ import TR_COLORS from "constants/TestRunStateColors";
 
 import dateFormat from "common/utils/dateFormat";
 
-import DefectModal from "./AddDefectModal";
 import LinkedDefect from "components/TestDesign/LinkedDefect";
+import DefectSelector from "components/Shared/DefectSelector";
+
+import DefectModal from "./AddDefectModal";
 
 class TestRun extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showDefectModal: false
+            showDefectModal: false,
+            showSelectDefectModal: false
         };
         this.handleCancel = this.handleCancel.bind(this);
         this.handleChangeStatus = this.handleChangeStatus.bind(this);
+        this.handleLinkDefects = this.handleLinkDefects.bind(this);
         this.handleSaveDefect = this.handleSaveDefect.bind(this);
+        this.handleUnlinkDefect = this.handleUnlinkDefect.bind(this);
         this.hideDefectModal = this.hideDefectModal.bind(this);
+        this.hideSelectDefectModal = this.hideSelectDefectModal.bind(this);
         this.showDefectModal = this.showDefectModal.bind(this);
-
+        this.showSelectDefectModal = this.showSelectDefectModal.bind(this);
     }
     componentDidMount() {
         this.props.onInit(this.props.execCycleId, this.props.testRunId);
@@ -45,15 +51,25 @@ class TestRun extends React.Component {
     handleChangeStatus(newStatus) {
         this.props.onChangeStatus(this.props.testRun, newStatus);
     }
+    handleLinkDefects(defects) {
+        this.props.onLinkDefects(defects, this.props.testRun);
+        this.hideSelectDefectModal();
+    }
     handleSaveDefect(defect) {
-        this.props.onSaveDefect({
-            ...defect,
-            testCases: [ this.props.testRun.testCase.id ]
-        });
+        this.props.onSaveDefect(defect, this.props.testRun);
+        this.hideDefectModal();
+    }
+    handleUnlinkDefect(defect) {
+        this.props.onUnlinkDefect(this.props.testRun, defect);
     }
     hideDefectModal() {
         this.setState({
             showDefectModal: false
+        });
+    }
+    hideSelectDefectModal(defects) {
+        this.setState({
+            showSelectDefectModal: false
         });
     }
     showDefectModal() {
@@ -61,34 +77,24 @@ class TestRun extends React.Component {
             showDefectModal: true
         });
     }
+    showSelectDefectModal() {
+        this.setState({
+            showSelectDefectModal: true
+        });
+    }
     render() {
         const {
             isInProgress,
             mode,
-            onDeleteDefect,
             testRunId,
             testRun
         } = this.props;
-        const { testCase } = testRun;
-        const { defects=[] } = testCase;
-        const { showDefectModal } = this.state;
+        const { defects, testCase } = testRun;
+        const { showDefectModal, showSelectDefectModal } = this.state;
 
         return (<div className="edit-tr">
             <div className="action-bar header-gradient-1">
                 <ButtonToolbar>
-                    {isInProgress
-                        ? <DropdownButton
-                            bsStyle={TR_COLORS[testRun.status]}
-                            bsSize="small"
-                            title={testRun.status}
-                            id="status-dd"
-                        >
-                            {TR_STATES.map(s => (<MenuItem
-                                key={s}
-                                onSelect={() => this.handleChangeStatus(s)}
-                            >{s}</MenuItem>))}
-                        </DropdownButton>
-                        : <Button bsSize="small" bsStyle="warning" disabled>{testRun.status}</Button>}
                     {testRun.state == TR_STATES[2]
                         ? <Button bsSize="small" bsStyle="warning">
                             <i className="glyphicon glyphicon-plus" />
@@ -104,16 +110,32 @@ class TestRun extends React.Component {
             <div className="container">
                 <Panel>
                     <Panel.Heading>
-                        {testCase && testCase.testPlan
-                            ? <Link to={`/design/testplan/${testCase.testPlan.id}/testcase/edit/${testCase.id}`}
-                                target="_blank"
-                                className="test-link"
-                            >
-                                <span className="text-info">TC-{testCase.id}</span>
-                                {" "}
-                                <i className="glyphicon glyphicon-share text-info" />
-                            </Link>
-                            : null}
+                        <div className="header-buttons">
+                            {testCase && testCase.testPlan
+                                ? <Link to={`/design/testplan/${testCase.testPlan.id}/testcase/edit/${testCase.id}`}
+                                    target="_blank"
+                                    className="test-link"
+                                >
+                                    <span className="text-info">TC-{testCase.id}</span>
+                                    {" "}
+                                    <i className="glyphicon glyphicon-share text-info" />
+                                </Link>
+                                : null}
+                            {isInProgress
+                                ? <DropdownButton
+                                    bsStyle={TR_COLORS[testRun.status]}
+                                    bsSize="small"
+                                    className="status-dd"
+                                    title={testRun.status}
+                                    id={`status-dd-${testRun.id}`}
+                                >
+                                    {TR_STATES.map(s => (<MenuItem
+                                        key={s}
+                                        onSelect={() => this.handleChangeStatus(s)}
+                                    >{s}</MenuItem>))}
+                                </DropdownButton>
+                                : <Button bsSize="small" bsStyle="warning" disabled>{testRun.status}</Button>}
+                        </div>
                         Execution Details
                     </Panel.Heading>
                     <Panel.Body>
@@ -128,11 +150,18 @@ class TestRun extends React.Component {
 
                 <Panel className="defects">
                     <Panel.Heading>
-                        <Button bsStyle="link" className="btn-add-defect" onClick={this.showDefectModal}>
-                            <i className="glyphicon glyphicon-plus text-danger" />
-                            {" "}
-                            <span className="text-danger">New</span>
-                        </Button>
+                        <div className="header-buttons">
+                            <Button bsStyle="link" bsSize="small" className="btn-link-defect" onClick={this.showSelectDefectModal}>
+                                <i className="glyphicon glyphicon-link text-danger" />
+                                {" "}
+                                <span className="text-danger">Link</span>
+                            </Button>
+                            <Button bsStyle="link" bsSize="small" className="btn-add-defect" onClick={this.showDefectModal}>
+                                <i className="glyphicon glyphicon-plus text-danger" />
+                                {" "}
+                                <span className="text-danger">New</span>
+                            </Button>
+                        </div>
                         <Panel.Title componentClass="h3">Defects</Panel.Title>
                     </Panel.Heading>
                     <Panel.Body>
@@ -142,7 +171,7 @@ class TestRun extends React.Component {
                                     {defects.map(defect =>
                                         <LinkedDefect
                                             allowDelete={true}
-                                            onDelete={onDeleteDefect}
+                                            onDelete={this.handleUnlinkDefect}
                                             key={`defect-${defect.id}`}
                                             defect={defect} />)}
                                 </tbody>
@@ -152,7 +181,14 @@ class TestRun extends React.Component {
                     </Panel.Body>
                 </Panel>
             </div>
-            <DefectModal show={showDefectModal} onSave={this.handleSaveDefect} onClose={this.hideDefectModal} />
+            <DefectModal
+                show={showDefectModal}
+                onSave={this.handleSaveDefect}
+                onClose={this.hideDefectModal} />
+            <DefectSelector
+                show={showSelectDefectModal}
+                onSave={this.handleLinkDefects}
+                onClose={this.hideSelectDefectModal} />
         </div>);
     }
 }

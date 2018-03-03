@@ -11,7 +11,7 @@ import buildDefect from "businessLogic/Defects/buildDefect";
 import validateDefect from "businessLogic/Defects/validateDefect";
 
 function* saveDefect(action) {
-    const { defect } = action;
+    const { defect, redirect } = action;
     yield put(setLoading(REQ_SAVE_DEFECT, true));
     try {
         let response;
@@ -33,7 +33,8 @@ function* saveDefect(action) {
         }
         Alert.success("Saved");
         yield put(rcvSaveDefect(response.json));
-        yield put(redirectToDefects());
+        if(redirect)
+            yield put(redirectToDefects());
     } catch(ex) {
         console.log(ex);
         Alert.error("Failed to save defect. " + (ex && ex.text || ""));

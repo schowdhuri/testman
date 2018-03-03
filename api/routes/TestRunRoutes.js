@@ -65,6 +65,28 @@ const testRunRoutes = app => {
 					res.status(500).send(ex);
 				});
 		});
+
+	app.route("/api/testrun/:id/defect")
+		.post((req, res) => {
+			controller.linkDefects(req.params.id, req.body, req.wetland)
+				.then(result => {
+					res.json(result);
+				})
+				.catch(ex => {
+					res.status(500).send(ex);
+				});
+		});
+
+	app.route("/api/testrun/:id/defect/:defectId")
+		.delete((req, res) => {
+			controller.unlinkDefect(req.params.id, req.params.defectId, req.wetland)
+				.then(result => {
+					res.json(result);
+				})
+				.catch(ex => {
+					res.status(500).send(ex);
+				});
+		});
 };
 
 module.exports = testRunRoutes;
