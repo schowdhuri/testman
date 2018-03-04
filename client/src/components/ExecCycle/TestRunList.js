@@ -92,7 +92,6 @@ class TestRunList extends React.Component {
                         <th>Name</th>
                         <th>Status</th>
                         <th>Defects</th>
-                        <th>Comments</th>
                     </tr>
                 </thead>
                 <tbody>

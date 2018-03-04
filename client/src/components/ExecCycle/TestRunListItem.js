@@ -53,7 +53,6 @@ const TestRun = props => {
                 : testRun.status}
         </td>
         <td>{testRun.defects ? testRun.defects.length : 0}</td>
-        <td>{testRun.comments ? testRun.comments.length : 0}</td>
     </tr>);
 };
 TestRun.propTypes = {

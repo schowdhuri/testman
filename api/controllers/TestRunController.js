@@ -16,21 +16,26 @@ const findAll = async (execCycleId, wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(TestRun);
     const qb = repository.getQueryBuilder("tr");
-    const resArr = await qb
+    const testRuns = await qb
         .leftJoin("tr.execcycle", "ec")
         .leftJoin("tr.testcase", "tc")
-        .select("tr.id", "tc.id", "tc.name", "ec.id", "tr.status")
+        .leftJoin("tr.defects", "def")
+        .select("tr.id", "tc.id", "tc.name", "ec.id", "tr.status", "def.id")
         .where({ "ec.id": execCycleId })
         .getQuery()
-        .execute();
-
-    return resArr.map(res => ({
-        id: res["tr.id"],
-        status: res["tr.status"],
-        execCycle: res["ec.id"],
-        name: res["tc.name"],
-        testCase: res["tc.id"]
-    }));
+        .getResult();
+    
+    return testRuns.map(tr => {
+        const testRun = {
+            ...tr,
+            testCase: tr.testcase.id,
+            execCycle: tr.execcycle,
+            name: tr.testcase.name
+        };
+        delete testRun.execcycle;
+        delete testRun.testcase;
+        return testRun;
+    });
 };
 
 const findById = async (id, wetland) => {
@@ -99,11 +104,13 @@ const update = async (id, data, wetland) => {
     if(!STATES.find(s => s==data.status))
         throw new Error("Invalid status");
 
+    delete data.defects;
+
     const manager  = wetland.getManager();
     const repository = manager.getRepository(TestRun);
     const populator = wetland.getPopulator(manager);
 
-    const testruns = await repository.findOne(id, { populate: [ "testcase", "execcycle" ] });
+    const testRun = await repository.findOne(id, { populate: [ "testcase", "execcycle" ] });
     try {
         if(!testRun)
             throw new Error(`TestRun with id ${id} not found`);
