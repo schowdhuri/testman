@@ -20,7 +20,7 @@ function* linkDefects(action) {
             },
             dataType: "json"
         });
-        yield put(rcvLinkDefects(testRun, defects));
+        yield put(rcvLinkDefects(defects, testRun));
     } catch(ex) {
         console.log(ex);
         Alert.error("Failed to link defects: " + (ex && ex.text || ""));

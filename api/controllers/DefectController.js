@@ -54,40 +54,52 @@ const findAll = wetland => {
 const findById = (id, wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(Defect);
-    const qb = repository.getQueryBuilder("d");
-
-    return qb
-        .leftJoin("d.description", "desc")
-        .leftJoin("d.testcases", "tc")
-        .leftJoin("d.testruns", "tr")
-        .leftJoin("tc.testplan", "tp")
-        .select("d", "tc.id", "tc.name", "tp.id", "tr.id", "desc.id", "desc.value")
-        .where({ "d.id": id })
-        .getQuery()
-        .getResult()
-        .then(defects => {
-            const defect = defects[0];
-            return Object.assign({}, defects[0], {
-                testCases: defect.testcases.map(tc => Object.assign({}, tc, {
-                    testPlan: tc.testplan && tc.testplan.id,
-                    testplan: undefined,
-                    defects: undefined,
-                    comments: undefined
-                })),
-                testcases: undefined,
-                testRuns: defect.testruns,
-                testruns: undefined,
+    return repository
+        .findOne(id, {
+            populate: [
+                "description",
+                "testcases",
+                "testruns",
+                "testruns.testcase",
+                "testcases.testplan"
+            ]
+        })
+        .then(defect => {
+            if(!defect)
+                return Promise.reject("Not found");
+            return defect;
+        })
+        .then(defect => {
+            const testCases = defect.testcases.map(tc => ({
+                id: tc.id,
+                name: tc.name,
+                testPlan: tc.testplan && tc.testplan.id
+            }));
+            const testRuns = defect.testruns.map(tr => ({
+                id: tr.id,
+                status: tr.status,
+                testCase: {
+                    id: tr.testcase.id
+                }
+            }));
+            defect = {
+                ...defect,
+                testCases,
+                testRuns,
                 created: defect.created && dateFormat(defect.created),
                 modified: defect.modified && dateFormat(defect.modified)
-            });
+            };
+            delete defect.testcases;
+            delete defect.testruns;
+            return defect;
         })
         .then(defect => {
             return _getComments(defect.id, manager)
-                .then(comments => Promise.resolve(Object.assign({}, defect, {
+                .then(comments => Promise.resolve({
+                    ...defect,
                     comments: comments
-                })));
-        })
-        .catch(ex => console.log(ex));
+                }));
+        });
 };
 
 const _getTestCases = (tcIDs, manager) => {
@@ -159,7 +171,6 @@ const create = (data, wetland) => {
     return _getTestCases(data.testCases, manager)
         .then(testCases => {
             obj.testcases = testCases;
-            console.log(obj);
             const defect = populator.assign(Defect, obj, null, true);
             return manager
                 .persist(defect)
@@ -223,7 +234,10 @@ const remove = (id, wetland) => {
             if(!defect) {
                 return Promise.reject(`Defect with id ${id} not found`);
             }
-            if(defect.status != STATES[3]) {
+            if(defect.testCases &&
+                defect.testCases.length &&
+                defect.status != STATES[3]
+            ) {
                 return Promise.reject(`Can only delete Non-Issue defects`);
             }
             return manager.remove(defect)

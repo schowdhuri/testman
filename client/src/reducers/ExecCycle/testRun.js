@@ -19,7 +19,7 @@ const addEditExecCycle = (state=initialState, action) => {
                 ...initialState,
                 ...action.testRun,
                 name: action.testRun.testCase.name,
-                defects: action.testRun.testCase.defects || []
+                defects: action.testRun.defects || []
             };
         
         case ACTIONS.RCV_ADD_NEW_DEFECT: {
