@@ -1,3 +1,5 @@
+![TestMan](https://raw.githubusercontent.com/schowdhuri/testman/master/TestMan.png)
+
 # TestMan
 Minimal test management tool
 
