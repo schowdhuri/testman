@@ -38,7 +38,12 @@ class AddEditTestCase extends React.Component {
         this.props.onChangeComment(ev.target.value);
     }
     handleDelete() {
-
+        if(confirm("Delete this test case?")) {
+            this.props.onDelete(
+                this.props.testCase.id,
+                this.props.testPlanID 
+            );
+        }
     }
     handleDeleteComment(commentId) {
         this.props.onDeleteComment(commentId);

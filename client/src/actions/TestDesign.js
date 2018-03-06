@@ -46,6 +46,18 @@ export const rcvSaveTestCase = (testPlanId, testCase) => ({
     testCase
 });
 
+export const reqDeleteTestCase = (id, testPlanId) => ({
+    type: ACTIONS.REQ_DEL_TC,
+    id,
+    testPlanId
+});
+
+export const rcvDeleteTestCase = (id, testPlanId) => ({
+    type: ACTIONS.RCV_DEL_TC,
+    id,
+    testPlanId
+});
+
 export const selectTestPlan = testPlan => ({
     type: ACTIONS.SELECT_TEST_PLAN,
     testPlan

@@ -29,6 +29,9 @@ const mapDispatchToProps = dispatch => ({
     onChangeName(val) {
         dispatch(actions.changeTCName(val));
     },
+    onDelete(testCaseId, testPlanID) {
+        dispatch(actions.reqDeleteTestCase(testCaseId, testPlanID));
+    },
     onDeleteComment(id) {
         dispatch(actions.reqDeleteComment(id));
     },
