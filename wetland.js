@@ -1,7 +1,7 @@
 const path = require("path");
 
 module.exports = {
-    entityPath: path.resolve(__dirname, "api", "models"),
+    entityPath: path.resolve(__dirname, "server", "models"),
     stores: {
         defaultStore: {
             client: "sqlite",

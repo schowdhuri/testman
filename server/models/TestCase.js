@@ -1,8 +1,6 @@
 "use strict";
 
-const STATES = require("../../common/constants/DefectStates");
-
-class Defect {
+class TestCase {
     static setMapping(mapping) {
         mapping.field("created", {
             type: "datetime",
@@ -13,25 +11,27 @@ class Defect {
             nullable: true
         });
         mapping.forProperty("id").primary().increments();
+        mapping.oneToOne("user", { targetEntity: "User" });
         mapping.field("name", {
             type: "string",
             nullable: false
         });
-        mapping.oneToOne("description", { targetEntity: "RichText", inversedBy: "defects" });
+        mapping.oneToOne("description", { targetEntity: "RichText", inversedBy: "testcases" });
         mapping.field("status", {
             type: "enumeration",
             nullable: false,
-            enumeration: STATES
+            enumeration: ["New", "Pass", "Fail"]
         });
-        mapping.manyToMany("testcases", { targetEntity: "TestCase", inversedBy: "defects" });
-        mapping.manyToMany("testruns", { targetEntity: "TestRun", mappedBy: "defects" });
+        mapping.manyToOne("testplan", { targetEntity: "TestPlan", inversedBy: "testplan" });
+        mapping.oneToMany("comments", { targetEntity: "Comment", mappedBy: "testcases" });
+        mapping.manyToMany("defects", { targetEntity: "Defect", mappedBy: "testcases" });
     }
 
     beforeCreate() {
         const datetime = new Date();
         this.modified = datetime;
         this.created = datetime;
-        this.status = STATES[0];
+        this.status = "New";
     }
 
     beforeUpdate(values) {
@@ -39,4 +39,4 @@ class Defect {
     }
 }
 
-module.exports = Defect;
+module.exports = TestCase;

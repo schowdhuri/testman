@@ -3,7 +3,7 @@
 ## Core Features
 
 - Defect-TestRun relation
-    - linking/unlinking defect -> testrun
+    - linking/unlinking defect -> testrun [DONE]
 
 - Attachments
 - CSV upload for test cases
@@ -11,9 +11,9 @@
     - All tests
     - Only failed tests
 - Users
-    - OAuth
-    - User Roles
+    - OAuth [DONE]
     - User-Comment, User-Defect, User-TestCase, User-TestRun
+    - User Roles
 - Dashboard
 - Integrations (Slack, email, ...)
 

@@ -82,13 +82,6 @@ class Migration {
       table.foreign('defects_id').references('id').inTable('defect');
     });
 
-    builder.schema.createTable('user', table => {
-      table.datetime('created').nullable();
-      table.datetime('modified').nullable();
-      table.increments('id').notNullable();
-      table.string('username', 255).notNullable();
-      table.unique(['username'], 'user_username_unique');
-    });
   }
 
   static down(migration) {
@@ -107,8 +100,6 @@ class Migration {
     builder.schema.dropTable('richtext');
 
     builder.schema.dropTable('testplan');
-
-    builder.schema.dropTable('user');
 
     builder.schema.dropTable('defect_testcase');
   }

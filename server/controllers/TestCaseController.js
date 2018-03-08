@@ -51,7 +51,8 @@ const findAll = async (testPlanId, wetland) => {
     const resArr = await qb
         .leftJoin("tc.testplan", "tp")
         .leftJoin("tc.defects", "def")
-        .select("tc", "tp.id", "def")
+        .leftJoin("tc.user", "user")
+        .select("tc", "tp.id", "def", "user")
         .where({ "tp.id": testPlanId })
         .getQuery()
         .getResult();
@@ -65,7 +66,7 @@ const findAll = async (testPlanId, wetland) => {
             ...tc,
             created: dateFormat(tc.created),
             modified: dateFormat(tc.modified),
-            testPlan: tc.testplan.id,
+            testPlan: tc.testplan.id
         };
         delete testCase.testplan;
         return testCase;
@@ -75,16 +76,16 @@ const findAll = async (testPlanId, wetland) => {
         let comments = await _getComments(testCases[i].id, manager);
         testCases[i].comments = comments.map(c => c.content);
     }
-    
+
     return testCases;
 };
 
 const findById = async (id, wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(TestCase);
-    
+
     const testCase = await repository.findOne(id, {
-        populate: [ "description", "testplan", "defects" ]
+        populate: [ "description", "testplan", "defects", "user" ]
     });
 
     testCase.created = dateFormat(testCase.created);
@@ -95,7 +96,7 @@ const findById = async (id, wetland) => {
     return testCase;
 };
 
-const create = async (testPlanId, obj, wetland) => {
+const create = async (testPlanId, obj, wetland, user) => {
     if(!obj.name)
         throw new Error("name is required");
 
@@ -106,6 +107,9 @@ const create = async (testPlanId, obj, wetland) => {
         },
         testplan: {
             id: testPlanId
+        },
+        user: {
+            id: user.id
         }
     };
     const manager  = wetland.getManager();
@@ -113,11 +117,11 @@ const create = async (testPlanId, obj, wetland) => {
     const testCase = populator.assign(TestCase, data);
     await manager
         .persist(testCase)
-        .flush();    
+        .flush();
     return testCase;
 };
 
-const update = async (id, data, wetland) => {
+const update = async (id, data, wetland, user) => {
     if(!id)
         throw new Error("id is required");
     if(!data)
@@ -144,11 +148,14 @@ const update = async (id, data, wetland) => {
                 value: data.description
             };
         }
+        data.user = {
+            id: user.id
+        };
         const updated = populator.assign(TestCase, data, testCase, true);
         // uow.registerDirty(testCase, [ "description" ]);
         await manager
             .flush();
-        return updated;    
+        return updated;
     } catch(ex) {
         console.log(ex);
         throw ex;

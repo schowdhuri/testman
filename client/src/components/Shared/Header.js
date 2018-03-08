@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { Navbar } from "react-bootstrap";
+import { Nav, Navbar, NavItem } from "react-bootstrap";
 
 const links = [{
     id: "dashboard",
@@ -44,6 +44,9 @@ class Header extends React.Component {
                         <Link to={link.url}>{link.name}</Link>
                     </li>))}
                 </ul>
+                <Nav pullRight>
+                    <NavItem href="/auth/google">Login</NavItem>
+                </Nav>
             </Navbar>
         </header>);
     }

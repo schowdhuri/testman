@@ -5,10 +5,12 @@ const controller = require("../controllers/TestCaseController");
 const testCaseRoutes = app => {
 	app.route("/api/testcase")
 		.get(async (req, res) => {
+			console.log("session: ", req.session)
 			const testPlanId = req.query.testplan;
 			if(!testPlanId) {
 				res.status(400).send("testplan is required");
 			}
+			console.log("User: ", req.user);
 			try {
 				const result = await controller.findAll(
 					testPlanId,
@@ -28,7 +30,8 @@ const testCaseRoutes = app => {
 				const result = await controller.create(
 					testPlanId,
 					req.body,
-					req.wetland
+					req.wetland,
+					req.user
 				);
 				res.json(result);
 			} catch(ex) {
@@ -50,10 +53,12 @@ const testCaseRoutes = app => {
 		})
 		.put(async (req, res) => {
 			try {
+				console.log("session: ", req.session)
 				const result = await controller.update(
 					req.params.id,
 					req.body,
-					req.wetland
+					req.wetland,
+					req.user
 				);
 				res.json(result);
 			} catch(ex) {

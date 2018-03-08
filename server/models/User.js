@@ -10,8 +10,20 @@ class User {
             type: "datetime",
             nullable: true
         });
-        mapping.forProperty("id").generatedValue("autoIncrement");
+        mapping.forProperty("id").primary().increments();
+        mapping.field("authid", {
+            type: "string",
+            nullable: false
+        });
         mapping.field("username", {
+            type: "string",
+            nullable: false
+        });
+        mapping.field("email", {
+            type: "string",
+            nullable: false
+        });
+        mapping.field("name", {
             type: "string",
             nullable: false
         });

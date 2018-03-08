@@ -1,8 +1,8 @@
 "use strict";
 
-const STATES = require("../../common/constants/TestRunStates");
+const STATES = require("../../common/constants/DefectStates");
 
-class TestRun {
+class Defect {
     static setMapping(mapping) {
         mapping.field("created", {
             type: "datetime",
@@ -12,19 +12,21 @@ class TestRun {
             type: "datetime",
             nullable: true
         });
-        mapping.field("runDate", {
-            type: "datetime",
-            nullable: true
-        });
         mapping.forProperty("id").primary().increments();
+        mapping.oneToOne("user", { targetEntity: "User" });
+        mapping.oneToOne("assignee", { targetEntity: "User" });
+        mapping.field("name", {
+            type: "string",
+            nullable: false
+        });
+        mapping.oneToOne("description", { targetEntity: "RichText", inversedBy: "defects" });
         mapping.field("status", {
             type: "enumeration",
             nullable: false,
             enumeration: STATES
         });
-        mapping.manyToOne("execcycle", { targetEntity: "ExecCycle", inversedBy: "testruns" });
-        mapping.oneToOne("testcase", { targetEntity: "TestCase" });
-        mapping.manyToMany("defects", { targetEntity: "Defect", inversedBy: "testruns" })
+        mapping.manyToMany("testcases", { targetEntity: "TestCase", inversedBy: "defects" });
+        mapping.manyToMany("testruns", { targetEntity: "TestRun", mappedBy: "defects" });
     }
 
     beforeCreate() {
@@ -39,4 +41,4 @@ class TestRun {
     }
 }
 
-module.exports = TestRun;
+module.exports = Defect;
