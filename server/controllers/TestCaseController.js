@@ -10,18 +10,26 @@ const _getComments = async (testCaseID, manager) => {
     const comments = await repository.find({
         "tc.id": testCaseID
     }, {
-        populate: [ {"testcases": "tc"}, "content" ]
+        populate: [ {"testcases": "tc"}, "content", "user" ]
     });
     if(!comments)
         return [];
 
     return comments
-        .map(c => Object.assign({}, {
-            id: c.id,
-            content: c.content && c.content.value,
-            created: c.created,
-            modified: c.modified
-        }))
+        .map(c => {
+            const user = c.user ? {
+                id: c.user.id,
+                name: c.user.name,
+                email: c.user.email
+            } : null;
+            return {
+                id: c.id,
+                content: c.content && c.content.value,
+                created: c.created,
+                modified: c.modified,
+                user
+            };
+        })
         .filter(c => c.content);
 };
 
@@ -73,7 +81,7 @@ const findAll = async (testPlanId, wetland) => {
     });
 
     for(let i=0; i<testCases.length; i++) {
-        let comments = await _getComments(testCases[i].id, manager);
+        const comments = await _getComments(testCases[i].id, manager);
         testCases[i].comments = comments.map(c => c.content);
     }
 
@@ -92,8 +100,10 @@ const findById = async (id, wetland) => {
     testCase.modified = dateFormat(testCase.modified);
 
     const comments = await _getComments(testCase.id, manager);
-    testCase.comments = comments;
-    return testCase;
+    return {
+        ...testCase,
+        comments
+    };
 };
 
 const create = async (testPlanId, obj, wetland, user) => {

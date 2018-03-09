@@ -4,53 +4,56 @@ const controller = require("../controllers/CommentController");
 
 const commentRoutes = app => {
 	app.route("/api/comment")
-		.get((req, res) => {
-			controller.findAll(req.wetland)
-				.then(result => {
-					res.json(result);
-				})
-				.catch(ex => {
-					res.status(500).send(ex);
-				});
-		})
-		.post((req, res) => {
-			controller.create(req.body, req.wetland)
-				.then(result => {
-					res.json(result);
-				})
-				.catch(ex => {
-					console.log(ex)
-					res.status(500).send(ex);
-				});
+		.post(async (req, res) => {
+			try {
+				const result = await controller.create(
+					req.body,
+					req.wetland,
+					req.user
+				);
+				res.json(result);
+			} catch(ex) {
+				res.status(500).send(ex);
+			}
 		});
 
 	app.route("/api/comment/:id")
-		.get((req, res) => {
-			controller.findById(req.params.id, req.wetland)
-				.then(result => {
-					res.json(result);
-				})
-				.catch(ex => {
-					res.status(500).send(ex);
-				});
+		.get(async (req, res) => {
+			try {
+				const result = await controller.findById(
+					req.params.id,
+					req.wetland
+				);
+				res.json(result);
+			} catch(ex) {
+				res.status(500).send(ex);
+			}
 		})
-		.put((req, res) => {
-			controller.update(req.params.id, req.body, req.wetland)
-				.then(result => {
-					res.json(result);
-				})
-				.catch(ex => {
-					res.status(500).send(ex);
-				});
+		.put(async (req, res) => {
+			console.log(req.session)
+			try {
+				const result = await controller.update(
+					req.params.id,
+					req.body,
+					req.wetland,
+					req.user
+				);
+				res.json(result);
+			} catch(ex) {
+				res.status(500).send(ex);
+			}
 		})
-		.delete((req, res) => {
-			controller.remove(req.params.id, req.wetland)
-				.then(result => {
-					res.json(result);
-				})
-				.catch(ex => {
-					res.status(500).send(ex);
-				});
+		.delete(async (req, res) => {
+			try {
+				const result = await controller.remove(
+					req.params.id,
+					req.wetland,
+					req.user
+				);
+				res.json(result);
+			} catch(ex) {
+				res.status(500).send(ex);
+			}
 		});
 };
 

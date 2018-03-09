@@ -2,127 +2,108 @@ const Comment = require("../models/Comment");
 const Defect = require("../models/Defect");
 const TestCase = require("../models/TestCase");
 
-const findAll = wetland => {
+const findById = async (id, wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(Comment);
-    const qb = repository.getQueryBuilder("c");
-    return qb
-        .leftJoin("c.content", "co")
-        .leftJoin("c.defects", "d")
-        .leftJoin("c.testcases", "tc")
-        .select("c.id", "co.value", "tc.id", "d.id")
-        .getQuery()
-        .execute()
-        .then(resArr => Promise.resolve(resArr.map(res => ({
-            id: res["c.id"],
-            content: res["co.value"],
-            defect: res["d.id"],
-            testCase: res["tc.id"]
-        }))));
-};
-
-const findById = (id, wetland) => {
-    const manager = wetland.getManager();
-    const repository = manager.getRepository(Comment);
-    return repository.findOne(id, {
-        populate: [ "content", "testcases", "defects" ]
+    const comment = await repository.findOne(id, {
+        populate: [ "content", "testcases", "defects", "user" ]
     });
+    return comment;
 };
 
-const create = (obj, wetland) => {
+const create = async (obj, wetland, user) => {
     if(!obj.content)
-        return Promise.reject("content is required");
+        throw new Error("content is required");
     if(!obj.testCase && !obj.defect) {
-        return Promise.reject("Comment must be linked to an entity");
+        throw new Error("Comment must be linked to an entity");
     }
     const data = {
-        content: obj.content
+        content: obj.content,
+        user: {
+            id: user.id
+        }
     };
     const manager  = wetland.getManager();
     const populator = wetland.getPopulator(manager);
-    let pLinkedEntity;
+    let linkedEntity;
     if(obj.testCase) {
-        pLinkedEntity = manager.getRepository(TestCase).findOne(obj.testCase)
+        linkedEntity = await manager.getRepository(TestCase).findOne(obj.testCase)
     } else {
-        pLinkedEntity = manager.getRepository(Defect).findOne(obj.defect)
+        linkedEntity = await manager.getRepository(Defect).findOne(obj.defect)
     }
-    return pLinkedEntity.then(linkedEntity => {
-        if(!linkedEntity)
-            return Promise.reject("Invalid ID");
-        if(linkedEntity instanceof Defect)
-            data.defects = [ linkedEntity ];
-        else if(linkedEntity instanceof TestCase)
-            data.testcases = [ linkedEntity ];
-        data.content = {
-            value: data.content
-        };
-        console.log("data: ", data);
-        const comment = populator.assign(Comment, data, null, true);
-        return manager
-            .persist(comment)
-            .flush()
-            .then(() => comment);
-    });
+    if(!linkedEntity)
+        throw new Error("Invalid ID");
+    if(linkedEntity instanceof Defect)
+        data.defects = [ linkedEntity ];
+    else if(linkedEntity instanceof TestCase)
+        data.testcases = [ linkedEntity ];
+    data.content = {
+        value: data.content
+    };
+
+    const comment = populator.assign(Comment, data, null, true);
+    await manager
+        .persist(comment)
+        .flush();
+    return comment;
 };
 
-const update = (id, data, wetland) => {
+const update = async (id, data, wetland, user) => {
     if(!id)
-        return Promise.reject("id is required");
+        throw new Error("id is required");
     if(!data)
-        return Promise.reject("No data provided");
+        throw new Error("No data provided");
 
     const manager  = wetland.getManager();
     const repository = manager.getRepository(Comment);
     const populator = wetland.getPopulator(manager);
     const uow = manager.getUnitOfWork();
 
-    return repository.findOne(id, {
-        populate: [ "content" ]
-    }).then(comment => {
-        if(!comment)
-            return Promise.reject(`Comment with id ${id} not found`);
-        try {
-            if(comment.content) {
-                data.content = {
-                    id: comment.content.id,
-                    value: data.content
-                };
-            } else if(data.content) {
-                data.content = {
-                    value: data.content
-                };
-            }
-            populator.assign(Comment, data, comment, true);
-            uow.registerDirty(comment, [ "content" ]);
-            return manager
-                .flush()
-                .then(() => comment);
-        } catch(ex) {
-            console.log(ex);
-            return Promise.reject(ex);
-        }
+    const comment = await repository.findOne(id, {
+        populate: [ "content", "user" ]
     });
+    if(!comment)
+        throw new Error(`Comment with id ${id} not found`);
+    if(comment.user && !comment.user.id != user.id) {
+        throw new Error("Can't edit comment from another user");
+    }
+    if(comment.content) {
+        data.content = {
+            id: comment.content.id,
+            value: data.content
+        };
+    } else if(data.content) {
+        data.content = {
+            value: data.content
+        };
+    }
+    data.user = {
+        id: user.id
+    };
+    const updated = populator.assign(Comment, data, comment, true);
+    uow.registerDirty(comment, [ "content" ]);
+    await manager.flush();
+    return updated;
 };
 
-const remove = (id, wetland) => {
+const remove = async (id, wetland, user) => {
     if(!id)
-        return Promise.reject("id is required");
+        throw new Error("id is required");
 
     const manager = wetland.getManager();
     const repository = manager.getRepository(Comment);
 
-    return repository.findOne(id)
-        .then(comment => {
-            if(!comment)
-                return Promise.reject(`Comment with id ${id} not found`);
-            return manager.remove(comment)
-                .flush()
-                .then(() => comment);
-        });
+    const comment = await repository.findOne(id)
+    if(!comment)
+        throw new Error(`Comment with id ${id} not found`);
+    if(comment.user && !comment.user.id != user.id) {
+        throw new Error("Can't delete comment from another user");
+    }
+    await manager.remove(comment).flush();
+    return comment;
 };
 
 module.exports = {
-    findAll,
     findById,
     create,
     update,

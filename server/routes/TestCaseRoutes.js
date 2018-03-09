@@ -48,6 +48,7 @@ const testCaseRoutes = app => {
 				);
 				res.json(result);
 			} catch(ex) {
+				console.log(ex)
 				res.status(500).send(ex);
 			}
 		})

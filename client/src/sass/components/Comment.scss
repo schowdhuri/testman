@@ -13,10 +13,9 @@
         span, a {
             display: inline-block;
             margin: 0 4px;
-
-            &:first-child {
-                margin-left: 0;
-            }
+        }
+        .glyphicon {
+            margin-right: 5px;
         }
     }
 }

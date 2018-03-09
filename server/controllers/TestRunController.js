@@ -24,7 +24,7 @@ const findAll = async (execCycleId, wetland) => {
         .where({ "ec.id": execCycleId })
         .getQuery()
         .getResult();
-    
+
     return testRuns.map(tr => {
         const testRun = {
             ...tr,
@@ -69,7 +69,7 @@ const findById = async (id, wetland) => {
     return testRun;
 };
 
-const create = async (data, wetland) => {
+const create = async (data, wetland, user) => {
     if(!data.execCycle)
         throw new Error("execCycle is required");
     if(!data.testCase)
@@ -81,6 +81,9 @@ const create = async (data, wetland) => {
         },
         execCycle: {
             id: data.execCycle
+        },
+        user: {
+            id: user.id
         }
     };
     const manager  = wetland.getManager();
@@ -92,7 +95,7 @@ const create = async (data, wetland) => {
     return testRun;
 };
 
-const update = async (id, data, wetland) => {
+const update = async (id, data, wetland, user) => {
     if(!id)
         throw new Error("id is required");
     if(!data)
@@ -118,11 +121,15 @@ const update = async (id, data, wetland) => {
             id: data.testCase
         };
         if(data.status != testRun.status) {
+            // status being changed
             if(data.status==STATES[0])
                 testRun.runDate = null;
             else
                 testRun.runDate = new Date();
         }
+        data.user = {
+            id: user.id
+        };
         const updated = populator.assign(TestRun, data, testRun, true);
         await manager.flush();
         return findById(id, wetland);
@@ -148,7 +155,7 @@ const linkDefects = async (id, data, wetland) => {
     const testRun = await repository.findOne(id, { populate: [ "defects", "testcase" ] });
     if(!testRun)
         throw new Error(`TestRun with id ${id} not found`);
-        
+
     const defects = [];
     for(let i=0; i<defectIds.length; i++) {
         try {
@@ -159,7 +166,7 @@ const linkDefects = async (id, data, wetland) => {
             console.log("Defect ID: ", defectIds[i], "not found", ex);
         }
     }
-    
+
     const arrDefects = new ArrayCollection();
     testRun.defects.forEach(d => arrDefects.push({ id: d.id }));
     defects
@@ -167,7 +174,7 @@ const linkDefects = async (id, data, wetland) => {
         .forEach(defect => {
             if(!testRun.defects.find(d => d.id==defect.id))
                 arrDefects.push({ id: defect.id });
-            
+
             const arrTestCases = new ArrayCollection();
             if(defect.testcases)
                 defect.testcases.forEach(tc => arrTestCases.push(tc));
@@ -176,7 +183,7 @@ const linkDefects = async (id, data, wetland) => {
                 const defectData = {
                     testcases: arrTestCases
                 };
-                populator.assign(Defect, defectData, defect, true);          
+                populator.assign(Defect, defectData, defect, true);
             }
         });
     const newData = {
@@ -195,13 +202,13 @@ const unlinkDefect = async (id, defectId, wetland) => {
 
     const manager = wetland.getManager();
     const populator = wetland.getPopulator(manager);
-    
+
     const defect = await getDefect(defectId, wetland);
     const testRun = await findById(id, wetland);
-    
+
     if(!testRun)
         throw new Error(`TestRun with id ${id} not found`);
-    
+
     try {
         let shouldRemoveDefect = false;
         if(defect.testCases.length==1 &&
@@ -211,7 +218,7 @@ const unlinkDefect = async (id, defectId, wetland) => {
             // for this defect
             shouldRemoveDefect = true;
         }
-        
+
         if(shouldRemoveDefect) {
             // testRun.defects = testRun.defects.filter(d => d.id!=defectId);
             const defectRepository = manager.getRepository(Defect);
@@ -256,7 +263,7 @@ const unlinkDefect = async (id, defectId, wetland) => {
             populator.assign(Defect, defectData, defectEntity, true);
             populator.assign(TestRun, data, testRun, true);
         }
-        
+
         await manager.flush();
         // const updated = findById(testr)
         return testRun;

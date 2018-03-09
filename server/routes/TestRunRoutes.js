@@ -23,7 +23,8 @@ const testRunRoutes = app => {
 			try {
 				const result = await controller.create(
 					req.body,
-					req.wetland
+					req.wetland,
+					req.user
 				);
 				res.json(result);
 			} catch(ex) {
@@ -60,7 +61,8 @@ const testRunRoutes = app => {
 				const result = await controller.update(
 					req.params.id,
 					req.body,
-					req.wetland
+					req.wetland,
+					req.user
 				);
 				res.json(result);
 			} catch(ex) {

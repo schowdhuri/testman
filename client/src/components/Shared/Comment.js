@@ -50,7 +50,8 @@ class Comment extends React.Component {
         const {
             created,
             modified,
-            content
+            content,
+            user
         } = this.props;
         const { editMode } = this.state;
         return (<div className="comment">
@@ -77,7 +78,16 @@ class Comment extends React.Component {
                     </a>
                 </div>
                 : <div className="controls">
-                    <span className="modified">Last updated: {moment(modified).format("DD MMM, HH:mm")}</span> |
+                    {user
+                        ? <span className="user">
+                            <i className="glyphicon glyphicon-user" />
+                            {user.name}
+                        </span>
+                        : null}
+                    <span className="modified">
+                        <i className="glyphicon glyphicon-time" title="Last updated" />
+                        {moment(modified).format("DD MMM, HH:mm")}
+                    </span> |
                     <a href="#" onClick={this.handleEdit}>Edit</a> |
                     <a href="#" onClick={this.handleDelete}>Delete</a>
                 </div>}
