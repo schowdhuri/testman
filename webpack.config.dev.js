@@ -93,7 +93,10 @@ module.exports = {
         }, {
             test: /\.(jpe?g|png|gif)$/i,
             use: {
-                loader: "file-loader"
+                loader: "file-loader",
+                options: {
+                    publicPath: 'static/'
+                }
             }
         }, {
             test: /\.ico$/,
@@ -103,7 +106,7 @@ module.exports = {
         }]
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin(),
+        // new webpack.HotModuleReplacementPlugin(),
         new webpack.DefinePlugin(GLOBALS),
         new webpack.NoEmitOnErrorsPlugin(),
         new ExtractTextPlugin("[name].css"), // relative to output.path

@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { Nav, Navbar, NavItem } from "react-bootstrap";
 
+import Logo from "common/images/TestMan.png";
+
 const links = [{
     id: "dashboard",
     name: "Dashboard",
@@ -32,6 +34,7 @@ class Header extends React.Component {
             <Navbar>
                 <Navbar.Header>
                     <Navbar.Brand>
+                        <img src={Logo} alt="TestMan Logo" className="logo" />
                         <Link to="/">TestMan</Link>
                     </Navbar.Brand>
                 </Navbar.Header>
