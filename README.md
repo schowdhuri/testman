@@ -1,6 +1,9 @@
-![TestMan](https://raw.githubusercontent.com/schowdhuri/testman/master/TestMan.png)
 
-# TestMan
+
+<h1>
+  <img src="https://raw.githubusercontent.com/schowdhuri/testman/master/common/images/TestMan.png" />
+  TestMan
+</h1>
 Minimal test management tool
 
 ## Development
