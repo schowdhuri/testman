@@ -17,3 +17,12 @@ export const redirectToDefects = () => ({
 export const redirectToExecCycle = () => ({
     type: ACTIONS.REDIRECT_EXEC_CYCLE
 });
+
+export const reqUsers = () => ({
+    type: ACTIONS.REQ_USERS
+});
+
+export const rcvUsers = users => ({
+    type: ACTIONS.RCV_USERS,
+    users
+});

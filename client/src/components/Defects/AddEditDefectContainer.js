@@ -1,18 +1,19 @@
 import { connect } from "react-redux";
 
 import * as actions from "actions/Defects";
-import { redirectToDefects } from "actions/Shared";
+import { redirectToDefects, reqUsers } from "actions/Shared";
 
 import AddEditDefect from "./AddEditDefect";
 
 import { getDefectAddEditState } from "selectors/Defects";
 import { getSelected } from "selectors/TestSelector";
-import { isLoading } from "selectors/Shared";
+import { getUsers, isLoading } from "selectors/Shared";
 
 const mapStateToProps = state => ({
     isLoading: isLoading(state),
     defect: getDefectAddEditState(state),
-    selectedTestCases: getSelected(state)
+    selectedTestCases: getSelected(state),
+    users: getUsers(state)
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -22,6 +23,9 @@ const mapDispatchToProps = dispatch => ({
     onCancel() {
         dispatch(actions.resetAddEdit());
         dispatch(redirectToDefects());
+    },
+    onChangeAssignee(user) {
+        dispatch(actions.changeAssignee(user));
     },
     onChangeComment(value) {
         dispatch(actions.changeDefectComment(value));
@@ -47,6 +51,7 @@ const mapDispatchToProps = dispatch => ({
     onInit(id) {
         dispatch(actions.resetAddEdit());
         dispatch(actions.reqDefect(id));
+        dispatch(reqUsers());
     },
     onSave(defect) {
         dispatch(actions.reqSaveDefect(defect));

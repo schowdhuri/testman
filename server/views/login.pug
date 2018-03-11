@@ -1,11 +1,12 @@
 extend layouts/base
 
 block head
-    link(rel="stylesheet", href="/static/index.css")
+    title Login to TestMan
+    link(rel="stylesheet", href="/static/login.css")
 
 block content
-    a.btn(href="/auth/google") Login Using Google
     #app-root
 
 block footer
-
+    //- script(src="/static/login.vendor.min.js")
+    script(src="/static/login.min.js")

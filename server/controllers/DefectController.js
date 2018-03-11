@@ -17,6 +17,8 @@ const _getComments = async (defectID, manager) => {
             alias: "c",
             populate: [ "content" ]
         });
+    if(!comments)
+        return [];
     return comments
         .map(c => ({
             id: c.id,
@@ -35,7 +37,8 @@ const findAll = async (wetland) => {
     let defects = await qb
         .leftJoin("d.description", "desc")
         .leftJoin("d.testcases", "tc")
-        .select("d", "tc", "desc")
+        .leftJoin("d.assignee", "assignee")
+        .select("d", "tc", "desc", "assignee")
         .getQuery()
         .getResult();
 
@@ -65,7 +68,8 @@ const findById = async (id, wetland) => {
                 "testcases",
                 "testruns",
                 "testruns.testcase",
-                "testcases.testplan"
+                "testcases.testplan",
+                "assignee"
             ]
         });
 
@@ -107,7 +111,7 @@ const _getTestCases = async (tcIDs, manager) => {
     tcIDs = tcIDs.filter(tcID => tcID);
     let testCases = [];
     for(let i=0; i<tcIDs.length; i++) {
-        const testCase = await repository.findOne(tcID);
+        const testCase = await repository.findOne(tcIDs[i]);
         testCases.push(testCase);
     }
     testCases = testCases.filter(tc => tc);
@@ -118,7 +122,7 @@ const _getTestCases = async (tcIDs, manager) => {
     return arrTestCases;
 };
 
-const create = async (data, wetland) => {
+const create = async (data, wetland, user) => {
     if(!data.name)
         throw new HttpError(400, "name is required");
     if(!data.description)
@@ -129,6 +133,9 @@ const create = async (data, wetland) => {
         name: data.name,
         description: {
             value: data.description || ""
+        },
+        user: {
+            id: user.id
         }
     };
     if(data.status)
@@ -166,28 +173,36 @@ const update = async (id, data, wetland) => {
     const populator = wetland.getPopulator(manager);
 
     let defect = await repository.findOne(id, {
-        populate: [ "description", "testcases", "user" ]
+        populate: [ "description", "testcases", "assignee" ]
     });
 
     if(!defect)
         throw new HttpError(404, `Defect with id ${id} not found`);
     const arrTestCases = new ArrayCollection();
-
+    const obj = {};
     if(defect.description) {
-        data.description = {
+        obj.description = {
             id: defect.description.id,
             value: data.description
         };
     } else if(data.description) {
-        data.description = {
+        obj.description = {
             value: data.description
+        };
+    }
+    if((!defect.assignee && data.assignee) ||
+        (defect.assignee && data.assignee && data.assignee.id != defect.assignee.id)
+    ) {
+        // assignee changed
+        obj.assignee = {
+            id: data.assignee.id
         };
     }
 
     data.testCases.forEach(tc => arrTestCases.push({ id: tc }));
-    data.testcases = arrTestCases;
+    obj.testcases = arrTestCases;
 
-    const updated = populator.assign(Defect, data, defect, true);
+    const updated = populator.assign(Defect, obj, defect, true);
     await manager.flush();
 
     return updated;

@@ -3,6 +3,7 @@ export const RCV_DEFECTS            = "RCV_DEFECTS";
 export const REQ_DEFECT             = "REQ_DEFECT";
 export const RCV_DEFECT             = "RCV_DEFECT";
 export const RESET_DF_ADD_EDIT      = "RESET_DF_ADD_EDIT";
+export const CHANGE_DF_ASSIGNEE     = "CHANGE_DF_ASSIGNEE";
 export const CHANGE_DF_NAME         = "CHANGE_DF_NAME";
 export const CHANGE_DF_DESCR        = "CHANGE_DF_DESCR";
 export const CHANGE_DF_STATUS       = "CHANGE_DF_STATUS";

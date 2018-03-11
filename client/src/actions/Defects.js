@@ -23,6 +23,11 @@ export const resetAddEdit = () => ({
     type: ACTIONS.RESET_DF_ADD_EDIT
 });
 
+export const changeAssignee = value => ({
+    type: ACTIONS.CHANGE_DF_ASSIGNEE,
+    value
+});
+
 export const changeDefectName = value => ({
     type: ACTIONS.CHANGE_DF_NAME,
     value

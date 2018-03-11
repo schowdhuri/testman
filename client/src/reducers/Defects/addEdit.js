@@ -1,6 +1,7 @@
 import * as ACTIONS from "constants/DefectsActions";
 
 const initialState = {
+    assignee: null,
     name: "",
     description: {
         value: ""
@@ -35,6 +36,14 @@ const addEditDefect = (state=initialState, action) => {
             };
             break;
         }
+
+        case ACTIONS.CHANGE_DF_ASSIGNEE:
+            return {
+                ...state,
+                assignee: {
+                    ...action.value
+                }
+            };
 
         case ACTIONS.CHANGE_DF_DESCR:
             return {

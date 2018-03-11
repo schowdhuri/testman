@@ -14,6 +14,9 @@ const buildDefect = data => {
     defect.testRuns = data.testRuns
         ? data.testRuns.map(tr => tr.id)
         : [];
+    defect.assignee = data.assignee
+        ? { id: data.assignee.id }
+        : null;
     return defect;
 };
 

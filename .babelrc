@@ -2,7 +2,7 @@
     "presets": [ "env", "stage-1", "react" ],
     "env": {
         "development": {
-            "presets": [ "react-hmre" ]
+            "presets": []
         }
     },
     "plugins": [ "transform-runtime" ]

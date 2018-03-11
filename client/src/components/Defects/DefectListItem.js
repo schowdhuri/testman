@@ -9,6 +9,7 @@ const DefectListItem = props => {
     } = props;
 
     const {
+        assignee,
         id,
         name,
         status,
@@ -32,6 +33,7 @@ const DefectListItem = props => {
         <td>
             <Link to={`/defects/edit/${id}`}>{name}</Link>
         </td>
+        <td>{assignee && assignee.name || "< Unassigned >"}</td>
         <td>{status}</td>
         <td>{testCases ? testCases.length : 0}</td>
         <td>{comments ? comments.length : 0}</td>

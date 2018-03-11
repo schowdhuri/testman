@@ -29,6 +29,11 @@
         .defect-status {
             margin-right: 15px;
         }
+        .assignee {
+            #assignee-dd {
+                text-transform: none;
+            }
+        }
     }
     .defect-list {
         background: #fff;

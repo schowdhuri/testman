@@ -6,6 +6,7 @@ import execCycle from "./ExecCycle";
 import isLoading from "./Shared/isLoading";
 import testDesign from "./TestDesign";
 import testSelector from "./TestSelector";
+import users from "./Shared/users";
 
 import groupMultiSelect from "reducers/Shared/GroupMultiSelect";
 
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
     isLoading,
     testDesign,
     testSelector,
+    users,
 
     groupMultiSelect
 });

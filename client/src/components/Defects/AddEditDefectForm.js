@@ -18,18 +18,24 @@ import Title from "components/Shared/Title";
 
 const AddEditDefectForm = props => {
     const {
+        assignee,
         defectId,
         description,
         name,
-        status,
+        onChangeAssignee,
         onChangeName,
         onChangeDescription,
-        onChangeStatus
+        onChangeStatus,
+        status,
+        users
     } = props;
 
     const handleChangeDescription = ev => onChangeDescription(ev.target.value);
     const handleChangeStatus = val => onChangeStatus
         ? onChangeStatus(val)
+        : {};
+    const handleChangeAssignee = val => onChangeAssignee
+        ? onChangeAssignee(val)
         : {};
 
     return (<React.Fragment>
@@ -53,7 +59,28 @@ const AddEditDefectForm = props => {
                     : null}
             </Col>
         </Row>
-        <Description placeholder="Description" onUpdate={onChangeDescription} value={description} />
+         <Row>
+            <Col md={10}>
+                <Description
+                    placeholder="Description"
+                    onUpdate={onChangeDescription}
+                    value={description} />
+            </Col>
+            <Col md={2} className="assignee text-right">
+                {users
+                    ? <DropdownButton
+                        bsSize="small"
+                        title={assignee && assignee.name || "< Unassigned >"}
+                        id="assignee-dd"
+                    >
+                        {users.map(u => (<MenuItem
+                            key={`assignee-${u.id}`}
+                            onSelect={() => handleChangeAssignee(u)}
+                        >{u.name}</MenuItem>))}
+                    </DropdownButton>
+                    : null}
+            </Col>
+        </Row>
     </React.Fragment>);
 };
 AddEditDefectForm.propTypes = {

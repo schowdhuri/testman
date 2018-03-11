@@ -49,6 +49,7 @@ class DefectList extends React.Component {
                         </th>
                         <th>ID</th>
                         <th>Name</th>
+                        <th>Assigned To</th>
                         <th>Status</th>
                         <th>Test Cases</th>
                         <th>Comments</th>

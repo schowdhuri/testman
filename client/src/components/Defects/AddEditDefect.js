@@ -24,6 +24,7 @@ class AddEditDefect extends React.Component {
         };
         this.handleAddTests = this.handleAddTests.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
+        this.handleChangeAssignee = this.handleChangeAssignee.bind(this);
         this.handleChangeComment = this.handleChangeComment.bind(this);
         this.handleChangeName = this.handleChangeName.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
@@ -48,6 +49,10 @@ class AddEditDefect extends React.Component {
     }
     handleCancel() {
         this.props.onCancel();
+    }
+    handleChangeAssignee(user) {
+        if(user && !this.props.assignee || user.props != this.props.assignee.id)
+            this.props.onChangeAssignee(user);
     }
     handleChangeComment(ev) {
         this.props.onChangeComment(ev.target.value);
@@ -91,7 +96,7 @@ class AddEditDefect extends React.Component {
         });
     }
     render() {
-        const { defectID, defect, selectedTestCases } = this.props;
+        const { defectID, defect, selectedTestCases, users } = this.props;
         const { newComment, testCases, comments } = defect;
         const { showImportDialog } = this.state;
         return (<div className="add-edit-defect">
@@ -107,10 +112,13 @@ class AddEditDefect extends React.Component {
                 <Panel>
                     <Panel.Body>
                         <DefectForm
+                            assignee={defect.assignee}
                             defectId={defect.id}
                             name={defect.name}
                             description={defect.description.value}
                             status={defect.status}
+                            users={users}
+                            onChangeAssignee={this.handleChangeAssignee}
                             onChangeName={this.handleChangeName}
                             onChangeDescription={this.handleChangeDescr}
                             onChangeStatus={this.handleChangeStatus} />

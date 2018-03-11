@@ -27,12 +27,16 @@ const entries = glob
                 [parts.name]: filePath
             }
         };
-    }, {
+    }, {}/*, {
         vendor: [
             "react",
             "react-dom"
         ]
-    });
+    }*/);
+
+const vendorChunkNames = Object.keys(entries)
+    .filter(key => key != "vendor")
+    .map(key => key + ".vendor");
 
 module.exports = {
     context: STATIC_ROOT,
@@ -113,10 +117,10 @@ module.exports = {
         new webpack.ProvidePlugin({
             "fetch": "imports-loader?this=>global!exports-loader?global.fetch!whatwg-fetch"
         }),
-        new ProgressBarPlugin(),
+        new ProgressBarPlugin()/*,
         new webpack.optimize.CommonsChunkPlugin({
-          names: [ "polyfills", "vendor"]
-        })
+          names: vendorChunkNames
+        })*/
     ],
     watch: true
 };
