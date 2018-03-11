@@ -2,7 +2,10 @@
 
 const pageRoutes = app => {
     app.route("/").get((req, res) => {
-        res.render("index", { title: 'Hey', message: 'Hello there!' });
+        res.render("index");
+    });
+    app.route("/login").get((req, res) => {
+        res.render("login");
     });
 };
 

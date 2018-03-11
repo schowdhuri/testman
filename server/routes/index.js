@@ -11,6 +11,8 @@ const userRoutes = require("./UserRoutes");
 const pageRoutes = require("./pages");
 // more routes
 
+const isAuthenticated = require("../controllers/AuthController").isAuthenticated;
+
 module.exports = app => {
     authRoutes(app);
     testPlanRoutes(app);

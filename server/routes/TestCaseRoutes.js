@@ -1,16 +1,15 @@
 "use strict";
 
 const controller = require("../controllers/TestCaseController");
+const sendError = require("../helpers/sendHttpError");
 
 const testCaseRoutes = app => {
 	app.route("/api/testcase")
 		.get(async (req, res) => {
-			console.log("session: ", req.session)
 			const testPlanId = req.query.testplan;
 			if(!testPlanId) {
 				res.status(400).send("testplan is required");
 			}
-			console.log("User: ", req.user);
 			try {
 				const result = await controller.findAll(
 					testPlanId,
@@ -18,7 +17,7 @@ const testCaseRoutes = app => {
 				);
 				res.json(result);
 			} catch(ex) {
-				res.status(500).send(ex);
+				sendError(ex, res);
 			}
 		})
 		.post(async (req, res) => {
@@ -35,7 +34,7 @@ const testCaseRoutes = app => {
 				);
 				res.json(result);
 			} catch(ex) {
-				res.status(500).send(ex);
+				sendError(ex, res);
 			}
 		});
 
@@ -48,8 +47,7 @@ const testCaseRoutes = app => {
 				);
 				res.json(result);
 			} catch(ex) {
-				console.log(ex)
-				res.status(500).send(ex);
+				sendError(ex, res);
 			}
 		})
 		.put(async (req, res) => {
@@ -63,7 +61,7 @@ const testCaseRoutes = app => {
 				);
 				res.json(result);
 			} catch(ex) {
-				res.status(500).send(ex);
+				sendError(ex, res);
 			}
 		})
 		.delete(async (req, res) => {
@@ -74,8 +72,7 @@ const testCaseRoutes = app => {
 				);
 				res.json(result);
 			} catch(ex) {
-				console.log(ex)
-				res.status(500).send(ex);
+				sendError(ex, res);
 			}
 		});
 };

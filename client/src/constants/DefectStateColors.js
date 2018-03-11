@@ -4,5 +4,5 @@ export default {
     [STATES[0]]: "danger",
     [STATES[1]]: "info",
     [STATES[2]]: "success",
-    [STATES[2]]: ""
+    [STATES[3]]: "default"
 };

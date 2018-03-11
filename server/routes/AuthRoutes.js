@@ -1,4 +1,5 @@
 const passport = require("passport");
+const controller = require("../controllers/AuthController");
 
 const authRoutes = app => {
     app.route("/auth/google")
@@ -14,6 +15,18 @@ const authRoutes = app => {
                 failureRedirect: "/login"
             }),
             (req, res) => res.redirect("/")
+        );
+
+    app.route("/")
+        .get(
+            controller.isAuthenticated,
+            (req, res, next) => next()
+        );
+
+    app.route("/api/*")
+        .all(
+            controller.isAuthenticated,
+            (req, res, next) => next()
         );
 };
 

@@ -1,6 +1,7 @@
 "use strict";
 
 const controller = require("../controllers/CommentController");
+const sendError = require("../helpers/sendHttpError");
 
 const commentRoutes = app => {
 	app.route("/api/comment")
@@ -13,7 +14,7 @@ const commentRoutes = app => {
 				);
 				res.json(result);
 			} catch(ex) {
-				res.status(500).send(ex);
+				sendError(ex, res);
 			}
 		});
 
@@ -26,7 +27,7 @@ const commentRoutes = app => {
 				);
 				res.json(result);
 			} catch(ex) {
-				res.status(500).send(ex);
+				sendError(ex, res);
 			}
 		})
 		.put(async (req, res) => {
@@ -40,7 +41,7 @@ const commentRoutes = app => {
 				);
 				res.json(result);
 			} catch(ex) {
-				res.status(500).send(ex);
+				sendError(ex, res);
 			}
 		})
 		.delete(async (req, res) => {
@@ -52,7 +53,7 @@ const commentRoutes = app => {
 				);
 				res.json(result);
 			} catch(ex) {
-				res.status(500).send(ex);
+				sendError(ex, res);
 			}
 		});
 };

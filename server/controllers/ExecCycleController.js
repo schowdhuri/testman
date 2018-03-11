@@ -4,204 +4,188 @@ const ExecCycle = require("../models/ExecCycle");
 const TestRun = require("../models/TestRun");
 const TestCase = require("../models/TestCase");
 
-const _getTestRuns = (execCycleId, manager) => {
+const HttpError = require("../helpers/HttpError");
+
+const _getTestRuns = async (execCycleId, manager) => {
     const repository = manager.getRepository(TestRun);
     const qb = repository.getQueryBuilder("tr");
 
-    return qb
+    const testRuns = await qb
         .leftJoin("tr.execcycle", "ec")
         .leftJoin("tr.testcase", "tc")
         .select("tr.id", "tc.id", "tc.name", "ec.id", "tr.status")
         .where({ "ec.id": execCycleId })
         .getQuery()
-        .execute()
-        .then(resArr => resArr.map(res => ({
-            id: res["tr.id"],
-            status: res["tr.status"],
-            execCycle: res["ec.id"],
-            name: res["tc.name"],
-            testCase: res["tc.id"]
-        })));
+        .execute();
+
+    return testRuns.map(testRun => ({
+        id: testRun["tr.id"],
+        status: testRun["tr.status"],
+        execCycle: testRun["ec.id"],
+        name: testRun["tc.name"],
+        testCase: testRun["tc.id"]
+    }));
 };
 
-const _getTestCases = (idArr, manager) => {
+const _getTestCases = async (idArr, manager) => {
     const repository = manager.getRepository(TestCase);
-    const pArr = idArr.map(id => repository.findOne(id));
-    return Promise.all(pArr);
+    const testCases = [];
+    for(let i=0; i<idArr.length; i++) {
+        const testCase = await repository.findOne(idArr[i]);
+        testCases.push(testCase);
+    }
+    return testCases;
 };
 
-const findAll = wetland => {
+const findAll = async (wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(ExecCycle);
 
-    return repository
-        .find()
-        .then(cycles => cycles || [])
-        .then(cycles => Promise.all(cycles.map(c => _getTestRuns(c.id, manager)
-            .then(testRuns => Object.assign({}, c, {
-                testruns: undefined,
-                testRuns: testRuns
-            }))))
-        );
+    let execCycles = await repository.find();
+    execCycles = execCycles || [];
+    for(let i=0; i<execCycles.length; i++) {
+        const testRuns = await _getTestRuns(execCycles[i].id, manager);
+        execCycles[i].testRuns = testRuns;
+        delete execCycles.testruns;
+    }
+    return execCycles;
 };
 
-const findById = (id, wetland) => {
+const findById = async (id, wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(ExecCycle);
-    return repository
-        .findOne(id)
-        .then(execCycle => {
-            return _getTestRuns(execCycle.id, manager)
-                .then(testRuns => Object.assign({}, execCycle, {
-                    testruns: undefined,
-                    testRuns: testRuns
-                }))
-        });
+    const execCycle = await repository.findOne(id);
+
+    const testRuns = await _getTestRuns(execCycle.id, manager);
+    execCycle.testRuns = testRuns;
+    delete execCycle.testruns;
+    return execCycle;
 };
 
-const create = (obj, wetland) => {
+const create = async (obj, wetland) => {
     if(!obj.name)
-        return Promise.reject("name is required");
+        throw new HttpError(400, "name is required");
     const data = {
         name: obj.name
     };
     const manager  = wetland.getManager();
     const populator = wetland.getPopulator(manager);
     const cycle = populator.assign(ExecCycle, data);
-    return manager
-        .persist(cycle)
-        .flush()
-        .then(() => cycle);
+    await manager.persist(cycle).flush();
+    return cycle;
 };
 
-const update = (id, data, wetland) => {
+const update = async (id, data, wetland) => {
     if(!id)
-        return Promise.reject("id is required");
+        throw new HttpError(400, "id is required");
     if(!data)
-        return Promise.reject("No data provided");
+        throw new HttpError(400, "No data provided");
     if(!data.testCases)
-        return Promise.reject("testCases required");
+        throw new HttpError(400, "testCases required");
     if(!data.status)
-        return Promise.reject("status is required");
+        throw new HttpError("status is required");
 
     const manager  = wetland.getManager();
     const repository = manager.getRepository(ExecCycle);
     const populator = wetland.getPopulator(manager);
 
-    return repository.findOne(id).then(cycle => {
-        if(!cycle)
-            return Promise.reject(`ExecCycle with id ${id} not found`);
-        try {
-            return Promise.all([
-                _getTestCases(data.testCases, manager),
-                _getTestRuns(id, manager)
-            ])
-            .then(result => {
-                const testCases = result[0];
-                const testRuns = result[1];
-                const newTestCases = testCases.filter(tc => !testRuns.find(tr => tr.testCase==tc.id));
-                const removedTestRuns = testRuns.filter(tr => !testCases.find(tc => tc.id==tr.testCase));
+    const execCycle = await repository.findOne(id)
+    if(!execCycle)
+        throw new HttpError(404, `ExecCycle with id ${id} not found`);
+    const testCases = await _getTestCases(data.testCases, manager);
+    const testRuns = await _getTestRuns(id, manager);
 
-                // remove unused testRuns
-                const testRunRepo = manager.getRepository(TestRun);
-                removedTestRuns.forEach(tr => manager.remove(tr));
+    const newTestCases = testCases
+        .filter(tc => !testRuns.find(tr => tr.testCase==tc.id));
+    const removedTestRuns = testRuns
+        .filter(tr => !testCases.find(tc => tc.id==tr.testCase));
 
-                // create new testRuns
-                const newTestRuns = newTestCases.map(tc => ({
-                    name: tc.name,
-                    testcase: {
-                        id: tc.id
-                    },
-                    execCycle: {
-                        id
-                    }
-                }));
+    // remove unused testRuns
+    const testRunRepo = manager.getRepository(TestRun);
+    removedTestRuns.forEach(tr => manager.remove(tr));
 
-                // retained testRuns
-                const retainedTestRuns = testRuns
-                    .filter(tr => testCases.find(tc => tc.id==tr.testCase))
-                    .map(tr => ({
-                        id: tr.id
-                    }));
-                return [
-                    ...retainedTestRuns,
-                    ...newTestRuns
-                ];
-            })
-            .then(testRuns => {
-                const arrTestRuns = new ArrayCollection();
-                testRuns.forEach(tr => arrTestRuns.push(tr));
-                data = Object.assign({}, data, {
-                    testCases: undefined,
-                    testruns: arrTestRuns
-                });
-                const updated = populator.assign(ExecCycle, data, cycle, true);
-                return manager
-                    .flush()
-                    .then(() => updated);
-            });
-        } catch(ex) {
-            console.log(ex);
-            return Promise.reject(ex);
+    // create new testRuns
+    const newTestRuns = newTestCases.map(tc => ({
+        name: tc.name,
+        testcase: {
+            id: tc.id
+        },
+        execCycle: {
+            id
         }
-    });
+    }));
+
+    // retained testRuns
+    const retainedTestRuns = testRuns
+        .filter(tr => testCases.find(tc => tc.id==tr.testCase))
+        .map(tr => ({
+            id: tr.id
+        }));
+    const allTestRuns = [
+        ...retainedTestRuns,
+        ...newTestRuns
+    ];
+    const arrTestRuns = new ArrayCollection();
+    allTestRuns.forEach(tr => arrTestRuns.push(tr));
+    data = {
+        ...data,
+        testruns: arrTestRuns
+    };
+    delete data.testRuns;
+
+    const updated = populator.assign(ExecCycle, data, execCycle, true);
+    await manager.flush();
+
+    return updated;
 };
 
-const remove = (id, wetland) => {
+const remove = async (id, wetland) => {
     if(!id)
-        return Promise.reject("id is required");
+        throw new HttpError(400, "id is required");
 
     const manager = wetland.getManager();
     const repository = manager.getRepository(ExecCycle);
 
-    return repository.findOne(id)
-        .then(cycle => {
-            if(!cycle)
-                return Promise.reject(`ExecCycle with id ${id} not found`);
-            return manager.remove(cycle)
-                .flush()
-                .then(() => cycle);
-        });
+    const execCycle = await repository.findOne(id);
+
+    if(!execCycle)
+        throw new HttpError(404, `ExecCycle with id ${id} not found`);
+    await manager.remove(execCycle).flush();
+    return execCycle;
 };
 
-const startExec = (id, wetland) => {
+const startExec = async (id, wetland) => {
     if(!id)
-        return Promise.reject("id is required");
+        throw new HttpError(400, "id is required");
 
     const manager = wetland.getManager();
     const repository = manager.getRepository(ExecCycle);
 
-    return repository.findOne(id)
-        .then(cycle => {
-            if(!cycle)
-                return Promise.reject(`ExecCycle with id ${id} not found`);
-            if(cycle.status != "New")
-                return Promise.reject("Execution can't be started");
-            cycle.status = "In Progress";
-            return manager
-                .flush()
-                .then(() => cycle);
-        });
+    const execCycle = await repository.findOne(id);
+    if(!execCycles)
+        throw new HttpError(404, `ExecCycle with id ${id} not found`);
+    if(execCycle.status != "New")
+        return Promise.reject("Execution can't be started");
+    execCycle.status = "In Progress";
+    await manager.flush();
+    return execCycle;
 };
 
-const endExec = (id, wetland) => {
+const endExec = async (id, wetland) => {
     if(!id)
-        return Promise.reject("id is required");
+        throw new HttpError(400, "id is required");
 
     const manager = wetland.getManager();
     const repository = manager.getRepository(ExecCycle);
 
-    return repository.findOne(id)
-        .then(cycle => {
-            if(!cycle)
-                return Promise.reject(`ExecCycle with id ${id} not found`);
-            if(cycle.status != "In Progress")
-                return Promise.reject("Execution can't be stopped");
-            cycle.status = "Completed";
-            return manager
-                .flush()
-                .then(() => cycle);
-        });
+    const execCycle = await repository.findOne(id);
+    if(!execCycle)
+        throw new HttpError(404, `ExecCycle with id ${id} not found`);
+    if(execCycle.status != "In Progress")
+        throw new HttpError(400, "Execution can't be stopped");
+    execCycle.status = "Completed";
+    await manager.flush();
+    return execCycle;
 };
 
 module.exports = {

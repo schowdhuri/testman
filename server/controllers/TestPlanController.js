@@ -1,52 +1,60 @@
 const TestPlan = require("../models/TestPlan");
 const TestCase = require("../models/TestCase");
 
-const _getTestCases = (testPlanID, manager) => {
+const HttpError = require("../helpers/HttpError");
+
+const _getTestCases = async (testPlanID, manager) => {
     const repository = manager.getRepository(TestCase);
     const qb = repository.getQueryBuilder("tc");
-    return qb
+    const testCases = await qb
         .leftJoin("tc.testplan", "tp")
         .select("tc")
         .where({ "testplan_id": testPlanID })
         .getQuery()
-        .execute()
-        .then(resArr => resArr.map(res => ({
-            id: res["tc.id"],
-            name: res["tc.name"],
-            status: res["tc.status"]
-        })));
+        .execute();
+
+    return testCases.map(testCase => ({
+        id: testCase["tc.id"],
+        name: testCase["tc.name"],
+        status: testCase["tc.status"]
+    }));
 };
 
-const findAll = wetland => {
+const findAll = async (wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(TestPlan);
 
-    return repository
-        .find()
-        .then(testPlans => testPlans || [])
-        .then(testPlans => Promise.all(testPlans.map(tp => _getTestCases(tp.id, manager)
-            .then(testCases => Object.assign({}, tp, {
-                testcases: undefined,
-                testCases: testCases.map(tc => tc && tc.id)
-            }))
-        ))).catch(ex => console.log(ex));
+    const testPlans = await repository.find();
+    if(!testPlans)
+        return [];
+    const result = [];
+    for(let i=0; i<testPlans.length; i++) {
+        const testCases = await _getTestCases(testPlans[i].id, manager);
+        const { testcases, ...others } = testPlans[i];
+        result.push({
+            ...others,
+            testCases: testCases.map(tc => tc && tc.id)
+        });
+    }
+    return result;
 };
 
-const findById = (id, wetland) => {
+const findById = async (id, wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(TestPlan);
-    return repository
-        .findOne(id)
-        .then(testPlan => _getTestCases(testPlan.id, manager)
-            .then(testCases => Object.assign({}, testPlan, {
-                testcases: undefined,
-                testCases: testCases.map(tc => tc && tc.id)
-            })));
+    const testPlan = await repository.findOne(id);
+    if(!testPlan)
+        throw new HttpError(404, `TestPlan ${id} not found`);
+
+    const testCases = await _getTestCases(testPlan.id, manager);
+    testPlan.testCases = testCases.map(tc => tc && tc.id);
+    delete testPlan.testcases;
+    return testPlan;
 };
 
-const create = (obj, wetland) => {
+const create = async (obj, wetland) => {
     if(!obj.name)
-        return Promise.reject("name is required");
+        throw new HttpError(400, "name is required");
 
     const data = {
         name: obj.name
@@ -54,53 +62,41 @@ const create = (obj, wetland) => {
     const manager  = wetland.getManager();
     const populator = wetland.getPopulator(manager);
     const testPlan = populator.assign(TestPlan, data);
-    return manager
-        .persist(testPlan)
-        .flush()
-        .then(() => testPlan);
+    await manager.persist(testPlan).flush();
+    return testPlan;
 };
 
-const update = (id, data, wetland) => {
+const update = async (id, data, wetland) => {
     if(!id)
-        return Promise.reject("id is required");
+        throw new HttpError(400, "id is required");
     if(!data)
-        return Promise.reject("No data provided");
+        throw new HttpError(400, "No data provided");
     if(!data.name)
-        return Promise.reject("name is required");
+        throw new HttpError(400, "name is required");
 
     const manager  = wetland.getManager();
     const repository = manager.getRepository(TestPlan);
-    
-    return repository.findOne(id).then(testPlan => {
-        if(!testPlan)
-            return Promise.reject(`TestPlan with id ${id} not found`);
-        try {
-            testPlan.name = data.name;
-            return manager
-                .flush()
-                .then(() => testPlan);
-        } catch(ex) {
-            console.log(ex);
-            return Promise.reject(ex);
-        }
-    });
+
+    const testPlan = await repository.findOne(id);
+    if(!testPlan)
+        throw new HttpError(404, `TestPlan with id ${id} not found`);
+    testPlan.name = data.name;
+    await manager.flush();
+    return testPlan;
 };
 
-const remove = (id, wetland) => {
+const remove = async (id, wetland) => {
     if(!id)
-        return Promise.reject("id is required");
+        throw new HttpError(400, "id is required");
 
     const manager = wetland.getManager();
     const repository = manager.getRepository(TestPlan);
 
-    return repository.findOne(id)
-        .then(testPlan => {
-            if(!testPlan)
-                return Promise.reject(`TestPlan with id ${id} not found`);
-            return manager.remove(testPlan)
-                .flush()
-                .then(() => testPlan);
-        });
+    const testPlan = await repository.findOne(id);
+    if(!testPlan)
+        throw new HttpError(404, `TestPlan ${id} not found`);
+    await manager.remove(testPlan).flush();
+    return testPlan;
 };
 
 module.exports = {

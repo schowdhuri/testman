@@ -4,6 +4,7 @@ const Comment = require("../models/Comment");
 const Defect = require("../models/Defect");
 
 const dateFormat = require("../../common/utils/dateFormat");
+const HttpError = require("../helpers/HttpError");
 
 const _getComments = async (testCaseID, manager) => {
     const repository = manager.getRepository(Comment);
@@ -108,7 +109,7 @@ const findById = async (id, wetland) => {
 
 const create = async (testPlanId, obj, wetland, user) => {
     if(!obj.name)
-        throw new Error("name is required");
+        throw new HttpError(400, "name is required");
 
     const data = {
         name: obj.name,
@@ -125,17 +126,15 @@ const create = async (testPlanId, obj, wetland, user) => {
     const manager  = wetland.getManager();
     const populator = wetland.getPopulator(manager);
     const testCase = populator.assign(TestCase, data);
-    await manager
-        .persist(testCase)
-        .flush();
+    await manager.persist(testCase).flush();
     return testCase;
 };
 
 const update = async (id, data, wetland, user) => {
     if(!id)
-        throw new Error("id is required");
+        throw new HttpError(400, "id is required");
     if(!data)
-        throw new Error("No data provided");
+        throw new HttpError(400, "No data provided");
 
     const manager  = wetland.getManager();
     const repository = manager.getRepository(TestCase);
@@ -146,7 +145,7 @@ const update = async (id, data, wetland, user) => {
         populate: ["description"]
     });
     if(!testCase)
-        throw new Error(`TestCase with id ${id} not found`);
+        throw new HttpError(404, `TestCase with id ${id} not found`);
     try {
         if(testCase.description) {
             data.description = {
@@ -163,8 +162,7 @@ const update = async (id, data, wetland, user) => {
         };
         const updated = populator.assign(TestCase, data, testCase, true);
         // uow.registerDirty(testCase, [ "description" ]);
-        await manager
-            .flush();
+        await manager.flush();
         return updated;
     } catch(ex) {
         console.log(ex);
@@ -174,16 +172,15 @@ const update = async (id, data, wetland, user) => {
 
 const remove = async (id, wetland) => {
     if(!id)
-        throw new Error("id is required");
+        throw new HttpError(400, "id is required");
 
     const manager = wetland.getManager();
     const repository = manager.getRepository(TestCase);
 
     const testCase = await repository.findOne(id)
     if(!testCase)
-        throw new Error(`TestCase with id ${id} not found`);
-    return manager.remove(testCase)
-        .flush();
+        throw new HttpError(404, `TestCase with id ${id} not found`);
+    return manager.remove(testCase).flush();
     return testCase;
 };
 

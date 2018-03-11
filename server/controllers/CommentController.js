@@ -2,6 +2,8 @@ const Comment = require("../models/Comment");
 const Defect = require("../models/Defect");
 const TestCase = require("../models/TestCase");
 
+const HttpError = require("../helpers/HttpError");
+
 const findById = async (id, wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(Comment);
@@ -13,9 +15,9 @@ const findById = async (id, wetland) => {
 
 const create = async (obj, wetland, user) => {
     if(!obj.content)
-        throw new Error("content is required");
+        throw new HttpError(400, "content is required");
     if(!obj.testCase && !obj.defect) {
-        throw new Error("Comment must be linked to an entity");
+        throw new HttpError(400, "Comment must be linked to an entity");
     }
     const data = {
         content: obj.content,
@@ -32,7 +34,7 @@ const create = async (obj, wetland, user) => {
         linkedEntity = await manager.getRepository(Defect).findOne(obj.defect)
     }
     if(!linkedEntity)
-        throw new Error("Invalid ID");
+        throw new HttpError(400, "Invalid ID");
     if(linkedEntity instanceof Defect)
         data.defects = [ linkedEntity ];
     else if(linkedEntity instanceof TestCase)
@@ -50,9 +52,9 @@ const create = async (obj, wetland, user) => {
 
 const update = async (id, data, wetland, user) => {
     if(!id)
-        throw new Error("id is required");
+        throw new HttpError(400, "id is required");
     if(!data)
-        throw new Error("No data provided");
+        throw new HttpError(400, "No data provided");
 
     const manager  = wetland.getManager();
     const repository = manager.getRepository(Comment);
@@ -63,9 +65,9 @@ const update = async (id, data, wetland, user) => {
         populate: [ "content", "user" ]
     });
     if(!comment)
-        throw new Error(`Comment with id ${id} not found`);
+        throw new HttpError(404, `Comment with id ${id} not found`);
     if(comment.user && !comment.user.id != user.id) {
-        throw new Error("Can't edit comment from another user");
+        throw new HttpError(400, "Can't edit comment from another user");
     }
     if(comment.content) {
         data.content = {
@@ -88,16 +90,16 @@ const update = async (id, data, wetland, user) => {
 
 const remove = async (id, wetland, user) => {
     if(!id)
-        throw new Error("id is required");
+        throw new HttpError(400, "id is required");
 
     const manager = wetland.getManager();
     const repository = manager.getRepository(Comment);
 
     const comment = await repository.findOne(id)
     if(!comment)
-        throw new Error(`Comment with id ${id} not found`);
+        throw new HttpError(404, `Comment with id ${id} not found`);
     if(comment.user && !comment.user.id != user.id) {
-        throw new Error("Can't delete comment from another user");
+        throw new HttpError(400, "Can't delete comment from another user");
     }
     await manager.remove(comment).flush();
     return comment;

@@ -1,56 +1,66 @@
 "use strict";
 
 const controller = require("../controllers/TestPlanController");
+const sendError = require("../helpers/sendHttpError");
 
 const testPlanRoutes = app => {
 	app.route("/api/testplan")
-		.get((req, res) => {
-			controller.findAll(req.wetland)
-				.then(result => {
-					res.json(result);
-				})
-				.catch(ex => {
-					res.status(500).send(ex);
-				});
+		.get(async (req, res) => {
+			try {
+				const result = await controller.findAll(req.wetland)
+				res.json(result);
+			} catch(ex) {
+				sendError(ex, res);
+			}
 		})
-		.post((req, res) => {
-			controller.create(req.body, req.wetland)
-				.then(result => {
-					res.json(result);
-				})
-				.catch(ex => {
-					console.log(ex)
-					res.status(500).send(ex);
-				});
+		.post(async (req, res) => {
+			try {
+				const result = await controller.create(
+					req.body,
+					req.wetland,
+					req.user
+				);
+				res.json(result);
+			} catch(ex) {
+				sendError(ex, res);
+			}
 		});
 
 	app.route("/api/testplan/:id")
-		.get((req, res) => {
-			controller.findById(req.params.id, req.wetland)
-				.then(result => {
-					res.json(result);
-				})
-				.catch(ex => {
-					res.status(500).send(ex);
-				});
-		})
-		.put((req, res) => {
-			controller.update(req.params.id, req.body, req.wetland)
-				.then(result => {
-					res.json(result);
-				})
-				.catch(ex => {
-					res.status(500).send(ex);
-				});
-		})
-		.delete((req, res) => {
-			controller.remove(req.params.id, req.wetland)
-			.then(result => {
+		.get(async (req, res) => {
+			try {
+				const result = await controller.findById(
+					req.params.id,
+					req.wetland
+				);
 				res.json(result);
-			})
-			.catch(ex => {
-				res.status(500).send(ex);
-			});
+			} catch(ex) {
+				sendError(ex, res);
+			}
+		})
+		.put(async (req, res) => {
+			try {
+				const result = await controller.update(
+					req.params.id,
+					req.body,
+					req.wetland,
+					req.user
+				);
+				res.json(result);
+			} catch(ex) {
+				sendError(ex, res);
+			}
+		})
+		.delete(async (req, res) => {
+			try {
+				const result = await controller.remove(
+					req.params.id,
+					req.wetland
+				);
+				res.json(result);
+			} catch(ex) {
+				sendError(ex, res);
+			}
 		});
 };
 
