@@ -1,3 +1,5 @@
+const parse = require("csv-parse");
+
 const TestCase = require("../models/TestCase");
 const TestPlan = require("../models/TestPlan");
 const Comment = require("../models/Comment");
@@ -130,6 +132,60 @@ const create = async (testPlanId, obj, wetland, user) => {
     return testCase;
 };
 
+const bulkCreate = async (testPlanId, file, wetland, user) => {
+    if(!file)
+        throw new HttpError(400, "file not found");
+    const processCSV = new Promise((resolve, reject) => {
+        const testCases = [];
+        const parser = parse({
+            delimiter: ",",
+            escape: "\""
+        });
+        parser.on("readable", () => {
+            let row;
+            while(row = parser.read()) {
+                testCases.push({
+                    name: row[0].trim(),
+                    description: row[1].trim()
+                });
+            }
+        })
+        .on("finish", function() {
+            resolve(testCases);
+        })
+        .on("error", function(error) {
+            reject(error.message);
+        });
+        parser.write(file.data.toString());
+        parser.end();
+    });
+    const testCaseData = await processCSV;
+
+    const manager  = wetland.getManager();
+    const populator = wetland.getPopulator(manager);
+
+    const testCases = testCaseData.map(tc => {
+        const data = {
+            name: tc.name,
+            description: {
+                value: tc.description || ""
+            },
+            testplan: {
+                id: testPlanId
+            },
+            user: {
+                id: user.id
+            }
+        };
+        const testCase = populator.assign(TestCase, data);
+        manager.persist(testCase);
+        return testCase;
+    });
+    await manager.flush();
+    return testCases;
+};
+
+
 const update = async (id, data, wetland, user) => {
     if(!id)
         throw new HttpError(400, "id is required");
@@ -189,5 +245,6 @@ module.exports = {
     findById,
     create,
     update,
-    remove
+    remove,
+    bulkCreate
 };

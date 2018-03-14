@@ -109,3 +109,15 @@ export const rcvDeleteComment = id => ({
     type: ACTIONS.RCV_DELETE_COMMENT,
     id
 });
+
+export const reqUploadTests = (testPlanId, file) => ({
+    type: ACTIONS.REQ_UPLOAD_TESTS,
+    testPlanId,
+    file
+});
+
+export const rcvUploadTests = (testPlanId, testCases) => ({
+    type: ACTIONS.RCV_UPLOAD_TESTS,
+    testPlanId,
+    testCases
+});

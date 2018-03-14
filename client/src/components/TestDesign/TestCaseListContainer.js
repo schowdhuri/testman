@@ -19,6 +19,9 @@ const mapDispatchToProps = dispatch => ({
     fetchTestCases(testPlan) {
         if(testPlan)
             dispatch(actions.reqTestCases(testPlan.id));
+    },
+    onUploadTests(testPlanId, file) {
+        dispatch(actions.reqUploadTests(testPlanId, file));
     }
 });
 

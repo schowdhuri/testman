@@ -6,8 +6,18 @@ import {
 } from "react-bootstrap";
 
 import TestCasesToolbar from "./TestCasesToolbar";
+import UploadTestCases from "./UploadTestCases";
 
 class TestCaseList extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            showUploadTestCases: false
+        };
+        this.handleUploadTestCases = this.handleUploadTestCases.bind(this);
+        this.hideUploadTestCases = this.hideUploadTestCases.bind(this);
+        this.showUploadTestCases = this.showUploadTestCases.bind(this);
+    }
     componentDidMount() {
         if(this.props.testPlan && this.props.testPlanID == this.props.testPlan.id)
             this.props.fetchTestCases(this.props.testPlan);
@@ -19,13 +29,25 @@ class TestCaseList extends React.Component {
             this.props.fetchTestCases(nextProps.testPlan);
         }
     }
+    handleUploadTestCases(file) {
+        console.log("Upload: ", file);
+        this.props.onUploadTests(this.props.testPlan.id, file);
+        this.hideUploadTestCases();
+    }
+    hideUploadTestCases(fie) {
+        this.setState({ showUploadTestCases: false });
+    }
+    showUploadTestCases() {
+        this.setState({ showUploadTestCases: true });
+    }
     render() {
         const {
             testCases,
             testPlan
         } = this.props;
+        const { showUploadTestCases } = this.state;
         return (<div className="tests-list">
-            <TestCasesToolbar testPlan={testPlan} />
+            <TestCasesToolbar testPlan={testPlan} onUpload={this.showUploadTestCases} />
             <Table striped condensed hover className="data-grid ">
                 <thead>
                     <tr>
@@ -55,6 +77,10 @@ class TestCaseList extends React.Component {
                     </tr>))}
                 </tbody>
             </Table>
+            <UploadTestCases
+                show={showUploadTestCases}
+                onCancel={this.hideUploadTestCases}
+                onUpload={this.handleUploadTestCases} />
         </div>);
     }
 }

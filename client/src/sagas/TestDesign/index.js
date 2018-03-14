@@ -8,6 +8,7 @@ import reqTestPlans from "./reqTestPlans";
 import saveComment from "./saveComment";
 import saveTestCase from "./saveTestCase";
 import saveTestPlan from "./saveTestPlan";
+import uploadCSV from "./uploadCSV";
 
 function* testDesignSaga() {
     yield spawn(deleteComment);
@@ -18,6 +19,7 @@ function* testDesignSaga() {
     yield spawn(saveComment);
     yield spawn(saveTestCase);
     yield spawn(saveTestPlan);
+    yield spawn(uploadCSV);
 }
 
 export default testDesignSaga;
