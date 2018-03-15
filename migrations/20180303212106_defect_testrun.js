@@ -2,11 +2,6 @@ class Migration {
   static up(migration) {
     let builder = migration.getBuilder('defaultStore');
 
-    builder.schema.alterTable('comment', table => {
-      table.dropForeign('testrun_id');
-      table.dropColumn('testrun_id');
-    });
-
     builder.schema.createTable('testrun_defect', table => {
       table.increments('id').notNullable().primary();
       table.integer('testrun_id').unsigned().nullable();
@@ -20,14 +15,6 @@ class Migration {
 
   static down(migration) {
     let builder = migration.getBuilder('defaultStore');
-
-    builder.schema.alterTable('comment', table => {
-      table.integer('testrun_id').unsigned().nullable();
-    });
-
-    builder.schema.alterTable('comment', table => {
-      table.foreign('testrun_id').references('id').inTable('testrun');
-    });
 
     builder.schema.dropTable('testrun_defect');
   }

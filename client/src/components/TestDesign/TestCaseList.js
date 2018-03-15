@@ -30,7 +30,6 @@ class TestCaseList extends React.Component {
         }
     }
     handleUploadTestCases(file) {
-        console.log("Upload: ", file);
         this.props.onUploadTests(this.props.testPlan.id, file);
         this.hideUploadTestCases();
     }

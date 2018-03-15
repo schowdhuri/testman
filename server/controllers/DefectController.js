@@ -41,6 +41,9 @@ const findAll = async (wetland) => {
         .select("d", "tc", "desc", "assignee")
         .getQuery()
         .getResult();
+    
+    if(!defects)
+        return [];
 
     defects = defects.map(defect => {
         const d = {

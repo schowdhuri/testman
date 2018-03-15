@@ -139,7 +139,8 @@ const bulkCreate = async (testPlanId, file, wetland, user) => {
         const testCases = [];
         const parser = parse({
             delimiter: ",",
-            escape: "\""
+            escape: "\"",
+            from: 2 // skip header row
         });
         parser.on("readable", () => {
             let row;
