@@ -3,7 +3,8 @@ const parseComment = (comment={}) => {
         id: comment.id,
         content: comment.content.value,
         created: comment.created,
-        modified: comment.modified
+        modified: comment.modified,
+        user: comment.user
     };
 };
 

@@ -41,7 +41,7 @@ class AddEditTestCase extends React.Component {
         if(confirm("Delete this test case?")) {
             this.props.onDelete(
                 this.props.testCase.id,
-                this.props.testPlanID 
+                this.props.testPlanID
             );
         }
     }

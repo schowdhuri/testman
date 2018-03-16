@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import TextareaAutosize from 'react-autosize-textarea';
+import Markdown from "react-markdown";
 
 import "sass/components/Description.scss";
 
@@ -45,6 +46,7 @@ class Description extends React.Component {
             this.props.onChange(ev.target.value);
     }
     handleEdit(ev) {
+        console.log("clicked")
         ev.preventDefault();
         this.setState({ editMode: true });
     }
@@ -81,28 +83,30 @@ class Description extends React.Component {
                 onMouseDown={this.handleMouseDown}
                 onMouseUp={this.handleMouseUp}
         >
-            <TextareaAutosize
-                ref={ref => this.textField = ref}
-                tabIndex={-1}
-                className={editMode ? "form-control" : "form-control static"}
-                placeholder={placeholder}
-                value={value}
-                onFocus={this.handleEdit}
-                onChange={this.handleChange}
-                onKeyUp={this.handleKeyUp} />
-
             {editMode
-                ? <div className="controls">
-                    <a href="#" onClick={this.handleSave}>
-                        <i className="glyphicon glyphicon-ok text-success" />
-                        <span className="text-success">Save</span>
-                    </a>
-                    <a href="#" onClick={this.handleCancel}>
-                        <i className="glyphicon glyphicon-remove text-warning" />
-                        <span className="text-warning">Cancel</span>
-                    </a>
-                </div>
-                : null}
+                ? <React.Fragment>
+                    <TextareaAutosize
+                        ref={ref => this.textField = ref}
+                        tabIndex={-1}
+                        className={editMode ? "form-control" : "form-control static"}
+                        placeholder={placeholder}
+                        value={value}
+                        onChange={this.handleChange}
+                        onKeyUp={this.handleKeyUp} />
+                    <div className="controls">
+                        <a href="#" onClick={this.handleSave}>
+                            <i className="glyphicon glyphicon-ok text-success" />
+                            <span className="text-success">Save</span>
+                        </a>
+                        <a href="#" onClick={this.handleCancel}>
+                            <i className="glyphicon glyphicon-remove text-warning" />
+                            <span className="text-warning">Cancel</span>
+                        </a>
+                    </div>
+                </React.Fragment>
+                : <div className="markdown-static" onClick={this.handleEdit}>
+                    <Markdown source={value}  />
+                </div>}
         </div>);
     }
 }

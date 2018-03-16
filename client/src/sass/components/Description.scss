@@ -31,4 +31,21 @@
             }
         }
     }
+
+    .markdown-static {
+        border: solid 1px transparent;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1.3rem;
+        outline: none;
+        padding: 10px;
+
+        &:hover {
+            background-color: #f2f2f2;
+        }
+
+        p:last-child {
+            margin-bottom: 0;
+        }
+    }
 }

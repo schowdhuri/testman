@@ -18,4 +18,10 @@
             margin-right: 5px;
         }
     }
+
+    .markdown-static {
+        p:last-child {
+            margin-bottom: 0;
+        }
+    }
 }

@@ -43,10 +43,12 @@ const create = async (obj, wetland, user) => {
         value: data.content
     };
 
-    const comment = populator.assign(Comment, data, null, true);
+    const newComment = populator.assign(Comment, data, null, true);
     await manager
-        .persist(comment)
+        .persist(newComment)
         .flush();
+
+    const comment = await findById(newComment.id, wetland);
     return comment;
 };
 
@@ -66,7 +68,7 @@ const update = async (id, data, wetland, user) => {
     });
     if(!comment)
         throw new HttpError(404, `Comment with id ${id} not found`);
-    if(comment.user && !comment.user.id != user.id) {
+    if(comment.user && comment.user.id != user.id) {
         throw new HttpError(400, "Can't edit comment from another user");
     }
     if(comment.content) {

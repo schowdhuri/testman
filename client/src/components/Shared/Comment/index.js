@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
+import Markdown from "react-markdown";
 import {
     FormControl,
     FormGroup,
@@ -64,14 +65,16 @@ class Comment extends React.Component {
                         componentClass="textarea" />
                 </FormGroup>
                 : <Well bsSize="large">
-                    {content}
+                    <div className="markdown-static">
+                        <Markdown source={content} />
+                    </div>
                 </Well>}
             {editMode
                 ? <div className="controls">
                     <a href="#" onClick={this.handleSave}>
                         <i className="glyphicon glyphicon-ok text-success" />
                         <span className="text-success">Save</span>
-                    </a> |
+                    </a>
                     <a href="#" onClick={this.handleCancel}>
                         <i className="glyphicon glyphicon-remove text-warning" />
                         <span className="text-warning">Cancel</span>
@@ -87,9 +90,15 @@ class Comment extends React.Component {
                     <span className="modified">
                         <i className="glyphicon glyphicon-time" title="Last updated" />
                         {moment(modified).format("DD MMM, HH:mm")}
-                    </span> |
-                    <a href="#" onClick={this.handleEdit}>Edit</a> |
-                    <a href="#" onClick={this.handleDelete}>Delete</a>
+                    </span>
+                    <a href="#" className="text-info" onClick={this.handleEdit}>
+                        <i className="glyphicon glyphicon-pencil text-info" />
+                        Edit
+                    </a>
+                    <a href="#" className="text-danger" onClick={this.handleDelete}>
+                        <i className="glyphicon glyphicon-trash text-danger" />
+                        Delete
+                    </a>
                 </div>}
         </div>);
     }

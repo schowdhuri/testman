@@ -6,7 +6,7 @@
     - linking/unlinking defect -> testrun [DONE]
 
 - Attachments
-- CSV upload for test cases
+- CSV upload for test cases [DONE]
 - Clone Exec Cycle
     - All tests
     - Only failed tests
@@ -20,8 +20,8 @@
 
 ## Enhancements
 
-- CSS fix for sidebar links
-- Markdown support
+- CSS fix for sidebar links [DONE]
+- Markdown support [DONE]
 - Deep-linking + routing for TestDesign tab
 - Auto-select first item when TestDesign or ExecCycle is opened
 
