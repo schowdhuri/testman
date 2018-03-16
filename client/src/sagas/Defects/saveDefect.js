@@ -1,14 +1,14 @@
 import Alert from "react-s-alert";
 import { call, put, takeEvery } from "redux-saga/effects";
 
-import request from "utils/request";
+import request from "utils/Shared/request";
 
 import { REQ_SAVE_DEFECT } from "constants/DefectsActions";
 import { rcvSaveDefect } from "actions/Defects";
 import { redirectToDefects, setLoading } from "actions/Shared";
 
-import buildDefect from "businessLogic/Defects/buildDefect";
-import validateDefect from "businessLogic/Defects/validateDefect";
+import buildDefect from "utils/Defects/buildDefect";
+import validateDefect from "utils/Defects/validateDefect";
 
 function* saveDefect(action) {
     const { defect, redirect } = action;

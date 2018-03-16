@@ -1,6 +1,6 @@
 import { spawn, takeEvery } from "redux-saga/effects";
 
-import hashHistory from "utils/history";
+import hashHistory from "utils/Shared/history";
 
 import * as ACTIONS from "constants/SharedActions";
 

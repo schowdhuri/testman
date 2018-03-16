@@ -2,7 +2,6 @@ const path = require("path");
 const express = require("express");
 const expressSession = require("express-session");
 const bodyParser = require("body-parser");
-const fileUpload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
 const expressWetland = require("express-wetland");
 const passport = require("passport");
@@ -20,7 +19,6 @@ const wetland = new Wetland(wetlandConfig);
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(fileUpload());
 app.use("/static", express.static(path.join(__dirname, "client", "dist")));
 app.use(cookieParser());
 app.use(expressWetland(wetland));

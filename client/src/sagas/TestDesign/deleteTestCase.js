@@ -1,7 +1,7 @@
 import Alert from "react-s-alert";
 import { call, put, takeEvery } from "redux-saga/effects";
 
-import request from "utils/request";
+import request from "utils/Shared/request";
 
 import { REQ_DEL_TC } from "constants/TestDesignActions";
 import { rcvDeleteTestCase } from "actions/TestDesign";
@@ -11,7 +11,7 @@ import { setLoading } from "actions/Shared";
 
 function* deleteTestCase(action) {
     const { id, testPlanId } = action;
-    
+
     yield put(setLoading(REQ_DEL_TC, true));
     try {
             yield call(request, {

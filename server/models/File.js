@@ -1,6 +1,6 @@
 "use strict";
 
-class RichText {
+class File {
     static setMapping(mapping) {
         mapping.field("created", {
             type: "datetime",
@@ -11,11 +11,20 @@ class RichText {
             nullable: true
         });
         mapping.forProperty("id").primary().increments();
-        mapping.field("value", {
-            type: "text",
+        mapping.oneToOne("user", { targetEntity: "User" });
+        mapping.field("name", {
+            type: "string",
             nullable: false
         });
-        mapping.oneToMany("attachments", { targetEntity: "File", mappedBy: "richtext" });
+        mapping.field("description", {
+            type: "string",
+            nullable: true
+        });
+        mapping.field("path", {
+            type: "string",
+            nullable: false
+        });
+        mapping.manyToOne("richtext", { targetEntity: "Comment", inversedBy: "richtext" });
     }
 
     beforeCreate() {
@@ -29,4 +38,4 @@ class RichText {
     }
 }
 
-module.exports = RichText;
+module.exports = File;

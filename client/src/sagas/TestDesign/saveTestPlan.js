@@ -1,15 +1,15 @@
 import Alert from "react-s-alert";
 import { call, put, takeEvery } from "redux-saga/effects";
 
-import request from "utils/request";
+import request from "utils/Shared/request";
 
 import { REQ_TP_SAVE } from "constants/TestDesignActions";
 import { rcvSaveTestPlan } from "actions/TestDesign";
 // import { redirectToTestDesign } from "actions/Shared";
 import { setLoading } from "actions/Shared";
 
-import validateTestPlan from "businessLogic/TestDesign/validateTestPlan";
-import buildTestPlan from "businessLogic/TestDesign/buildTestPlan";
+import validateTestPlan from "utils/TestDesign/validateTestPlan";
+import buildTestPlan from "utils/TestDesign/buildTestPlan";
 
 function* saveTestPlan(action) {
     const { testPlan } = action;

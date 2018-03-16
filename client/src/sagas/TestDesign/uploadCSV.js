@@ -1,5 +1,5 @@
 import Alert from "react-s-alert";
-import request from "utils/request";
+import request from "utils/Shared/request";
 import { call, put, takeEvery } from "redux-saga/effects";
 
 import { REQ_UPLOAD_TESTS } from "constants/TestDesignActions";

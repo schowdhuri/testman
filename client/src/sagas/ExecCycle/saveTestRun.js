@@ -1,14 +1,14 @@
 import Alert from "react-s-alert";
 import { call, put, takeEvery } from "redux-saga/effects";
 
-import request from "utils/request";
+import request from "utils/Shared/request";
 
 import { REQ_SAVE_TR } from "constants/ExecCyclesActions";
 import { rcvSaveTestRun } from "actions/ExecCycle";
 import { setLoading } from "actions/Shared";
 
-import validateTestRun from "businessLogic/ExecCycle/validateTestRun";
-import buildTestRun from "businessLogic/ExecCycle/buildTestRun";
+import validateTestRun from "utils/ExecCycle/validateTestRun";
+import buildTestRun from "utils/ExecCycle/buildTestRun";
 
 function* saveTestRun(action) {
     const { testRun } = action;

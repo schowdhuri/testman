@@ -85,7 +85,12 @@
                 padding-right: 0;
             }
         }
-
-
     }
+}
+
+.dropzone.active {
+    background: #ccccf2;
+    border-radius: 4px;
+    border: dashed 2px blue;
+    padding: 10px;
 }

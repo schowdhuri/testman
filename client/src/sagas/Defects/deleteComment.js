@@ -1,7 +1,7 @@
 import Alert from "react-s-alert";
 import { call, put, takeEvery } from "redux-saga/effects";
 
-import request from "utils/request";
+import request from "utils/Shared/request";
 
 import { REQ_DELETE_COMMENT } from "constants/DefectsActions";
 import { rcvDeleteComment } from "actions/Defects";

@@ -1,12 +1,12 @@
 import Alert from "react-s-alert";
 import { call, put, takeEvery } from "redux-saga/effects";
 
-import request from "utils/request";
+import request from "utils/Shared/request";
 
 import { REQ_TEST_CASE } from "constants/TestDesignActions";
 import { rcvTestCase } from "actions/TestDesign";
 import { setLoading } from "actions/Shared";
-import parseTestCase from "businessLogic/TestDesign/parseTestCase";
+import parseTestCase from "utils/TestDesign/parseTestCase";
 
 function* getTestCases(action) {
     const { id } = action;

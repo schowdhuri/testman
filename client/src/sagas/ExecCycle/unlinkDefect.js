@@ -1,7 +1,7 @@
 import Alert from "react-s-alert";
 import { call, put, takeEvery } from "redux-saga/effects";
 
-import request from "utils/request";
+import request from "utils/Shared/request";
 
 import { REQ_UNLINK_DEFECT } from "constants/ExecCyclesActions";
 import { rcvUnlinkDefect } from "actions/ExecCycle";
@@ -9,7 +9,7 @@ import { setLoading } from "actions/Shared";
 
 function* unlinkDefect(action) {
     const { testRun, defect } = action;
-    
+
     yield put(setLoading(REQ_UNLINK_DEFECT, true));
     try {
         yield call(request, {

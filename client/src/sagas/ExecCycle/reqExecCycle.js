@@ -1,7 +1,7 @@
 import Alert from "react-s-alert";
 import { call, put, take, takeEvery } from "redux-saga/effects";
 
-import request from "utils/request";
+import request from "utils/Shared/request";
 
 import { REQ_EXEC_CYCLE } from "constants/ExecCyclesActions";
 

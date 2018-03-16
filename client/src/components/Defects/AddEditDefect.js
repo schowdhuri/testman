@@ -96,7 +96,13 @@ class AddEditDefect extends React.Component {
         });
     }
     render() {
-        const { defectID, defect, selectedTestCases, users } = this.props;
+        const {
+            defectID,
+            defect,
+            onAttachFile,
+            selectedTestCases,
+            users
+        } = this.props;
         const { newComment, testCases, comments } = defect;
         const { showImportDialog } = this.state;
         return (<div className="add-edit-defect">
@@ -118,6 +124,7 @@ class AddEditDefect extends React.Component {
                             description={defect.description.value}
                             status={defect.status}
                             users={users}
+                            onAttachFile={onAttachFile}
                             onChangeAssignee={this.handleChangeAssignee}
                             onChangeName={this.handleChangeName}
                             onChangeDescription={this.handleChangeDescr}

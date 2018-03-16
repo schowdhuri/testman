@@ -1,12 +1,12 @@
 import Alert from "react-s-alert";
 import { call, put, takeEvery } from "redux-saga/effects";
 
-import request from "utils/request";
+import request from "utils/Shared/request";
 
 import { REQ_SAVE_TC_COMMENT } from "constants/TestDesignActions";
 import { rcvSaveTCComment } from "actions/TestDesign";
 import { setLoading } from "actions/Shared";
-import parseComment from "businessLogic/TestDesign/parseComment";
+import parseComment from "utils/TestDesign/parseComment";
 
 function* saveTestCaseComment(action) {
     const { testCaseId, value, id } = action;

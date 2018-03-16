@@ -20,6 +20,9 @@ const mapDispatchToProps = dispatch => ({
     onAddTests(testCases) {
         dispatch(actions.addTests(testCases));
     },
+    onAttachFile(id, file) {
+        dispatch(actions.reqAttachToDefect(id, file));
+    },
     onCancel() {
         dispatch(actions.resetAddEdit());
         dispatch(redirectToDefects());

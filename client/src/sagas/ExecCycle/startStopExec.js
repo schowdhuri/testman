@@ -1,14 +1,14 @@
 import Alert from "react-s-alert";
 import { call, put, spawn, takeEvery } from "redux-saga/effects";
 
-import request from "utils/request";
+import request from "utils/Shared/request";
 
 import { REQ_END_EC, REQ_START_EC } from "constants/ExecCyclesActions";
 import { rcvEndExecCycle, rcvStartExecCycle } from "actions/ExecCycle";
 import { setLoading } from "actions/Shared";
 
-import validateExecCycle from "businessLogic/ExecCycle/validateExecCycle";
-import buildExecCycle from "businessLogic/ExecCycle/buildExecCycle";
+import validateExecCycle from "utils/ExecCycle/validateExecCycle";
+import buildExecCycle from "utils/ExecCycle/buildExecCycle";
 
 function* start(action) {
     const { execCycle } = action;

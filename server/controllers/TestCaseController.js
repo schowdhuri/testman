@@ -135,6 +135,7 @@ const create = async (testPlanId, obj, wetland, user) => {
 const bulkCreate = async (testPlanId, file, wetland, user) => {
     if(!file)
         throw new HttpError(400, "file not found");
+
     const processCSV = new Promise((resolve, reject) => {
         const testCases = [];
         const parser = parse({
@@ -157,7 +158,7 @@ const bulkCreate = async (testPlanId, file, wetland, user) => {
         .on("error", function(error) {
             reject(error.message);
         });
-        parser.write(file.data.toString());
+        parser.write(file.buffer.toString());
         parser.end();
     });
     const testCaseData = await processCSV;

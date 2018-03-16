@@ -1,12 +1,12 @@
 import Alert from "react-s-alert";
 import { call, put, takeEvery } from "redux-saga/effects";
 
-import request from "utils/request";
+import request from "utils/Shared/request";
 
 import { REQ_SAVE_DF_COMMENT } from "constants/DefectsActions";
 import { rcvSaveDefectComment } from "actions/Defects";
 import { setLoading } from "actions/Shared";
-import parseComment from "businessLogic/TestDesign/parseComment";
+import parseComment from "utils/TestDesign/parseComment";
 
 function* saveDefectComment(action) {
     const { defectId, value, id } = action;

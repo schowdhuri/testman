@@ -1,7 +1,7 @@
 import Alert from "react-s-alert";
 import { call, put, takeEvery } from "redux-saga/effects";
 
-import request from "utils/request";
+import request from "utils/Shared/request";
 
 import { REQ_TEST_RUN } from "constants/ExecCyclesActions";
 import { rcvTestRun } from "actions/ExecCycle";

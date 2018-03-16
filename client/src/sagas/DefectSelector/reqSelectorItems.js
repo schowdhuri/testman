@@ -7,8 +7,8 @@ import { rcvItems } from "actions/DefectSelector";
 import { reqDefects } from "actions/Defects";
 import { setLoading } from "actions/Shared";
 
-import parseSelectorData from "businessLogic/DefectSelector/parseSelectorData";
-import cache from "businessLogic/DefectSelector/DefectSelectorCache";
+import parseSelectorData from "utils/DefectSelector/parseSelectorData";
+import cache from "utils/DefectSelector/DefectSelectorCache";
 
 function* getItems(action) {
     const { path } = action;

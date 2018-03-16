@@ -6,8 +6,8 @@ import { RCV_TEST_PLANS, RCV_TEST_CASES } from "constants/TestDesignActions";
 import { rcvItems } from "actions/TestSelector";
 import { reqTestPlans, reqTestCases } from "actions/TestDesign";
 import { setLoading } from "actions/Shared";
-import parseSelectorData from "businessLogic/TestSelector/parseSelectorData";
-import cache from "businessLogic/TestSelector/TestSelectorCache";
+import parseSelectorData from "utils/TestSelector/parseSelectorData";
+import cache from "utils/TestSelector/TestSelectorCache";
 
 function* getItems(action) {
     const { path } = action;

@@ -1,6 +1,6 @@
 import * as ACTIONS from "constants/DefectSelectorActions";
 
-import isChildOf from "businessLogic/shared/GroupMultiSelect/isChildOf";
+import isChildOf from "utils/GroupMultiSelect/isChildOf";
 
 const initialState = {
     all: [],

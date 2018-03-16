@@ -1,6 +1,6 @@
 import * as ACTIONS from "constants/GroupMultiSelectActions";
-import flatten from "businessLogic/shared/GroupMultiSelect/flatten";
-import isChildOf from "businessLogic/shared/GroupMultiSelect/isChildOf";
+import flatten from "utils/GroupMultiSelect/flatten";
+import isChildOf from "utils/GroupMultiSelect/isChildOf";
 
 const selectedItemsReducer = (state=[], action) => {
     const { type } = action;

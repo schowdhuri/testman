@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import TextareaAutosize from 'react-autosize-textarea';
 import Markdown from "react-markdown";
+import Dropzone from "react-dropzone";
 
 import "sass/components/Description.scss";
 
@@ -15,6 +16,7 @@ class Description extends React.Component {
         };
         this.handleCancel = this.handleCancel.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleDrop = this.handleDrop.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.handleKeyUp = this.handleKeyUp.bind(this);
         this.handleMouseDown = this.handleMouseDown.bind(this);
@@ -44,6 +46,17 @@ class Description extends React.Component {
         this.setState({ value: ev.target.value });
         if(typeof(this.props.onChange)=="function")
             this.props.onChange(ev.target.value);
+    }
+    handleDrop (files) {
+        if(files && files.length) {
+            const file = files[0];
+            console.log(file);
+            if(!file || !file.name || !file.size) {
+                Alert.error("Invalid file");
+                return;
+            }
+            this.props.onUpload(file);
+        }
     }
     handleEdit(ev) {
         console.log("clicked")
@@ -83,30 +96,38 @@ class Description extends React.Component {
                 onMouseDown={this.handleMouseDown}
                 onMouseUp={this.handleMouseUp}
         >
-            {editMode
-                ? <React.Fragment>
-                    <TextareaAutosize
-                        ref={ref => this.textField = ref}
-                        tabIndex={-1}
-                        className={editMode ? "form-control" : "form-control static"}
-                        placeholder={placeholder}
-                        value={value}
-                        onChange={this.handleChange}
-                        onKeyUp={this.handleKeyUp} />
-                    <div className="controls">
-                        <a href="#" onClick={this.handleSave}>
-                            <i className="glyphicon glyphicon-ok text-success" />
-                            <span className="text-success">Save</span>
-                        </a>
-                        <a href="#" onClick={this.handleCancel}>
-                            <i className="glyphicon glyphicon-remove text-warning" />
-                            <span className="text-warning">Cancel</span>
-                        </a>
-                    </div>
-                </React.Fragment>
-                : <div className="markdown-static" onClick={this.handleEdit}>
-                    <Markdown source={value}  />
-                </div>}
+            <Dropzone
+                className="dropzone"
+                activeClassName="active"
+                multiple={false}
+                disableClick={true}
+                onDrop={this.handleDrop}
+            >
+                {editMode
+                    ? <React.Fragment>
+                            <TextareaAutosize
+                                ref={ref => this.textField = ref}
+                                tabIndex={-1}
+                                className={editMode ? "form-control" : "form-control static"}
+                                placeholder={placeholder}
+                                value={value}
+                                onChange={this.handleChange}
+                                onKeyUp={this.handleKeyUp} />
+                        <div className="controls">
+                            <a href="#" onClick={this.handleSave}>
+                                <i className="glyphicon glyphicon-ok text-success" />
+                                <span className="text-success">Save</span>
+                            </a>
+                            <a href="#" onClick={this.handleCancel}>
+                                <i className="glyphicon glyphicon-remove text-warning" />
+                                <span className="text-warning">Cancel</span>
+                            </a>
+                        </div>
+                    </React.Fragment>
+                    : <div className="markdown-static" onClick={this.handleEdit}>
+                        <Markdown source={value}  />
+                    </div>}
+            </Dropzone>
         </div>);
     }
 }

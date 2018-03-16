@@ -1,12 +1,14 @@
 const { ArrayCollection } = require("wetland");
 
 const Defect = require("../models/Defect");
+const File = require("../models/File");
 const TestCase = require("../models/TestCase");
 const Comment = require("../models/Comment");
 
 const STATES = require("../../common/constants/DefectStates");
 const dateFormat = require("../../common/utils/dateFormat");
 const HttpError = require("../helpers/HttpError");
+
 
 const _getComments = async (defectID, manager) => {
     const repository = manager.getRepository(Comment);
@@ -41,7 +43,7 @@ const findAll = async (wetland) => {
         .select("d", "tc", "desc", "assignee")
         .getQuery()
         .getResult();
-    
+
     if(!defects)
         return [];
 
@@ -165,6 +167,31 @@ const create = async (data, wetland, user) => {
     return defect;
 };
 
+const attachFile = async(id, file, wetland, user) => {
+    if(!id)
+        throw new HttpError(400, "id is required");
+
+    if(!file)
+        throw new HttpError(400, "No file");
+
+    const manager = wetland.getManager();
+    const repository = manager.getRepository(Defect);
+    const populator = wetland.getPopulator(manager);
+
+    const defect = await repository.findOne(id, { populate: [ "description" ] });
+
+    const attachmentData = {
+        name: file.originalname,
+        path: file.filename
+    };
+    const attachment = populator.assign(File, attachmentData);
+    manager.persist(attachment);
+    defect.description.attachments.push(attachment);
+    await manager.flush();
+
+    return defect;
+};
+
 const update = async (id, data, wetland) => {
     if(!id)
         throw new HttpError(400, "id is required");
@@ -257,6 +284,7 @@ module.exports = {
     findAll,
     findById,
     create,
+    attachFile,
     update,
     remove,
     bulkRemove

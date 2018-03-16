@@ -3,6 +3,8 @@
 const controller = require("../controllers/TestCaseController");
 const sendError = require("../helpers/sendHttpError");
 
+const createUploader = require("../helpers/multer");
+
 const testCaseRoutes = app => {
 	app.route("/api/testcase")
 		.get(async (req, res) => {
@@ -39,17 +41,17 @@ const testCaseRoutes = app => {
 		});
 
 	app.route("/api/testcase/upload")
-		.post(async (req, res) => {
+		.post(createUploader(true).single("file"), async (req, res) => {
 			const testPlanId = req.query.testplan;
 			if(!testPlanId) {
 				res.status(400).send("testplan is required");
 			}
-			if(!req.files)
-        		res.status(400).send("No files were uploaded");
+			if(!req.file)
+        		res.status(400).send("No file uploaded");
 			try {
 				const result = await controller.bulkCreate(
 					testPlanId,
-					req.files.file,
+					req.file,
 					req.wetland,
 					req.user
 				);

@@ -52,6 +52,18 @@ const create = async (obj, wetland, user) => {
     return comment;
 };
 
+const attachFile = async(id, file, wetland, user) => {
+    if(!id)
+        throw new HttpError(400, "id is required");
+    if(!file)
+        throw new HttpError(400, "File not found");
+    const manager = wetland.getManager();
+    const repository = manager.getRepository(Comment);
+    const comment = await repository.findOne(id);
+    console.log(file);
+    return comment;
+};
+
 const update = async (id, data, wetland, user) => {
     if(!id)
         throw new HttpError(400, "id is required");
@@ -111,5 +123,6 @@ module.exports = {
     findById,
     create,
     update,
-    remove
+    remove,
+    attachFile
 };

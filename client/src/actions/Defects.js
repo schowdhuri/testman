@@ -122,3 +122,15 @@ export const deleteTestCase = id => ({
     type: ACTIONS.DEL_TEST_FRM_DEFECT,
     id
 });
+
+export const reqAttachToDefect = (id, file) => ({
+    type: ACTIONS.REQ_ATTACH_TO_DEFECT,
+    id,
+    file
+});
+
+export const rcvAttachToDefect = (id, attachment) => ({
+    type: ACTIONS.RCV_ATTACH_TO_DEFECT,
+    id,
+    attachment
+});

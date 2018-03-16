@@ -1,7 +1,7 @@
 import Alert from "react-s-alert";
 import { call, put, takeEvery } from "redux-saga/effects";
 
-import request from "utils/request";
+import request from "utils/Shared/request";
 
 import { REQ_DELETE_DEFECT } from "constants/DefectsActions";
 import { rcvDeleteDefect } from "actions/Defects";
@@ -9,7 +9,6 @@ import { redirectToDefects, setLoading } from "actions/Shared";
 
 function* delDefect(action) {
     const { id, redirect } = action;
-    console.log("ssfsdfsdfds")
     yield put(setLoading(REQ_DELETE_DEFECT, true));
     try {
         const response = yield call(request, {

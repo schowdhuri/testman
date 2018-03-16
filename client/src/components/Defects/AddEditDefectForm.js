@@ -22,6 +22,7 @@ const AddEditDefectForm = props => {
         defectId,
         description,
         name,
+        onAttachFile,
         onChangeAssignee,
         onChangeName,
         onChangeDescription,
@@ -30,14 +31,16 @@ const AddEditDefectForm = props => {
         users
     } = props;
 
+    const handleAttach = file => onAttachFile
+        ? onAttachFile(defectId, file)
+        : null;
+    const handleChangeAssignee = val => onChangeAssignee
+        ? onChangeAssignee(val)
+        : null;
     const handleChangeDescription = ev => onChangeDescription(ev.target.value);
     const handleChangeStatus = val => onChangeStatus
         ? onChangeStatus(val)
-        : {};
-    const handleChangeAssignee = val => onChangeAssignee
-        ? onChangeAssignee(val)
-        : {};
-
+        : null;
     return (<React.Fragment>
         <Row>
             <Col md={10}>
@@ -64,6 +67,7 @@ const AddEditDefectForm = props => {
                 <Description
                     placeholder="Description"
                     onUpdate={onChangeDescription}
+                    onUpload={handleAttach}
                     value={description} />
             </Col>
             <Col md={2} className="assignee text-right">

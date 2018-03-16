@@ -1,15 +1,15 @@
 import Alert from "react-s-alert";
 import { call, put, takeEvery } from "redux-saga/effects";
 
-import request from "utils/request";
+import request from "utils/Shared/request";
 
 import { REQ_TC_SAVE } from "constants/TestDesignActions";
 import { rcvSaveTestCase } from "actions/TestDesign";
 import { redirectToTestDesign } from "actions/Shared";
 import { setLoading } from "actions/Shared";
 
-import validateTestCase from "businessLogic/TestDesign/validateTestCase";
-import buildTestCase from "businessLogic/TestDesign/buildTestCase";
+import validateTestCase from "utils/TestDesign/validateTestCase";
+import buildTestCase from "utils/TestDesign/buildTestCase";
 
 function* saveTestCase(action) {
     const { testPlanId, testCase } = action;
