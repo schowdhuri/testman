@@ -17,17 +17,17 @@ const authRoutes = app => {
             (req, res) => res.redirect("/")
         );
 
-    // app.route("/")
-    //     .get(
-    //         controller.isAuthenticated,
-    //         (req, res, next) => next()
-    //     );
+    app.route("/")
+        .get(
+            controller.isAuthenticated,
+            (req, res, next) => next()
+        );
 
-    // app.route("/api/*")
-    //     .all(
-    //         controller.isAuthenticated,
-    //         (req, res, next) => next()
-    //     );
+    app.route("/api/*")
+        .all(
+            controller.isAuthenticated,
+            (req, res, next) => next()
+        );
 };
 
 module.exports = authRoutes;
