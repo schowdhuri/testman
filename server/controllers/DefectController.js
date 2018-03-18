@@ -1,113 +1,29 @@
 const { ArrayCollection } = require("wetland");
 
 const Defect = require("../models/Defect");
-const File = require("../models/File");
 const TestCase = require("../models/TestCase");
-const Comment = require("../models/Comment");
 
 const STATES = require("../../common/constants/DefectStates");
 const dateFormat = require("../../common/utils/dateFormat");
 const HttpError = require("../helpers/HttpError");
 
 
-const _getComments = async (defectID, manager) => {
-    const repository = manager.getRepository(Comment);
-    const comments = await repository
-        .find({
-            "c.defects_id": defectID
-        }, {
-            alias: "c",
-            populate: [ "content" ]
-        });
-    if(!comments)
-        return [];
-    return comments
-        .map(c => ({
-            id: c.id,
-            content: c.content && c.content.value,
-            created: dateFormat(c.created),
-            modified :dateFormat(c.modified)
-        }))
-        .filter(c => c.content);
-};
-
 const findAll = async (wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(Defect);
-    const qb = repository.getQueryBuilder("d");
-
-    let defects = await qb
-        .leftJoin("d.description", "desc")
-        .leftJoin("d.testcases", "tc")
-        .leftJoin("d.assignee", "assignee")
-        .select("d", "tc", "desc", "assignee")
-        .getQuery()
-        .getResult();
-
-    if(!defects)
-        return [];
-
-    defects = defects.map(defect => {
-        const d = {
-            ...defect,
-            description: defect.description.value,
-            testCases: defect.testcases
-        };
-        delete d.testcases;
-        return d;
-    });
-    for(let i=0; i< defects.length; i++) {
-        const comments = await _getComments(defects[i].id, manager);
-        defects[i].comments = comments.map(c => c.content);
-    }
+    const defects = await repository.findAll();
     return defects;
 };
 
 const findById = async (id, wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(Defect);
-    let defect = await repository
-        .findOne(id, {
-            populate: [
-                "description",
-                "testcases",
-                "testruns",
-                "testruns.testcase",
-                "testcases.testplan",
-                "assignee"
-            ]
-        });
+    let defect = await repository.getDetails(id);
 
     if(!defect)
         throw new HttpError(404, `Defect ${id} not found`);
 
-    const testCases = defect.testcases.map(tc => ({
-        id: tc.id,
-        name: tc.name,
-        testPlan: tc.testplan && tc.testplan.id
-    }));
-    const testRuns = defect.testruns.map(tr => ({
-        id: tr.id,
-        status: tr.status,
-        testCase: {
-            id: tr.testcase.id
-        }
-    }));
-    defect = {
-        ...defect,
-        testCases,
-        testRuns,
-        created: defect.created && dateFormat(defect.created),
-        modified: defect.modified && dateFormat(defect.modified)
-    };
-    delete defect.testcases;
-    delete defect.testruns;
-
-    const comments = await _getComments(defect.id, manager);
-    return {
-        ...defect,
-        comments
-    };
+    return defect;
 };
 
 const _getTestCases = async (tcIDs, manager) => {
@@ -167,31 +83,6 @@ const create = async (data, wetland, user) => {
     return defect;
 };
 
-const attachFile = async(id, file, wetland, user) => {
-    if(!id)
-        throw new HttpError(400, "id is required");
-
-    if(!file)
-        throw new HttpError(400, "No file");
-
-    const manager = wetland.getManager();
-    const repository = manager.getRepository(Defect);
-    const populator = wetland.getPopulator(manager);
-
-    const defect = await repository.findOne(id, { populate: [ "description" ] });
-
-    const attachmentData = {
-        name: file.originalname,
-        path: file.filename
-    };
-    const attachment = populator.assign(File, attachmentData);
-    manager.persist(attachment);
-    defect.description.attachments.push(attachment);
-    await manager.flush();
-
-    return defect;
-};
-
 const update = async (id, data, wetland) => {
     if(!id)
         throw new HttpError(400, "id is required");
@@ -203,7 +94,7 @@ const update = async (id, data, wetland) => {
     const populator = wetland.getPopulator(manager);
 
     let defect = await repository.findOne(id, {
-        populate: [ "description", "testcases", "assignee" ]
+        populate: [ "description", "description.attachments", "testcases", "assignee" ]
     });
 
     if(!defect)
@@ -212,13 +103,18 @@ const update = async (id, data, wetland) => {
     const obj = {};
     if(defect.description) {
         obj.description = {
-            id: defect.description.id,
-            value: data.description
+            id: defect.description.id
         };
-    } else if(data.description) {
-        obj.description = {
-            value: data.description
-        };
+    } else {
+        obj.description = {};
+    }
+    if(data.description) {
+        const arrAttachments = new ArrayCollection();
+        obj.description.value = data.description.value;
+        data.description.attachments.forEach(file => arrAttachments.push({
+            id: file.id
+        }));
+        obj.description.attachments = arrAttachments;
     }
     if((!defect.assignee && data.assignee) ||
         (defect.assignee && data.assignee && data.assignee.id != defect.assignee.id)
@@ -284,7 +180,6 @@ module.exports = {
     findAll,
     findById,
     create,
-    attachFile,
     update,
     remove,
     bulkRemove

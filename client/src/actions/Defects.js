@@ -123,14 +123,14 @@ export const deleteTestCase = id => ({
     id
 });
 
-export const reqAttachToDefect = (id, file) => ({
+export const reqAttachToDefect = (file, defect) => ({
     type: ACTIONS.REQ_ATTACH_TO_DEFECT,
-    id,
-    file
+    file,
+    defect
 });
 
-export const rcvAttachToDefect = (id, attachment) => ({
+export const rcvAttachToDefect = (file, defect) => ({
     type: ACTIONS.RCV_ATTACH_TO_DEFECT,
-    id,
-    attachment
+    file,
+    defect
 });

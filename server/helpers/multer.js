@@ -2,7 +2,7 @@ const path = require("path");
 const multer  = require("multer");
 const moment = require("moment");
 
-const UPLOAD_DIR = path.resolve(process.env.UPLOAD_PATH || "/tmp");
+const { UPLOAD_DIR } = require("../constants/paths");
 
 const storage = multer.diskStorage({
     destination: UPLOAD_DIR,

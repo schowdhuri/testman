@@ -1,9 +1,13 @@
 "use strict";
 
+const DefectRepository = require("../repositories/Defect");
+
 const STATES = require("../../common/constants/DefectStates");
 
 class Defect {
     static setMapping(mapping) {
+        mapping.entity({ repository: DefectRepository });
+
         mapping.field("created", {
             type: "datetime",
             nullable: true

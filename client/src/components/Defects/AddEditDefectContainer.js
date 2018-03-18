@@ -1,7 +1,13 @@
 import { connect } from "react-redux";
 
 import * as actions from "actions/Defects";
-import { redirectToDefects, reqUsers } from "actions/Shared";
+import {
+    redirectToDefects,
+    reqDeleteAttachment,
+    reqDownloadAttachment,
+    reqSaveAttachment,
+    reqUsers
+} from "actions/Shared";
 
 import AddEditDefect from "./AddEditDefect";
 
@@ -20,8 +26,8 @@ const mapDispatchToProps = dispatch => ({
     onAddTests(testCases) {
         dispatch(actions.addTests(testCases));
     },
-    onAttachFile(id, file) {
-        dispatch(actions.reqAttachToDefect(id, file));
+    onAttachFile(file, defect) {
+        dispatch(actions.reqAttachToDefect(file, defect));
     },
     onCancel() {
         dispatch(actions.resetAddEdit());
@@ -45,11 +51,17 @@ const mapDispatchToProps = dispatch => ({
     onDelete(id) {
         dispatch(actions.reqDeleteDefect(id, true));
     },
+    onDeleteAttachment(attachment) {
+        dispatch(reqDeleteAttachment(attachment));
+    },
     onDeleteComment(id) {
         dispatch(actions.reqDeleteComment(id));
     },
     onDeleteTestCase(id) {
         dispatch(actions.deleteTestCase(id));
+    },
+    onDownloadAttachment(attachment) {
+        dispatch(reqDownloadAttachment(attachment));
     },
     onInit(id) {
         dispatch(actions.resetAddEdit());
@@ -58,6 +70,9 @@ const mapDispatchToProps = dispatch => ({
     },
     onSave(defect) {
         dispatch(actions.reqSaveDefect(defect));
+    },
+    onSaveAttachment(attachment) {
+        dispatch(reqSaveAttachment(attachment));
     },
     onSaveComment(defectId, value, id) {
         dispatch(actions.reqSaveDefectComment(defectId, value, id));

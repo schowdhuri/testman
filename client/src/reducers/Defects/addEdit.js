@@ -1,10 +1,12 @@
 import * as ACTIONS from "constants/DefectsActions";
+import { RCV_DELETE_ATTACH, RCV_SAVE_ATTACH } from "constants/SharedActions";
 
 const initialState = {
     assignee: null,
     name: "",
     description: {
-        value: ""
+        value: "",
+        attachments: []
     },
     comments: [],
     testCases: [],
@@ -121,6 +123,43 @@ const addEditDefect = (state=initialState, action) => {
                         ...state.comments.slice(0, index),
                         ...state.comments.slice(index + 1)
                     ]
+                };
+            }
+            break;
+        }
+
+        case RCV_DELETE_ATTACH: {
+            const { attachment } = action;
+            const index = state.description.attachments.findIndex(a => a.id==attachment.id);
+            if(index != -1) {
+                return {
+                    ...state,
+                    description: {
+                        ...state.description,
+                        attachments: [
+                            ...state.description.attachments.slice(0, index),
+                            ...state.description.attachments.slice(index + 1),
+                        ]
+                    }
+                };
+            }
+            break;
+        }
+
+        case RCV_SAVE_ATTACH: {
+            const { attachment } = action;
+            const index = state.description.attachments.findIndex(a => a.id==attachment.id);
+            if(index != -1) {
+                return {
+                    ...state,
+                    description: {
+                        ...state.description,
+                        attachments: [
+                            ...state.description.attachments.slice(0, index),
+                            attachment,
+                            ...state.description.attachments.slice(index + 1),
+                        ]
+                    }
                 };
             }
             break;

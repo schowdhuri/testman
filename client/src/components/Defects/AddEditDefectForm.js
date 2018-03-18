@@ -10,6 +10,8 @@ import {
     Row
 } from "react-bootstrap";
 
+import Attachment from "components/Shared/Attachment";
+
 import DEF_STATES from "common/constants/DefectStates";
 import DEF_COLORS from "constants/DefectStateColors";
 
@@ -19,6 +21,7 @@ import Title from "components/Shared/Title";
 const AddEditDefectForm = props => {
     const {
         assignee,
+        attachments,
         defectId,
         description,
         name,
@@ -27,12 +30,15 @@ const AddEditDefectForm = props => {
         onChangeName,
         onChangeDescription,
         onChangeStatus,
+        onDeleteAttachment,
+        onDownloadAttachment,
+        onSaveAttachment,
         status,
         users
     } = props;
 
     const handleAttach = file => onAttachFile
-        ? onAttachFile(defectId, file)
+        ? onAttachFile(file)
         : null;
     const handleChangeAssignee = val => onChangeAssignee
         ? onChangeAssignee(val)
@@ -83,6 +89,16 @@ const AddEditDefectForm = props => {
                         >{u.name}</MenuItem>))}
                     </DropdownButton>
                     : null}
+            </Col>
+        </Row>
+        <Row>
+            <Col md={12} className="attachments">
+                {attachments.map(attachment => <Attachment
+                    key={`attachment-${attachment.name}`}
+                    attachment={attachment}
+                    onDelete={onDeleteAttachment}
+                    onDownload={onDownloadAttachment}
+                    onSave={onSaveAttachment} />)}
             </Col>
         </Row>
     </React.Fragment>);

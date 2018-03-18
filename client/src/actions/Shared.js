@@ -26,3 +26,38 @@ export const rcvUsers = users => ({
     type: ACTIONS.RCV_USERS,
     users
 });
+
+export const reqUploadFile = file => ({
+    type: ACTIONS.REQ_UPLOAD_FILE,
+    file
+});
+
+export const rcvUploadFile = file => ({
+    type: ACTIONS.RCV_UPLOAD_FILE,
+    file
+});
+
+export const reqDeleteAttachment = attachment => ({
+    type: ACTIONS.REQ_DELETE_ATTACH,
+    attachment
+});
+
+export const rcvDeleteAttachment = attachment => ({
+    type: ACTIONS.RCV_DELETE_ATTACH,
+    attachment
+});
+
+export const reqSaveAttachment = attachment => ({
+    type: ACTIONS.REQ_SAVE_ATTACH,
+    attachment
+});
+
+export const rcvSaveAttachment = attachment => ({
+    type: ACTIONS.RCV_SAVE_ATTACH,
+    attachment
+});
+
+export const reqDownloadAttachment = attachment => ({
+    type: ACTIONS.REQ_DOWNLOAD_ATTACH,
+    attachment
+});

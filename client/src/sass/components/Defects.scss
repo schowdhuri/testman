@@ -73,4 +73,11 @@
             padding: 15px;
         }
     }
+
+    .attachments {
+        .attachment {
+            display: inline-block;
+            margin: 0 10px 10px 0;
+        }
+    }
 }

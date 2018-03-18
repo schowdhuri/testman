@@ -1,20 +1,20 @@
 const authRoutes = require("./AuthRoutes");
 
-const testPlanRoutes = require("./TestPlanRoutes");
-const testCaseRoutes = require("./TestCaseRoutes");
-const defectRoutes = require("./DefectRoutes");
+const attachmentRoutes = require("./AttachmentRoutes");
 const commentRoutes = require("./CommentRoutes");
-const testRunRoutes = require("./TestRunRoutes");
+const defectRoutes = require("./DefectRoutes");
 const execCycleRoutes = require("./ExecCycleRoutes");
+const testCaseRoutes = require("./TestCaseRoutes");
+const testPlanRoutes = require("./TestPlanRoutes");
+const testRunRoutes = require("./TestRunRoutes");
 const userRoutes = require("./UserRoutes");
 
 const pageRoutes = require("./pages");
-// more routes
-
-const isAuthenticated = require("../controllers/AuthController").isAuthenticated;
 
 module.exports = app => {
     authRoutes(app);
+
+    attachmentRoutes(app);
     testPlanRoutes(app);
 	testCaseRoutes(app);
     defectRoutes(app);
@@ -24,5 +24,4 @@ module.exports = app => {
     userRoutes(app);
 
     pageRoutes(app);
-	// ...
 };

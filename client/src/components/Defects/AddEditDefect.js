@@ -23,6 +23,7 @@ class AddEditDefect extends React.Component {
             showImportDialog: false
         };
         this.handleAddTests = this.handleAddTests.bind(this);
+        this.handleAttachFile = this.handleAttachFile.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleChangeAssignee = this.handleChangeAssignee.bind(this);
         this.handleChangeComment = this.handleChangeComment.bind(this);
@@ -46,6 +47,9 @@ class AddEditDefect extends React.Component {
     handleAddTests(testCases) {
         this.props.onAddTests(testCases);
         this.hideSelector();
+    }
+    handleAttachFile(file) {
+        this.props.onAttachFile(file, this.props.defect);
     }
     handleCancel() {
         this.props.onCancel();
@@ -99,7 +103,9 @@ class AddEditDefect extends React.Component {
         const {
             defectID,
             defect,
-            onAttachFile,
+            onDeleteAttachment,
+            onDownloadAttachment,
+            onSaveAttachment,
             selectedTestCases,
             users
         } = this.props;
@@ -122,13 +128,17 @@ class AddEditDefect extends React.Component {
                             defectId={defect.id}
                             name={defect.name}
                             description={defect.description.value}
+                            attachments={defect.description.attachments}
                             status={defect.status}
                             users={users}
-                            onAttachFile={onAttachFile}
+                            onAttachFile={this.handleAttachFile}
                             onChangeAssignee={this.handleChangeAssignee}
                             onChangeName={this.handleChangeName}
                             onChangeDescription={this.handleChangeDescr}
-                            onChangeStatus={this.handleChangeStatus} />
+                            onChangeStatus={this.handleChangeStatus}
+                            onDeleteAttachment={onDeleteAttachment}
+                            onDownloadAttachment={onDownloadAttachment}
+                            onSaveAttachment={onSaveAttachment} />
                     </Panel.Body>
                 </Panel>
                 <Panel className="testcases">

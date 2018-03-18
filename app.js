@@ -11,6 +11,13 @@ const wetlandConfig = require("./wetland");
 const routes = require("./server/routes");
 const AuthController = require("./server/controllers/AuthController");
 
+const {
+    STATIC_DIR,
+    STATIC_DIR_ALIAS,
+    UPLOAD_DIR,
+    UPLOAD_DIR_ALIAS
+} = require("./server/constants/paths");
+
 const PORT = 3200;
 
 const app = express();
@@ -19,7 +26,8 @@ const wetland = new Wetland(wetlandConfig);
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use("/static", express.static(path.join(__dirname, "client", "dist")));
+app.use(UPLOAD_DIR_ALIAS, express.static(UPLOAD_DIR));
+app.use(STATIC_DIR_ALIAS, express.static(STATIC_DIR));
 app.use(cookieParser());
 app.use(expressWetland(wetland));
 

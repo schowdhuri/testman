@@ -1,7 +1,11 @@
 "use strict";
 
+const FileRepository = require("../repositories/File");
+
 class File {
     static setMapping(mapping) {
+        mapping.entity({ repository: FileRepository });
+
         mapping.field("created", {
             type: "datetime",
             nullable: true
