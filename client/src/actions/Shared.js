@@ -1,5 +1,14 @@
 import * as ACTIONS from "constants/SharedActions";
 
+export const reqLoginStatus = () => ({
+    type: ACTIONS.REQ_LOGIN_STATUS
+});
+
+export const rcvLoginStatus = user => ({
+    type: ACTIONS.RCV_LOGIN_STATUS,
+    user
+});
+
 export const setLoading = (id, status) => ({
     type: ACTIONS.IS_LOADING,
     id,

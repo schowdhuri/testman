@@ -4,6 +4,7 @@ import defects from "./Defects";
 import defectSelector from "./DefectSelector";
 import execCycle from "./ExecCycle";
 import isLoading from "./Shared/isLoading";
+import session from "./Shared/session";
 import testDesign from "./TestDesign";
 import testSelector from "./TestSelector";
 import users from "./Shared/users";
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
     defectSelector,
     execCycle,
     isLoading,
+    session,
     testDesign,
     testSelector,
     users,

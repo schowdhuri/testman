@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 
 import App from "./App";
 
-import * as actions from "actions/TestDesign";
+import { reqLoginStatus } from "actions/Shared";
 
 import { isLoading } from "selectors/Shared";
 
@@ -10,6 +10,12 @@ const mapStateToProps = state => ({
     isLoading: isLoading(state)
 });
 
-const AppContainer = connect(mapStateToProps)(App);
+const mapDispatchToProps = dispatch => ({
+    checkLogin() {
+        dispatch(reqLoginStatus());
+    }
+});
+
+const AppContainer = connect(mapStateToProps, mapDispatchToProps)(App);
 
 export default AppContainer;

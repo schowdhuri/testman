@@ -1,4 +1,6 @@
 export const IS_LOADING             = "IS_LOADING";
+export const REQ_LOGIN_STATUS       = "REQ_LOGIN_STATUS";
+export const RCV_LOGIN_STATUS       = "RCV_LOGIN_STATUS";
 export const REDIRECT_TEST_DESIGN   = "REDIRECT_TEST_DESIGN";
 export const REDIRECT_DEFECTS       = "REDIRECT_DEFECTS";
 export const REDIRECT_EXEC_CYCLE    = "REDIRECT_EXEC_CYCLE";

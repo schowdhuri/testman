@@ -6,6 +6,9 @@ import LoadingOverlay from "./Shared/LoadingOverlay";
 import Header from "./Shared/Header";
 
 class App extends React.Component {
+    componentDidMount() {
+        this.props.checkLogin();
+    }
     render() {
         const { navId } = this.props;
         return (<div className="app">
@@ -19,11 +22,12 @@ class App extends React.Component {
     }
 }
 App.propTypes = {
-    isLoading: PropTypes.bool.isRequired,
+    checkLogin: PropTypes.func.isRequired,
     children: PropTypes.oneOfType([
         PropTypes.node,
         PropTypes.array
-    ])
+    ]),
+    isLoading: PropTypes.bool.isRequired
 };
 
 export default App;

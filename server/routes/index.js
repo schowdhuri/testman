@@ -4,6 +4,7 @@ const attachmentRoutes = require("./AttachmentRoutes");
 const commentRoutes = require("./CommentRoutes");
 const defectRoutes = require("./DefectRoutes");
 const execCycleRoutes = require("./ExecCycleRoutes");
+const loginCheckRoute = require("./LoginCheckRoute");
 const testCaseRoutes = require("./TestCaseRoutes");
 const testPlanRoutes = require("./TestPlanRoutes");
 const testRunRoutes = require("./TestRunRoutes");
@@ -13,6 +14,7 @@ const pageRoutes = require("./pages");
 
 module.exports = app => {
     authRoutes(app);
+    loginCheckRoute(app);
 
     attachmentRoutes(app);
     testPlanRoutes(app);
