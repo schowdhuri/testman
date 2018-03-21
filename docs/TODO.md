@@ -6,6 +6,14 @@
     - linking/unlinking defect -> testrun [DONE]
 
 - Attachments
+    - Defect [DONE]
+    - TestCase [DONE]
+    - Defect-Comment [DONE]
+    - TestCase-Comment [DONE]
+    - Cron script to cleanup orphaned attachments
+    - Delete file from fs when File is deleted [DONE]
+    - Add attachments when creating Defect
+    - Add attachments when creating TestCase
 - CSV upload for test cases [DONE]
 - Clone Exec Cycle
     - All tests

@@ -1,5 +1,7 @@
+import Alert from "react-s-alert";
 import React from "react";
 import PropTypes from "prop-types";
+import Dropzone from "react-dropzone";
 import {
     Col,
     ControlLabel,
@@ -37,9 +39,17 @@ const AddEditDefectForm = props => {
         users
     } = props;
 
-    const handleAttach = file => onAttachFile
-        ? onAttachFile(file)
-        : null;
+    const handleAttach = files => {
+        if(files && files.length) {
+            const file = files[0];
+            if(!file || !file.name || !file.size) {
+                Alert.error("Invalid file");
+                return;
+            }
+            if(onAttachFile)
+                onAttachFile(file);
+        }
+    };
     const handleChangeAssignee = val => onChangeAssignee
         ? onChangeAssignee(val)
         : null;
@@ -47,7 +57,14 @@ const AddEditDefectForm = props => {
     const handleChangeStatus = val => onChangeStatus
         ? onChangeStatus(val)
         : null;
-    return (<React.Fragment>
+
+    return (<Dropzone
+        className="dropzone"
+        activeClassName="active"
+        multiple={false}
+        disableClick={true}
+        onDrop={handleAttach}
+    >
         <Row>
             <Col md={10}>
                 <Title placeholder="Name" onUpdate={onChangeName} value={name} />
@@ -101,7 +118,7 @@ const AddEditDefectForm = props => {
                     onSave={onSaveAttachment} />)}
             </Col>
         </Row>
-    </React.Fragment>);
+    </Dropzone>);
 };
 AddEditDefectForm.propTypes = {
     description: PropTypes.string,

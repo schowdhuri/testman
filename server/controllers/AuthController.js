@@ -33,12 +33,7 @@ const createDeserializer = wetland => {
     };
 };
 
-const isAuthenticated = (req, res, next) => {
-    if(req.user) {
-        return next();
-    }
-    res.redirect("/login");
-};
+const isAuthenticated = req => Boolean(req.user);
 
 module.exports = {
     createStrategy,

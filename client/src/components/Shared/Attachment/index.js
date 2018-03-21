@@ -35,10 +35,17 @@ class Attachment extends React.Component {
         this.setState({ modal: true });
     }
     render() {
-        const { attachment } = this.props;
-        const { name, path } = attachment;
+        const {
+            allowDelete=true,
+            allowEdit=true,
+            allowDownload=true,
+            attachment
+        } = this.props;
+        const { name, path, file } = attachment;
         const { modal } = this.state;
-        const isImage = path.match(/\.png|\.jpe?g|\.gif|\.svg$/);
+        const reExtension = new RegExp("\\.png|\\.jpe?g|\\.gif|\\.svg$", "i");
+        const reMime = new RegExp("image/png|image/jpe?g|image/gif|image/svg\\+xml", "i");
+        const isImage = Boolean(reExtension.test(path) || (file && reMime.test(file.type)));
         let preview;
         if(isImage) {
             preview = (<div className="image-type">
@@ -56,15 +63,15 @@ class Attachment extends React.Component {
         return (<div className="attachment">
             <div className="preview">{preview}</div>
             <div className="controls">
-                <button className="btn btn-link" onClick={this.handleDelete}>
+                {!allowDelete || <button className="btn btn-link" onClick={this.handleDelete}>
                     <i className="glyphicon glyphicon-trash text-danger" />
-                </button>
-                <button className="btn btn-link" onClick={this.handleDownload}>
+                </button>}
+                {!allowDownload || <button className="btn btn-link" onClick={this.handleDownload}>
                     <i className="glyphicon glyphicon-download-alt text-success" />
-                </button>
-                <button className="btn btn-link" onClick={this.showModal}>
+                </button>}
+                {!allowEdit || <button className="btn btn-link" onClick={this.showModal}>
                     <i className="glyphicon glyphicon-zoom-in text-info" />
-                </button>
+                </button>}
             </div>
             <ViewEdit show={modal}
                 isImage={isImage}

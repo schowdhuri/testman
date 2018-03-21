@@ -121,3 +121,17 @@ export const rcvUploadTests = (testPlanId, testCases) => ({
     testPlanId,
     testCases
 });
+
+export const reqAttachToTestCase = (file, testCase, testPlanId) => ({
+    type: ACTIONS.REQ_ATTACH_TO_TC,
+    file,
+    testCase,
+    testPlanId
+});
+
+export const rcvAttachToTestCase = (file, testCase, testPlanId) => ({
+    type: ACTIONS.RCV_ATTACH_TO_TC,
+    file,
+    testCase,
+    testPlanId
+});

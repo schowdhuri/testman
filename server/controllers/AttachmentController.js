@@ -39,10 +39,13 @@ const create = async (file, wetland, user) => {
     };
     const manager  = wetland.getManager();
     const populator = wetland.getPopulator(manager);
+    const repository = manager.getRepository(File);
+
     const attachment = populator.assign(File, obj);
     manager.persist(attachment)
     await manager.flush();
-    return attachment;
+
+    return await repository.getDetails(attachment.id);
 };
 
 const update = async (id, data, wetland, user) => {
@@ -69,10 +72,10 @@ const update = async (id, data, wetland, user) => {
         }
     };
 
-    const updated = populator.assign(File, obj, attachment, true);
+    populator.assign(File, obj, attachment, true);
     await manager.flush();
 
-    return updated;
+    return await repository.getDetails(id);
 };
 
 const remove = async (id, wetland) => {
@@ -87,8 +90,7 @@ const remove = async (id, wetland) => {
     if(!attachment)
         throw new HttpError(404, `File with id ${id} not found`);
 
-    await manager.remove(attachment).flush();
-    return attachment;
+    return await repository.remove(attachment);
 };
 
 module.exports = {

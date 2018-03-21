@@ -1,3 +1,5 @@
+const { ArrayCollection } = require("wetland");
+
 const Comment = require("../models/Comment");
 const Defect = require("../models/Defect");
 const TestCase = require("../models/TestCase");
@@ -7,20 +9,20 @@ const HttpError = require("../helpers/HttpError");
 const findById = async (id, wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(Comment);
-    const comment = await repository.findOne(id, {
-        populate: [ "content", "testcases", "defects", "user" ]
-    });
+    const comment = await repository.getDetails(id);
+    if(!comment)
+        throw new HttpError(404, "Not found");
     return comment;
 };
 
-const create = async (obj, wetland, user) => {
-    if(!obj.content)
+const create = async (data, wetland, user) => {
+    if(!data.content || !data.content.value)
         throw new HttpError(400, "content is required");
-    if(!obj.testCase && !obj.defect) {
+    if(!data.testCase && !data.defect) {
         throw new HttpError(400, "Comment must be linked to an entity");
     }
-    const data = {
-        content: obj.content,
+    const obj = {
+        content: data.content,
         user: {
             id: user.id
         }
@@ -28,22 +30,19 @@ const create = async (obj, wetland, user) => {
     const manager  = wetland.getManager();
     const populator = wetland.getPopulator(manager);
     let linkedEntity;
-    if(obj.testCase) {
-        linkedEntity = await manager.getRepository(TestCase).findOne(obj.testCase)
+    if(data.testCase) {
+        linkedEntity = await manager.getRepository(TestCase).findOne(data.testCase)
     } else {
-        linkedEntity = await manager.getRepository(Defect).findOne(obj.defect)
+        linkedEntity = await manager.getRepository(Defect).findOne(data.defect)
     }
     if(!linkedEntity)
         throw new HttpError(400, "Invalid ID");
     if(linkedEntity instanceof Defect)
-        data.defects = [ linkedEntity ];
+        obj.defects = [ linkedEntity ];
     else if(linkedEntity instanceof TestCase)
-        data.testcases = [ linkedEntity ];
-    data.content = {
-        value: data.content
-    };
+        obj.testcases = [ linkedEntity ];
 
-    const newComment = populator.assign(Comment, data, null, true);
+    const newComment = populator.assign(Comment, obj, null, true);
     await manager
         .persist(newComment)
         .flush();
@@ -83,23 +82,26 @@ const update = async (id, data, wetland, user) => {
     if(comment.user && comment.user.id != user.id) {
         throw new HttpError(400, "Can't edit comment from another user");
     }
-    if(comment.content) {
-        data.content = {
-            id: comment.content.id,
-            value: data.content
-        };
-    } else if(data.content) {
-        data.content = {
-            value: data.content
-        };
-    }
-    data.user = {
-        id: user.id
+    const arrAttachments = new ArrayCollection();
+    (data.attachments || []).forEach(a => arrAttachments.push({
+        id: a.id
+    }));
+    const obj = {
+        content: {
+            value: data.content.value,
+            attachments: arrAttachments
+        },
+        user: {
+            id: user.id
+        }
     };
-    const updated = populator.assign(Comment, data, comment, true);
+    if(comment.content) {
+        obj.content.id = comment.content.id;
+    }
+    populator.assign(Comment, data, obj, true);
     uow.registerDirty(comment, [ "content" ]);
     await manager.flush();
-    return updated;
+    return await findById(id, wetland);
 };
 
 const remove = async (id, wetland, user) => {

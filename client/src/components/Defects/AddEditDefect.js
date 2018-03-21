@@ -24,9 +24,9 @@ class AddEditDefect extends React.Component {
         };
         this.handleAddTests = this.handleAddTests.bind(this);
         this.handleAttachFile = this.handleAttachFile.bind(this);
+        this.handleAttachFileToComment = this.handleAttachFileToComment.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleChangeAssignee = this.handleChangeAssignee.bind(this);
-        this.handleChangeComment = this.handleChangeComment.bind(this);
         this.handleChangeName = this.handleChangeName.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleDeleteComment = this.handleDeleteComment.bind(this);
@@ -48,6 +48,9 @@ class AddEditDefect extends React.Component {
         this.props.onAddTests(testCases);
         this.hideSelector();
     }
+    handleAttachFileToComment(file, comment) {
+        this.props.onAttachFileToComment(file, comment, this.props.defectID);
+    }
     handleAttachFile(file) {
         this.props.onAttachFile(file, this.props.defect);
     }
@@ -57,9 +60,6 @@ class AddEditDefect extends React.Component {
     handleChangeAssignee(user) {
         if(user && !this.props.assignee || user.props != this.props.assignee.id)
             this.props.onChangeAssignee(user);
-    }
-    handleChangeComment(ev) {
-        this.props.onChangeComment(ev.target.value);
     }
     handleChangeDescr(value) {
         this.props.onChangeDescription(value);
@@ -83,11 +83,20 @@ class AddEditDefect extends React.Component {
     handleSave() {
         this.props.onSave(this.props.defect);
     }
-    handleSaveComment() {
-        this.props.onSaveComment(this.props.defect.id, this.props.defect.newComment);
+    handleSaveComment(value, attachments) {
+        this.props.onSaveComment(
+            {
+                content: value,
+                attachments
+            },
+            this.props.defect.id
+        );
     }
-    handleUpdateComment(value, id) {
-        this.props.onSaveComment(this.props.defect.id, value, id);
+    handleUpdateComment(comment) {
+        this.props.onSaveComment(
+            comment,
+            this.props.defect.id
+        );
     }
     hideSelector() {
         this.setState({
@@ -109,7 +118,7 @@ class AddEditDefect extends React.Component {
             selectedTestCases,
             users
         } = this.props;
-        const { newComment, testCases, comments } = defect;
+        const { testCases, comments } = defect;
         const { showImportDialog } = this.state;
         return (<div className="add-edit-defect">
             <div className="action-bar header-gradient-1">
@@ -171,25 +180,15 @@ class AddEditDefect extends React.Component {
                             <Panel.Title componentClass="h3">Comments</Panel.Title>
                         </Panel.Heading>
                         <Panel.Body>
-                            <FormGroup controlId="newComment">
-                                <FormControl
-                                    placeholder="Add Comment"
-                                    value={newComment}
-                                    onChange={this.handleChangeComment}
-                                    componentClass="textarea" />
-                            </FormGroup>
-                            <ButtonToolbar>
-                                <Button
-                                    bsSize="small"
-                                    bsStyle="success"
-                                    onClick={this.handleSaveComment}
-                                    disabled={!newComment}
-                                >Save</Button>
-                            </ButtonToolbar>
+                            <Comment.New onSave={this.handleSaveComment} />
                             <hr />
                             {comments.map(comment => <Comment
                                 key={comment.id}
-                                {...comment}
+                                data={comment}
+                                onAddAttachment={this.handleAttachFileToComment}
+                                onRemoveAttachment={onDeleteAttachment}
+                                onDownloadAttachment={onDownloadAttachment}
+                                onSaveAttachment={onSaveAttachment}
                                 onUpdate={this.handleUpdateComment}
                                 onDelete={this.handleDeleteComment} />)}
                         </Panel.Body>

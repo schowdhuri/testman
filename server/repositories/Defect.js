@@ -13,7 +13,7 @@ class DefectRepository extends EntityRepository {
                 "c.defects_id": id
             }, {
                 alias: "c",
-                populate: [ "content" ]
+                populate: [ "content", "user" ]
             });
         if(!comments)
             return [];
@@ -25,6 +25,13 @@ class DefectRepository extends EntityRepository {
                 modified :dateFormat(c.modified)
             }))
             .filter(c => c.content);
+    }
+    async getCommentsMinimal(id, commentRepo) {
+        const comments = await commentRepo
+            .find({ "defects_id": id });
+        if(!comments)
+            return [];
+        return comments.map(c => c.id)
     }
     async getAttachments(idArr, fileRepo) {
         const pArr = idArr.map(id => fileRepo.getDetails(id));
@@ -62,7 +69,7 @@ class DefectRepository extends EntityRepository {
         const fileRepo = manager.getRepository(File);
         const [ attachments, comments ] = await Promise.all([
             this.getAttachments(defect.description.attachments.map(a => a.id), fileRepo),
-            this.getComments(defect.id, commentRepo)
+            commentRepo.findByDefect(defect.id)
         ]);
         return {
             ...others,
@@ -81,7 +88,6 @@ class DefectRepository extends EntityRepository {
     }
     async findAll() {
         const qb = this.getQueryBuilder("d");
-        const manager = this.getEntityManager();
 
         let defects = await qb
             .leftJoin("d.description", "desc")
@@ -96,26 +102,32 @@ class DefectRepository extends EntityRepository {
 
 
         defects = defects.map(defect => {
-            const { testcases, ...others } = defect;
+            const { description, testcases, ...others } = defect;
             const d = {
                 ...others,
-                description: defect.description.value,
-                testCases: defect.testcases
+                testCases: defect.testcases.map(t => t.id),
+                assignee: defect.assignee ? {
+                    id: defect.assignee.id,
+                    name: defect.assignee.name,
+                    email: defect.assignee.email
+                } : null,
+                created: dateFormat(defect.created),
+                modified: dateFormat(defect.modified)
             };
             return d;
         });
 
+        const manager = this.getEntityManager();
         const commentRepo = manager.getRepository(Comment);
-
         const pArrDefWithComments = defects.map(defect =>
-            this.getComments(defect.id, commentRepo)
+            this.getCommentsMinimal(defect.id, commentRepo)
                 .then(comments => ({
                     ...defect,
                     comments
                 }))
         );
-
         defects = await Promise.all(pArrDefWithComments);
+
         return defects;
     }
 }

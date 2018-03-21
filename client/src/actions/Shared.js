@@ -36,14 +36,14 @@ export const rcvUsers = users => ({
     users
 });
 
-export const reqUploadFile = file => ({
-    type: ACTIONS.REQ_UPLOAD_FILE,
-    file
+export const reqUploadFiles = files => ({
+    type: ACTIONS.REQ_UPLOAD_FILES,
+    files
 });
 
-export const rcvUploadFile = file => ({
-    type: ACTIONS.RCV_UPLOAD_FILE,
-    file
+export const rcvUploadFiles = files => ({
+    type: ACTIONS.RCV_UPLOAD_FILES,
+    files
 });
 
 export const reqDeleteAttachment = attachment => ({
@@ -56,17 +56,67 @@ export const rcvDeleteAttachment = attachment => ({
     attachment
 });
 
-export const reqSaveAttachment = attachment => ({
-    type: ACTIONS.REQ_SAVE_ATTACH,
+export const reqUpdateAttachment = attachment => ({
+    type: ACTIONS.REQ_UPDATE_ATTACH,
     attachment
 });
 
-export const rcvSaveAttachment = attachment => ({
-    type: ACTIONS.RCV_SAVE_ATTACH,
+export const rcvUpdateAttachment = attachment => ({
+    type: ACTIONS.RCV_UPDATE_ATTACH,
     attachment
 });
 
 export const reqDownloadAttachment = attachment => ({
     type: ACTIONS.REQ_DOWNLOAD_ATTACH,
     attachment
+});
+
+export const reqAttachToDefectComment = (file, comment, defectId) => ({
+    type: ACTIONS.REQ_ATTACH_TO_COMM,
+    file,
+    comment,
+    entity: "defect",
+    entityId: defectId
+});
+
+export const reqAttachToTestCaseComment = (file, comment, testCaseId) => ({
+    type: ACTIONS.REQ_ATTACH_TO_COMM,
+    file,
+    comment,
+    entity: "testCase",
+    entityId: testCaseId
+});
+
+export const rcvAttachToComment = (file, comment, entity, entityId) => ({
+    type: ACTIONS.RCV_ATTACH_TO_COMM,
+    file,
+    comment,
+    [entity]: entityId
+});
+
+export const reqSaveComment = (comment, entity, entityId) => ({
+    type: ACTIONS.REQ_SAVE_COMMENT,
+    comment,
+    entity,
+    entityId
+});
+
+export const reqSaveDefectComment = (comment, defectId) => ({
+    type: ACTIONS.REQ_SAVE_COMMENT,
+    comment,
+    entity: "defect",
+    entityId: defectId
+});
+
+export const reqSaveTestCaseComment = (comment, testCaseId) => ({
+    type: ACTIONS.REQ_SAVE_COMMENT,
+    comment,
+    entity: "testCase",
+    entityId: testCaseId
+});
+
+export const rcvSaveComment = (comment, entity, entityId) => ({
+    type: ACTIONS.RCV_SAVE_COMMENT,
+    comment,
+    [entity]: entityId
 });

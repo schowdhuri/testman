@@ -43,16 +43,10 @@ export const changeDefectStatus = value => ({
     value
 });
 
-export const changeDefectComment = value => ({
-    type: ACTIONS.CHANGE_DF_COMMENT,
-    value
-});
-
-export const reqSaveDefectComment = (defectId, value, id) => ({
+export const reqSaveDefectComment = (defectId, comment) => ({
     type: ACTIONS.REQ_SAVE_DF_COMMENT,
     defectId,
-    value,
-    id
+    comment
 });
 
 export const rcvSaveDefectComment = value => ({

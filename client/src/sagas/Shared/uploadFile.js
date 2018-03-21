@@ -1,30 +1,34 @@
 import Alert from "react-s-alert";
-import { call, put, takeEvery } from "redux-saga/effects";
+import { all, call, put, takeEvery } from "redux-saga/effects";
 
 import request from "utils/Shared/request";
 
-import { REQ_UPLOAD_FILE } from "constants/SharedActions";
-import { rcvUploadFile, setLoading } from "actions/Shared";
+import { REQ_UPLOAD_FILES } from "constants/SharedActions";
+import { rcvUploadFiles, setLoading } from "actions/Shared";
 
-function* uploadFile(action) {
-    const { file } = action;
-    yield put(setLoading(REQ_UPLOAD_FILE, true));
-    const data = new FormData();
-    data.append("file", file);
+function* uploadFiles(action) {
+    const { files } = action;
+
+    yield put(setLoading(REQ_UPLOAD_FILES, true));
     try {
-        const response = yield call(request, {
-            url: `/api/attachment/`,
-            type: "post",
-            data
+        const pArr = files.map(file => {
+            const data = new FormData();
+            data.append("file", file);
+            return request({
+                url: `/api/attachment/`,
+                type: "post",
+                data
+            });
         });
-        yield put(rcvUploadFile(response.json));
+        const results = yield all(pArr);
+        yield put(rcvUploadFiles(results.map(response => response.json)));
     } catch(ex) {
         console.log(ex);
         Alert.error(ex && ex.text || "Upload failed");
     }
-    yield put(setLoading(REQ_UPLOAD_FILE, false));
+    yield put(setLoading(REQ_UPLOAD_FILES, false));
 }
 
 export default function* () {
-    yield takeEvery(REQ_UPLOAD_FILE, uploadFile);
+    yield takeEvery(REQ_UPLOAD_FILES, uploadFiles);
 };

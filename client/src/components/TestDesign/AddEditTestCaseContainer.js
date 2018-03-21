@@ -1,14 +1,22 @@
 import { connect } from "react-redux";
 
 import * as actions from "actions/TestDesign";
-import { redirectToTestDesign } from "actions/Shared";
 
 import AddEditTestCase from "./AddEditTestCase";
 
 import {
-    getTestCaseAddEditState
-} from "selectors/TestDesign";
+    redirectToTestDesign,
+    reqAttachToTestCaseComment,
+    reqDeleteAttachment,
+    reqDownloadAttachment,
+    reqSaveTestCaseComment,
+    reqUpdateAttachment,
+    reqUsers
+} from "actions/Shared";
+
+import { getTestCaseAddEditState } from "selectors/TestDesign";
 import { isLoading } from "selectors/Shared";
+
 
 const mapStateToProps = state => ({
     isLoading: isLoading(state),
@@ -16,6 +24,12 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+    onAttachFile(file, testCase, testPlanId) {
+        dispatch(actions.reqAttachToTestCase(file, testCase, testPlanId));
+    },
+    onAttachFileToComment(file, comment, testCaseId) {
+        dispatch(reqAttachToTestCaseComment(file, comment, testCaseId));
+    },
     onCancel() {
         dispatch(actions.resetAddEdit());
         dispatch(redirectToTestDesign());
@@ -32,8 +46,14 @@ const mapDispatchToProps = dispatch => ({
     onDelete(testCaseId, testPlanID) {
         dispatch(actions.reqDeleteTestCase(testCaseId, testPlanID));
     },
+    onDeleteAttachment(attachment) {
+        dispatch(reqDeleteAttachment(attachment));
+    },
     onDeleteComment(id) {
         dispatch(actions.reqDeleteComment(id));
+    },
+    onDownloadAttachment(attachment) {
+        dispatch(reqDownloadAttachment(attachment));
     },
     onInit(id) {
         dispatch(actions.resetAddEdit());
@@ -43,8 +63,11 @@ const mapDispatchToProps = dispatch => ({
     onSave(testPlanID, testCase) {
         dispatch(actions.reqSaveTestCase(testPlanID, testCase));
     },
-    onSaveComment(testCaseId, value, id) {
-        dispatch(actions.reqSaveTCComment(testCaseId, value, id));
+    onSaveAttachment(attachment) {
+        dispatch(reqUpdateAttachment(attachment));
+    },
+    onSaveComment(comment, testCaseId) {
+        dispatch(reqSaveTestCaseComment(comment, testCaseId));
     }
 });
 

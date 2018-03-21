@@ -1,5 +1,10 @@
 import * as ACTIONS from "constants/DefectsActions";
-import { RCV_DELETE_ATTACH, RCV_SAVE_ATTACH } from "constants/SharedActions";
+import {
+    RCV_DELETE_ATTACH,
+    RCV_DELETE_COMMENT,
+    RCV_UPDATE_ATTACH,
+    RCV_SAVE_COMMENT
+} from "constants/SharedActions";
 
 const initialState = {
     assignee: null,
@@ -9,8 +14,7 @@ const initialState = {
         attachments: []
     },
     comments: [],
-    testCases: [],
-    newComment: ""
+    testCases: []
 };
 
 const addEditDefect = (state=initialState, action) => {
@@ -68,11 +72,6 @@ const addEditDefect = (state=initialState, action) => {
                 status: action.value
             };
 
-        case ACTIONS.CHANGE_DF_COMMENT:
-            return {
-                ...state,
-                newComment: action.value
-            };
 
         case ACTIONS.DEL_TEST_FRM_DEFECT: {
             const { id } = action;
@@ -89,8 +88,11 @@ const addEditDefect = (state=initialState, action) => {
             break;
         }
 
-        case ACTIONS.RCV_SAVE_DF_COMMENT: {
-            const comment = action.value;
+        case RCV_SAVE_COMMENT: {
+
+            const { defect, comment } = action;
+            if(!defect)
+                break;
             const index = state.comments.findIndex(c => c.id==comment.id);
             if(index == -1) {
                 return {
@@ -98,8 +100,7 @@ const addEditDefect = (state=initialState, action) => {
                     comments: [
                         comment,
                         ...state.comments,
-                    ],
-                    newComment: initialState.newComment
+                    ]
                 };
             }
             return {
@@ -108,12 +109,11 @@ const addEditDefect = (state=initialState, action) => {
                     ...state.comments.slice(0, index),
                     comment,
                     ...state.comments.slice(index + 1)
-                ],
-                newComment: initialState.newComment
+                ]
             };
         }
 
-        case ACTIONS.RCV_DELETE_COMMENT: {
+        case RCV_DELETE_COMMENT: {
             const { id } = action;
             const index = state.comments.findIndex(c => c.id==id);
             if(index != -1) {
@@ -143,10 +143,27 @@ const addEditDefect = (state=initialState, action) => {
                     }
                 };
             }
-            break;
+            // check all comment attachments
+            const comments = state.comments.map(comment => {
+                const index = comment.attachments.findIndex(a => a.id==attachment.id);
+                if(index != -1) {
+                    return {
+                        ...comment,
+                        attachments: [
+                            ...comment.attachments.slice(0, index),
+                            ...comment.attachments.slice(index + 1),
+                        ]
+                    };
+                }
+                return comment;
+            });
+            return {
+                ...state,
+                comments
+            };
         }
 
-        case RCV_SAVE_ATTACH: {
+        case RCV_UPDATE_ATTACH: {
             const { attachment } = action;
             const index = state.description.attachments.findIndex(a => a.id==attachment.id);
             if(index != -1) {
@@ -162,7 +179,25 @@ const addEditDefect = (state=initialState, action) => {
                     }
                 };
             }
-            break;
+            // check all comment attachments
+            const comments = state.comments.map(comment => {
+                const index = comment.attachments.findIndex(a => a.id==attachment.id);
+                if(index != -1) {
+                    return {
+                        ...comment,
+                        attachments: [
+                            ...comment.attachments.slice(0, index),
+                            attachment,
+                            ...comment.attachments.slice(index + 1),
+                        ]
+                    };
+                }
+                return comment;
+            });
+            return {
+                ...state,
+                comments
+            };
         }
 
         case ACTIONS.RESET_DF_ADD_EDIT:

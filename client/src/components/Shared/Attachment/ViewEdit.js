@@ -75,6 +75,17 @@ class ViewEdit extends React.Component {
     }
 }
 ViewEdit.propTypes = {
+    attachment: PropTypes.shape({
+        created: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        path: PropTypes.string.isRequired,
+        user: PropTypes.shape({
+            name: PropTypes.string.isRequired
+        })
+    }).isRequired,
+    isImage: PropTypes.bool.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    onDownload: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
     show: PropTypes.bool.isRequired

@@ -3,9 +3,11 @@ import { connect } from "react-redux";
 import * as actions from "actions/Defects";
 import {
     redirectToDefects,
+    reqAttachToDefectComment,
     reqDeleteAttachment,
     reqDownloadAttachment,
-    reqSaveAttachment,
+    reqSaveDefectComment,
+    reqUpdateAttachment,
     reqUsers
 } from "actions/Shared";
 
@@ -29,15 +31,15 @@ const mapDispatchToProps = dispatch => ({
     onAttachFile(file, defect) {
         dispatch(actions.reqAttachToDefect(file, defect));
     },
+    onAttachFileToComment(file, comment, defectId) {
+        dispatch(reqAttachToDefectComment(file, comment, defectId));
+    },
     onCancel() {
         dispatch(actions.resetAddEdit());
         dispatch(redirectToDefects());
     },
     onChangeAssignee(user) {
         dispatch(actions.changeAssignee(user));
-    },
-    onChangeComment(value) {
-        dispatch(actions.changeDefectComment(value));
     },
     onChangeDescription(val) {
         dispatch(actions.changeDefectDescription(val));
@@ -72,10 +74,10 @@ const mapDispatchToProps = dispatch => ({
         dispatch(actions.reqSaveDefect(defect));
     },
     onSaveAttachment(attachment) {
-        dispatch(reqSaveAttachment(attachment));
+        dispatch(reqUpdateAttachment(attachment));
     },
-    onSaveComment(defectId, value, id) {
-        dispatch(actions.reqSaveDefectComment(defectId, value, id));
+    onSaveComment(comment, defectId) {
+        dispatch(reqSaveDefectComment(comment, defectId));
     }
 });
 

@@ -1,7 +1,10 @@
 "use strict";
 
+const TestCaseRepository = require ("../repositories/TestCase");
+
 class TestCase {
     static setMapping(mapping) {
+        mapping.entity({ repository: TestCaseRepository });
         mapping.field("created", {
             type: "datetime",
             nullable: true

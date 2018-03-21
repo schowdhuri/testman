@@ -21,3 +21,5 @@ export const REQ_DELETE_COMMENT  = "REQ_DELETE_COMMENT";
 export const RCV_DELETE_COMMENT  = "RCV_DELETE_COMMENT";
 export const REQ_UPLOAD_TESTS    = "REQ_UPLOAD_TESTS";
 export const RCV_UPLOAD_TESTS    = "RCV_UPLOAD_TESTS";
+export const REQ_ATTACH_TO_TC    = "REQ_ATTACH_TO_TC";
+export const RCV_ATTACH_TO_TC    = "RCV_ATTACH_TO_TC";

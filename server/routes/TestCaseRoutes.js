@@ -75,7 +75,6 @@ const testCaseRoutes = app => {
 		})
 		.put(async (req, res) => {
 			try {
-				console.log("session: ", req.session)
 				const result = await controller.update(
 					req.params.id,
 					req.body,

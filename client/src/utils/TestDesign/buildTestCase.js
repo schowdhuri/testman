@@ -3,7 +3,7 @@ const buildTestCase = data => {
     if(data.id)
         testCase.id = data.id;
     testCase.name = data.name;
-    testCase.description = data.description.value;
+    testCase.description = data.description;
 
     return testCase;
 };

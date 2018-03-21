@@ -26,7 +26,7 @@ const findById = async (id, wetland) => {
     return defect;
 };
 
-const _getTestCases = async (tcIDs, manager) => {
+const _getTestCases = async (tcIDs, manager) => { // TODO move to DefectRepo
     const repository = manager.getRepository(TestCase);
     const arrTestCases = new ArrayCollection();
     tcIDs = tcIDs.filter(tcID => tcID);
@@ -99,6 +99,7 @@ const update = async (id, data, wetland) => {
 
     if(!defect)
         throw new HttpError(404, `Defect with id ${id} not found`);
+
     const arrTestCases = new ArrayCollection();
     const obj = {};
     if(defect.description) {

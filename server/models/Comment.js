@@ -1,7 +1,10 @@
 "use strict";
 
+const CommentRepository = require("../repositories/Comment");
+
 class Comment {
     static setMapping(mapping) {
+        mapping.entity({ repository: CommentRepository });
         mapping.field("created", {
             type: "datetime",
             nullable: true

@@ -10,9 +10,10 @@ import { setLoading } from "actions/Shared";
 
 import validateTestCase from "utils/TestDesign/validateTestCase";
 import buildTestCase from "utils/TestDesign/buildTestCase";
+import parseTestCase from "utils/TestDesign/parseTestCase";
 
 function* saveTestCase(action) {
-    const { testPlanId, testCase } = action;
+    const { testPlanId, testCase, redirect } = action;
     if(!testPlanId) {
         Alert.error("testPlanId not found");
         return;
@@ -41,8 +42,9 @@ function* saveTestCase(action) {
             });
         }
         Alert.success("Saved");
-        yield put(rcvSaveTestCase(testPlanId, response.json));
-        yield put(redirectToTestDesign());
+        yield put(rcvSaveTestCase(testPlanId, parseTestCase(response.json)));
+        if(redirect)
+            yield put(redirectToTestDesign());
     } catch(ex) {
         console.log(ex);
         Alert.error("Failed to save test case");

@@ -10,7 +10,9 @@ import {
     Table,
     Well
 } from "react-bootstrap";
+import Dropzone from "react-dropzone";
 
+import Attachment from "components/Shared/Attachment";
 import Comment from "components/Shared/Comment";
 import Description from "components/Shared/Description";
 import Title from "components/Shared/Title";
@@ -20,6 +22,8 @@ import LinkedDefect from "./LinkedDefect";
 class AddEditTestCase extends React.Component {
     constructor(props) {
         super(props);
+        this.handleAttach = this.handleAttach.bind(this);
+        this.handleAttachFileToComment = this.handleAttachFileToComment.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleChangeComment = this.handleChangeComment.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
@@ -30,6 +34,27 @@ class AddEditTestCase extends React.Component {
     }
     componentDidMount() {
         this.props.onInit(this.props.testID);
+    }
+    handleAttach(files) {
+        if(files && files.length) {
+            const file = files[0];
+            if(!file || !file.name || !file.size) {
+                Alert.error("Invalid file");
+                return;
+            }
+            this.props.onAttachFile(file, this.props.testCase, this.props.testPlanID);
+        }
+    }
+    handleAttachFileToComment(file, comment) {
+        this.props.onAttachFileToComment(
+            file,
+            comment,
+            this.props.testCase.id,
+            this.props.testPlanID
+        );
+    }
+    handleAttachFile(file) {
+        this.props.onAttachFile(file, this.props.defect);
     }
     handleCancel() {
         this.props.onCancel();
@@ -51,21 +76,38 @@ class AddEditTestCase extends React.Component {
     handleSave() {
         this.props.onSave(this.props.testPlanID, this.props.testCase);
     }
-    handleSaveComment() {
-        this.props.onSaveComment(this.props.testCase.id, this.props.testCase.newComment);
+    handleSaveComment(value, attachments) {
+        this.props.onSaveComment(
+            {
+                content: value,
+                attachments
+            },
+            this.props.testCase.id
+        );
     }
-    handleUpdateComment(value, id) {
-        this.props.onSaveComment(this.props.testCase.id, value, id);
+    handleUpdateComment(comment) {
+        this.props.onSaveComment(
+            comment,
+            this.props.testCase.id
+        );
     }
     render() {
         const {
             mode,
             onChangeDescription,
             onChangeName,
+            onDeleteAttachment,
+            onDownloadAttachment,
+            onSaveAttachment,
             testID,
             testCase
         } = this.props;
-        const { newComment, defects=[], comments=[] } = testCase;
+
+        const {
+            description,
+            defects=[],
+            comments=[]
+        } = testCase;
 
         return (<div className="add-edit-tc">
             <div className="action-bar header-gradient-1">
@@ -78,16 +120,33 @@ class AddEditTestCase extends React.Component {
             </div>
             <div className="container">
                 <Panel>
-                    <Panel.Body>
-                        <Title
-                            value={testCase.name}
-                            placeholder="Name"
-                            onUpdate={onChangeName} />
-                        <Description
-                            value={testCase.description.value}
-                            placeholder="Describe this test"
-                            onUpdate={onChangeDescription} />
-                    </Panel.Body>
+                    <Dropzone
+                        className="dropzone"
+                        activeClassName="active"
+                        multiple={false}
+                        disableClick={true}
+                        onDrop={this.handleAttach}
+                    >
+                        <Panel.Body>
+                            <Title
+                                value={testCase.name}
+                                placeholder="Name"
+                                onUpdate={onChangeName} />
+                            <Description
+                                value={testCase.description.value}
+                                placeholder="Describe this test"
+                                onUpdate={onChangeDescription} />
+
+                            <div className="attachments">
+                                {description.attachments.map(attachment => <Attachment
+                                    key={`attachment-${attachment.name}`}
+                                    attachment={attachment}
+                                    onDelete={onDeleteAttachment}
+                                    onDownload={onDownloadAttachment}
+                                    onSave={onSaveAttachment} />)}
+                            </div>
+                        </Panel.Body>
+                    </Dropzone>
                 </Panel>
 
                 {testCase.id
@@ -116,27 +175,17 @@ class AddEditTestCase extends React.Component {
                             <Panel.Title componentClass="h3">Comments</Panel.Title>
                         </Panel.Heading>
                         <Panel.Body>
-                            <FormGroup controlId="newComment">
-                                <FormControl
-                                    placeholder="Add Comment"
-                                    value={newComment}
-                                    onChange={this.handleChangeComment}
-                                    componentClass="textarea" />
-                            </FormGroup>
-                            <ButtonToolbar>
-                                <Button
-                                    bsSize="small"
-                                    bsStyle="success"
-                                    onClick={this.handleSaveComment}
-                                    disabled={!newComment}
-                                >Save</Button>
-                            </ButtonToolbar>
+                            <Comment.New onSave={this.handleSaveComment} />
                             <hr />
                             {comments.map(comment => <Comment
                                 key={comment.id}
-                                {...comment}
-                                onUpdate={this.handleUpdateComment}
-                                onDelete={this.handleDeleteComment} />)}
+                                data={comment}
+                                onAddAttachment={this.handleAttachFileToComment}
+                                onDelete={this.handleDeleteComment}
+                                onDownloadAttachment={onDownloadAttachment}
+                                onRemoveAttachment={onDeleteAttachment}
+                                onSaveAttachment={onSaveAttachment}
+                                onUpdate={this.handleUpdateComment} />)}
                         </Panel.Body>
                     </Panel>
                     : null}

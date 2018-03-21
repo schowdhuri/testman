@@ -1,112 +1,23 @@
+const { ArrayCollection } = require("wetland");
 const parse = require("csv-parse");
 
 const TestCase = require("../models/TestCase");
-const TestPlan = require("../models/TestPlan");
-const Comment = require("../models/Comment");
-const Defect = require("../models/Defect");
 
 const dateFormat = require("../../common/utils/dateFormat");
 const HttpError = require("../helpers/HttpError");
-
-const _getComments = async (testCaseID, manager) => {
-    const repository = manager.getRepository(Comment);
-    const comments = await repository.find({
-        "tc.id": testCaseID
-    }, {
-        populate: [ {"testcases": "tc"}, "content", "user" ]
-    });
-    if(!comments)
-        return [];
-
-    return comments
-        .map(c => {
-            const user = c.user ? {
-                id: c.user.id,
-                name: c.user.name,
-                email: c.user.email
-            } : null;
-            return {
-                id: c.id,
-                content: c.content && c.content.value,
-                created: c.created,
-                modified: c.modified,
-                user
-            };
-        })
-        .filter(c => c.content);
-};
-
-const _getDefects = async (testCaseID, manager) => {
-    const repository = manager.getRepository(Defect);
-    const qb = repository.getQueryBuilder("d");
-
-    const resArr = await qb
-        .leftJoin("d.testcases", "tc")
-        .select("d")
-        .where({ "tc.id": testCaseID })
-        .getQuery()
-        .execute();
-
-    return resArr.map(res => ({
-        id: res["d.id"],
-        name: res["d.name"],
-        status: res["d.status"]
-    }));
-};
 
 const findAll = async (testPlanId, wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(TestCase);
 
-    const qb = repository.getQueryBuilder("tc");
-    const resArr = await qb
-        .leftJoin("tc.testplan", "tp")
-        .leftJoin("tc.defects", "def")
-        .leftJoin("tc.user", "user")
-        .select("tc", "tp.id", "def", "user")
-        .where({ "tp.id": testPlanId })
-        .getQuery()
-        .getResult();
-
-    if(!resArr) {
-        return [];
-    }
-
-    const testCases = resArr.map(tc => {
-        const testCase = {
-            ...tc,
-            created: dateFormat(tc.created),
-            modified: dateFormat(tc.modified),
-            testPlan: tc.testplan.id
-        };
-        delete testCase.testplan;
-        return testCase;
-    });
-
-    for(let i=0; i<testCases.length; i++) {
-        const comments = await _getComments(testCases[i].id, manager);
-        testCases[i].comments = comments.map(c => c.content);
-    }
-
-    return testCases;
+    return await repository.findByTestPlan(testPlanId);
 };
 
 const findById = async (id, wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(TestCase);
 
-    const testCase = await repository.findOne(id, {
-        populate: [ "description", "testplan", "defects", "user" ]
-    });
-
-    testCase.created = dateFormat(testCase.created);
-    testCase.modified = dateFormat(testCase.modified);
-
-    const comments = await _getComments(testCase.id, manager);
-    return {
-        ...testCase,
-        comments
-    };
+    return await repository.getDetails(id);
 };
 
 const create = async (testPlanId, obj, wetland, user) => {
@@ -127,9 +38,12 @@ const create = async (testPlanId, obj, wetland, user) => {
     };
     const manager  = wetland.getManager();
     const populator = wetland.getPopulator(manager);
+    const repository = manager.getRepository(TestCase);
+
     const testCase = populator.assign(TestCase, data);
     await manager.persist(testCase).flush();
-    return testCase;
+
+    return await repository.getDetails(testCase.id);
 };
 
 const bulkCreate = async (testPlanId, file, wetland, user) => {
@@ -199,33 +113,37 @@ const update = async (id, data, wetland, user) => {
     const populator = wetland.getPopulator(manager);
     const uow = manager.getUnitOfWork();
 
-    let testCase = repository.findOne(id, {
-        populate: ["description"]
+    let testCase = await repository.findOne(id, {
+        populate: [ "description", "description.attachments" ]
     });
     if(!testCase)
         throw new HttpError(404, `TestCase with id ${id} not found`);
-    try {
-        if(testCase.description) {
-            data.description = {
-                id: testCase.description.id,
-                value: data.description
-            };
-        } else if(data.description) {
-            data.description = {
-                value: data.description
-            };
-        }
-        data.user = {
+
+    const obj = {
+        user: {
             id: user.id
+        }
+    };
+    if(testCase.description) {
+        obj.description = {
+            id: testCase.description.id
         };
-        const updated = populator.assign(TestCase, data, testCase, true);
-        // uow.registerDirty(testCase, [ "description" ]);
-        await manager.flush();
-        return updated;
-    } catch(ex) {
-        console.log(ex);
-        throw ex;
+    } else {
+        obj.description = {};
     }
+    if(data.description) {
+        const arrAttachments = new ArrayCollection();
+        obj.description.value = data.description.value;
+        data.description.attachments.forEach(file => arrAttachments.push({
+            id: file.id
+        }));
+        obj.description.attachments = arrAttachments;
+    }
+
+    const updated = populator.assign(TestCase, obj, testCase, true);
+    await manager.flush();
+
+    return updated;
 };
 
 const remove = async (id, wetland) => {

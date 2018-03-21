@@ -3,12 +3,12 @@ import { call, put, takeEvery } from "redux-saga/effects";
 
 import request from "utils/Shared/request";
 
-import { REQ_SAVE_ATTACH } from "constants/SharedActions";
-import { rcvSaveAttachment, setLoading } from "actions/Shared";
+import { REQ_UPDATE_ATTACH } from "constants/SharedActions";
+import { rcvUpdateAttachment, setLoading } from "actions/Shared";
 
 function* updateAttachment(action) {
     const { attachment } = action;
-    yield put(setLoading(REQ_SAVE_ATTACH, true));
+    yield put(setLoading(REQ_UPDATE_ATTACH, true));
     try {
         const response = yield call(request, {
             url: `/api/attachment/${attachment.id}`,
@@ -18,14 +18,14 @@ function* updateAttachment(action) {
             },
             dataType: "json"
         });
-        yield put(rcvSaveAttachment(response.json));
+        yield put(rcvUpdateAttachment(response.json));
     } catch(ex) {
         console.log(ex);
         Alert.error(ex && ex.text || "Unable to save");
     }
-    yield put(setLoading(REQ_SAVE_ATTACH, false));
+    yield put(setLoading(REQ_UPDATE_ATTACH, false));
 }
 
 export default function* () {
-    yield takeEvery(REQ_SAVE_ATTACH, updateAttachment);
+    yield takeEvery(REQ_UPDATE_ATTACH, updateAttachment);
 };
