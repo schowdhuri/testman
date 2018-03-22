@@ -25,7 +25,7 @@ class TestRun {
         });
         mapping.manyToOne("execcycle", { targetEntity: "ExecCycle", inversedBy: "testruns" });
         mapping.oneToOne("testcase", { targetEntity: "TestCase" });
-        mapping.manyToMany("defects", { targetEntity: "Defect", inversedBy: "testruns" })
+        mapping.manyToMany("defects", { targetEntity: "Defect", inversedBy: "testruns" });
     }
 
     beforeCreate() {

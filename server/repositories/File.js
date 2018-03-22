@@ -28,9 +28,10 @@ class FileRepository extends EntityRepository {
                 options.populate = [ options.populate, "user" ]
         }
         const files = await super.find(criteria, options);
-        console.log("files: ", files)
+
         if(!files)
             return [];
+
         return files.map(file => ({
             ...file,
             created: dateFormat(file.created),

@@ -1,9 +1,5 @@
-const path = require("path");
-const { ArrayCollection } = require("wetland");
-
 const File = require("../models/File");
 
-const dateFormat = require("../../common/utils/dateFormat");
 const HttpError = require("../helpers/HttpError");
 
 const findById = async (id, wetland) => {

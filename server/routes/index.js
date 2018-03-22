@@ -18,7 +18,7 @@ module.exports = app => {
 
     attachmentRoutes(app);
     testPlanRoutes(app);
-	testCaseRoutes(app);
+    testCaseRoutes(app);
     defectRoutes(app);
     commentRoutes(app);
     testRunRoutes(app);

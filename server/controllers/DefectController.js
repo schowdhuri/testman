@@ -4,7 +4,6 @@ const Defect = require("../models/Defect");
 const TestCase = require("../models/TestCase");
 
 const STATES = require("../../common/constants/DefectStates");
-const dateFormat = require("../../common/utils/dateFormat");
 const HttpError = require("../helpers/HttpError");
 
 

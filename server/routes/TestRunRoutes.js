@@ -1,6 +1,7 @@
 "use strict";
 
 const controller = require("../controllers/TestRunController");
+const sendError = require("../helpers/sendHttpError");
 
 const testRunRoutes = app => {
 	app.route("/api/testrun")
@@ -16,7 +17,7 @@ const testRunRoutes = app => {
 				);
 				res.json(result);
 			} catch(ex) {
-				res.status(500).send(ex);
+				sendError(ex, res);
 			}
 		})
 		.post(async (req, res) => {
@@ -28,7 +29,7 @@ const testRunRoutes = app => {
 				);
 				res.json(result);
 			} catch(ex) {
-				res.status(500).send(ex);
+				sendError(ex, res);
 			}
 		})
 		.delete(async (req, res) => {
@@ -39,7 +40,7 @@ const testRunRoutes = app => {
 				);
 				res.json(result);
 			} catch(ex) {
-				res.status(500).send(ex);
+				sendError(ex, res);
 			}
 		});
 
@@ -52,8 +53,7 @@ const testRunRoutes = app => {
 				);
 				res.json(result);
 			} catch(ex) {
-				console.log(ex)
-				res.status(500).send(ex);
+				sendError(ex, res);
 			}
 		})
 		.put(async (req, res) => {
@@ -66,7 +66,7 @@ const testRunRoutes = app => {
 				);
 				res.json(result);
 			} catch(ex) {
-				res.status(500).send(ex);
+				sendError(ex, res);
 			}
 		})
 		.delete(async (req, res) => {
@@ -77,7 +77,7 @@ const testRunRoutes = app => {
 				);
 				res.json(result);
 			} catch(ex) {
-				res.status(500).send(ex);
+				sendError(ex, res);
 			}
 		});
 
@@ -91,7 +91,7 @@ const testRunRoutes = app => {
 				);
 				res.json(result);
 			} catch(ex) {
-				res.status(500).send(ex);
+				sendError(ex, res);
 			}
 		});
 
@@ -105,8 +105,7 @@ const testRunRoutes = app => {
 				);
 				res.json(result);
 			} catch(ex) {
-				console.log("ERR: ", ex)
-				res.status(500).send(ex);
+				sendError(ex, res);
 			}
 		});
 };

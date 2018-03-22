@@ -7,7 +7,8 @@
     "start": "./node_modules/nodemon/bin/nodemon.js app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node_modules/.bin/babel-node node_modules/.bin/webpack --config webpack.config.dev.js",
-    "migrate": "node_modules/.bin/wetland migrator up -r"
+    "migrate": "node_modules/.bin/wetland migrator up -r",
+    "lint": "node_modules/.bin/babel-node npm_scripts/lint.js"
   },
   "author": "Subir Chowdhuri <subir@desdevpro.com>",
   "license": "MIT",
@@ -54,7 +55,11 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-react-hmre": "^1.1.1",
     "babel-preset-stage-1": "^6.24.1",
+    "chalk": "^2.3.2",
     "css-loader": "^0.28.9",
+    "eslint": "^4.19.1",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-react": "^7.7.0",
     "exports-loader": "^0.6.4",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.6",

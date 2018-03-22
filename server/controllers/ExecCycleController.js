@@ -101,7 +101,6 @@ const update = async (id, data, wetland) => {
         .filter(tr => !testCases.find(tc => tc.id==tr.testCase));
 
     // remove unused testRuns
-    const testRunRepo = manager.getRepository(TestRun);
     removedTestRuns.forEach(tr => manager.remove(tr));
 
     // create new testRuns
@@ -162,7 +161,7 @@ const startExec = async (id, wetland) => {
     const repository = manager.getRepository(ExecCycle);
 
     const execCycle = await repository.findOne(id);
-    if(!execCycles)
+    if(!execCycle)
         throw new HttpError(404, `ExecCycle with id ${id} not found`);
     if(execCycle.status != "New")
         return Promise.reject("Execution can't be started");

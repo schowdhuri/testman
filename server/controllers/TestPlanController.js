@@ -30,7 +30,7 @@ const findAll = async (wetland) => {
     const result = [];
     for(let i=0; i<testPlans.length; i++) {
         const testCases = await _getTestCases(testPlans[i].id, manager);
-        const { testcases, ...others } = testPlans[i];
+        const { testcases, ...others } = testPlans[i]; // eslint-disable-line no-unused-vars
         result.push({
             ...others,
             testCases: testCases.map(tc => tc && tc.id)

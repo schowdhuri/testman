@@ -63,7 +63,7 @@ class DefectRepository extends EntityRepository {
                 id: tr.testcase.id
             }
         }));
-        const { testcases, testruns, ...others } = defect;
+        const { testcases, testruns, ...others } = defect; // eslint-disable-line no-unused-vars
         const manager = this.getEntityManager();
         const commentRepo = manager.getRepository(Comment);
         const fileRepo = manager.getRepository(File);
@@ -102,7 +102,7 @@ class DefectRepository extends EntityRepository {
 
 
         defects = defects.map(defect => {
-            const { description, testcases, ...others } = defect;
+            const { description, testcases, ...others } = defect; // eslint-disable-line no-unused-vars
             const d = {
                 ...others,
                 testCases: defect.testcases.map(t => t.id),

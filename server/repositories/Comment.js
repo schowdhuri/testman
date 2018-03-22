@@ -1,6 +1,5 @@
 const { EntityRepository } = require("wetland");
 
-const Comment = require("../models/Comment");
 const File = require("../models/File");
 
 const dateFormat = require("../../common/utils/dateFormat");
@@ -59,7 +58,7 @@ class CommentRepository extends EntityRepository {
             name: d.name
         }));
 
-        const { testcases, defects, ...others } = comment;
+        const { testcases, defects, ...others } = comment; // eslint-disable-line no-unused-vars
         const manager = this.getEntityManager();
         const fileRepo = manager.getRepository(File);
         const attachments = await this.getAttachments(comment, fileRepo);

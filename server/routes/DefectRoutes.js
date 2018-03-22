@@ -3,7 +3,6 @@
 const controller = require("../controllers/DefectController");
 const sendError = require("../helpers/sendHttpError");
 
-const createUploader = require("../helpers/multer");
 
 const defectRoutes = app => {
     app.route("/api/defect")
@@ -24,7 +23,6 @@ const defectRoutes = app => {
                 );
                 res.json(result);
             } catch(ex) {
-                console.log(ex)
                 sendError(ex, res);
             }
         })

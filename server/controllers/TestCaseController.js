@@ -3,7 +3,6 @@ const parse = require("csv-parse");
 
 const TestCase = require("../models/TestCase");
 
-const dateFormat = require("../../common/utils/dateFormat");
 const HttpError = require("../helpers/HttpError");
 
 const findAll = async (testPlanId, wetland) => {
@@ -59,12 +58,15 @@ const bulkCreate = async (testPlanId, file, wetland, user) => {
         });
         parser.on("readable", () => {
             let row;
-            while(row = parser.read()) {
+            do {
+                row = parser.read();
+                if(!row)
+                    break;
                 testCases.push({
                     name: row[0].trim(),
                     description: row[1].trim()
                 });
-            }
+            } while(row);
         })
         .on("finish", function() {
             resolve(testCases);
@@ -111,7 +113,6 @@ const update = async (id, data, wetland, user) => {
     const manager  = wetland.getManager();
     const repository = manager.getRepository(TestCase);
     const populator = wetland.getPopulator(manager);
-    const uow = manager.getUnitOfWork();
 
     let testCase = await repository.findOne(id, {
         populate: [ "description", "description.attachments" ]
@@ -156,7 +157,8 @@ const remove = async (id, wetland) => {
     const testCase = await repository.findOne(id)
     if(!testCase)
         throw new HttpError(404, `TestCase with id ${id} not found`);
-    return manager.remove(testCase).flush();
+    await manager.remove(testCase).flush();
+
     return testCase;
 };
 

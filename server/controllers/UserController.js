@@ -1,5 +1,3 @@
-const { ArrayCollection } = require("wetland");
-
 const User = require("../models/User");
 
 const dateFormat = require("../../common/utils/dateFormat");

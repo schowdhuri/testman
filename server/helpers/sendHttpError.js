@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 const HttpError = require("./HttpError");
 
 const sendHTTPError = (err, res) => {

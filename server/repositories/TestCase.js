@@ -54,7 +54,7 @@ class TestCaseRepository extends EntityRepository {
             name: d.name,
             status: d.status
         }));
-        const { defects, ...others } = testCase;
+        const { defects, ...others } = testCase; // eslint-disable-line no-unused-vars
         const manager = this.getEntityManager();
         const commentRepo = manager.getRepository(Comment);
         const fileRepo = manager.getRepository(File);
@@ -92,7 +92,7 @@ class TestCaseRepository extends EntityRepository {
             return [];
 
         testCases = testCases.map(testCase => {
-            const { comments, testplan, ...others } = testCase;
+            const { comments, testplan, ...others } = testCase; // eslint-disable-line no-unused-vars
             const t = {
                 ...others,
                 testplan: testPlanId,
