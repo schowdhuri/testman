@@ -1,12 +1,10 @@
 import Alert from "react-s-alert";
-import { call, put, take, takeEvery } from "redux-saga/effects";
-
-import request from "utils/Shared/request";
+import { put, take, takeEvery } from "redux-saga/effects";
 
 import { REQ_IMPORT_TESTS } from "constants/TestSelectorActions";
 import { RCV_TEST_CASES } from "constants/TestDesignActions";
 
-import { rcvImportTests, resetSelection } from "actions/TestSelector";
+import { rcvImportTests } from "actions/TestSelector";
 import { reqTestCases } from "actions/TestDesign";
 import { setLoading } from "actions/Shared";
 
@@ -40,7 +38,7 @@ function* importTests(action) {
         yield put(rcvImportTests(tests));
         // Alert.success(`Imported ${tests.length} tests`);
     } catch(ex) {
-        console.log(ex);
+        console.log(ex); // eslint-disable-line no-console
         Alert.error("Failed to import test. " + (ex && ex.text || ""));
         yield put(setLoading(REQ_IMPORT_TESTS, false));
     }

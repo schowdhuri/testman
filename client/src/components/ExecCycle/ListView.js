@@ -6,7 +6,7 @@ import TestRunList from "./TestRunListContainer";
 
 class ListView extends React.Component {
     render() {
-        const { mode, execCycleId } = this.props;
+        const { execCycleId } = this.props;
         return (<div className="exec-cycles list">
             <ExecCycles execCycleId={execCycleId} />
             {execCycleId
@@ -18,7 +18,7 @@ class ListView extends React.Component {
     }
 }
 ListView.propTypes = {
-    mode: PropTypes.string,
+    execCycleId: PropTypes.number,
     testID: PropTypes.number
 };
 

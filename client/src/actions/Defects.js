@@ -43,27 +43,6 @@ export const changeDefectStatus = value => ({
     value
 });
 
-export const reqSaveDefectComment = (defectId, comment) => ({
-    type: ACTIONS.REQ_SAVE_DF_COMMENT,
-    defectId,
-    comment
-});
-
-export const rcvSaveDefectComment = value => ({
-    type: ACTIONS.RCV_SAVE_DF_COMMENT,
-    value
-});
-
-export const reqDeleteComment = id => ({
-    type: ACTIONS.REQ_DELETE_COMMENT,
-    id
-});
-
-export const rcvDeleteComment = id => ({
-    type: ACTIONS.RCV_DELETE_COMMENT,
-    id
-});
-
 export const reqSaveDefect = (defect, redirect=false) => ({
     type: ACTIONS.REQ_SAVE_DEFECT,
     defect,

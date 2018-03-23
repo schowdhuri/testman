@@ -40,7 +40,11 @@ const DefectListItem = props => {
     </tr>);
 };
 DefectListItem.propTypes = {
-
+    defect: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    }),
+    onToggle: PropTypes.func.isRequired
 };
 
 export default DefectListItem;

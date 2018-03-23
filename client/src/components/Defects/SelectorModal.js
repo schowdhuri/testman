@@ -12,7 +12,7 @@ class SelectorModal extends React.Component {
     handleInit() {
         // this.props.onInit(this.props.execCycle);
     }
-    handleSave(selectedItems, preSelectedItems) {
+    handleSave(selectedItems) {
         this.props.onSave(selectedItems);
     }
     render() {
@@ -33,5 +33,22 @@ class SelectorModal extends React.Component {
             onSave={this.handleSave} />);
     }
 }
+SelectorModal.propTypes = {
+    allowAdd: PropTypes.bool,
+    allowAddFolder: PropTypes.bool,
+    importActionContract: PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        key: PropTypes.string.isRequired,
+        extra: PropTypes.shape({
+            execCycle: PropTypes.shape({
+                id: PropTypes.number,
+                name: PropTypes.string
+            })
+        }).isRequired
+    }),
+    onClose: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
+    show: PropTypes.bool.isRequired
+};
 
 export default SelectorModal;

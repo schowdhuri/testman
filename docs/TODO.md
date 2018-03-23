@@ -37,5 +37,5 @@
 ## Workflow/Build Process
 
 - Hot reload
-- ESLint
+- ESLint [DONE]
 - Prettier (?)

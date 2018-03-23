@@ -19,7 +19,7 @@ function* getTestCases(action) {
         const testCase = response.json;
         yield put(rcvTestCase(parseTestCase(testCase)));
     } catch(ex) {
-        console.log(ex);
+        console.log(ex); // eslint-disable-line no-console
         Alert.error("Failed to fetch tests");
     }
     yield put(setLoading(REQ_TEST_CASE, false));

@@ -46,6 +46,8 @@ class UnselectedItem extends React.Component {
     }
 }
 UnselectedItem.propTypes = {
+    allowAdd: PropTypes.bool,
+    allowAddFolder: PropTypes.bool,
     item: PropTypes.shape({
         name: PropTypes.string.isRequired,
         id: PropTypes.oneOfType([

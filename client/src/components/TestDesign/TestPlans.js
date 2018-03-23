@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 
 import EditTestPlan from "./AddEditTestPlan";
 import TestPlansToolbar from "./TestPlansToolbar";
@@ -64,7 +63,12 @@ class TestPlans extends React.Component {
 }
 TestPlans.propTypes = {
     reqTestPlans: PropTypes.func.isRequired,
-    onSelect: PropTypes.func.isRequired
+    onSave: PropTypes.func.isRequired,
+    onSelect: PropTypes.func.isRequired,
+    testPlans: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    }))
 };
 
 export default TestPlans;

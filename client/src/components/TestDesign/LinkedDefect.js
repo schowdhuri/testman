@@ -3,12 +3,9 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Button } from "react-bootstrap";
 
-import DEF_STATES from "common/constants/DefectStates";
-import DEF_COLORS from "constants/DefectStateColors";
 
 const LinkedDefect = props => {
     const {
-        allowChangeStatus=false,
         allowDelete=false,
         defect,
         onDelete
@@ -46,7 +43,12 @@ const LinkedDefect = props => {
     </tr>);
 };
 LinkedDefect.propTypes = {
-
+    allowDelete: PropTypes.bool,
+    defect: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    }),
+    onDelete: PropTypes.func.isRequired
 };
 
 export default LinkedDefect;

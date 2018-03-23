@@ -8,10 +8,10 @@ import {
     redirectToTestDesign,
     reqAttachToTestCaseComment,
     reqDeleteAttachment,
+    reqDeleteComment,
     reqDownloadAttachment,
     reqSaveTestCaseComment,
-    reqUpdateAttachment,
-    reqUsers
+    reqUpdateAttachment
 } from "actions/Shared";
 
 import { getTestCaseAddEditState } from "selectors/TestDesign";
@@ -34,9 +34,6 @@ const mapDispatchToProps = dispatch => ({
         dispatch(actions.resetAddEdit());
         dispatch(redirectToTestDesign());
     },
-    onChangeComment(value) {
-        dispatch(actions.changeTCComment(value));
-    },
     onChangeDescription(val) {
         dispatch(actions.changeTCDescription(val));
     },
@@ -50,7 +47,7 @@ const mapDispatchToProps = dispatch => ({
         dispatch(reqDeleteAttachment(attachment));
     },
     onDeleteComment(id) {
-        dispatch(actions.reqDeleteComment(id));
+        dispatch(reqDeleteComment(id));
     },
     onDownloadAttachment(attachment) {
         dispatch(reqDownloadAttachment(attachment));
@@ -79,6 +76,6 @@ const mergeProps = (ownProps, stateProps, dispatchProps) => {
     };
 };
 
-const AddEditTestCaseContainer = connect(mapStateToProps, mapDispatchToProps)(AddEditTestCase);
+const AddEditTestCaseContainer = connect(mapStateToProps, mapDispatchToProps, mergeProps)(AddEditTestCase);
 
 export default AddEditTestCaseContainer;

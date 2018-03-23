@@ -16,7 +16,7 @@ function* getExecCycles() {
         });
         yield put(rcvExecCycles(response.json));
     } catch(ex) {
-        console.log(ex);
+        console.log(ex); // eslint-disable-line no-console
         Alert.error("Failed to fetch execution cycles. " + (ex && ex.text || ""));
     }
     yield put(setLoading(REQ_EXEC_CYCLES, false));

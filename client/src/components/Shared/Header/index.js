@@ -55,7 +55,7 @@ class Header extends React.Component {
     }
 }
 Header.propTypes = {
-
+    navId: PropTypes.string
 };
 
 export default Header;

@@ -70,10 +70,17 @@ class TestRunToolbar extends React.Component {
     }
 }
 TestRunToolbar.propTypes = {
+    allowDelete: PropTypes.bool,
+    allowEnd: PropTypes.bool,
+    allowStart: PropTypes.bool,
     execCycle: PropTypes.shape({
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired
-    })
+    }),
+    onAdd: PropTypes.func.isRequired,
+    onEnd: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    onStart: PropTypes.func.isRequired
 };
 
 export default TestRunToolbar;

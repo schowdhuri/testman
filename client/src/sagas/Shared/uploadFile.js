@@ -1,5 +1,5 @@
 import Alert from "react-s-alert";
-import { all, call, put, takeEvery } from "redux-saga/effects";
+import { all, put, takeEvery } from "redux-saga/effects";
 
 import request from "utils/Shared/request";
 
@@ -23,7 +23,7 @@ function* uploadFiles(action) {
         const results = yield all(pArr);
         yield put(rcvUploadFiles(results.map(response => response.json)));
     } catch(ex) {
-        console.log(ex);
+        console.log(ex); // eslint-disable-line no-console
         Alert.error(ex && ex.text || "Upload failed");
     }
     yield put(setLoading(REQ_UPLOAD_FILES, false));

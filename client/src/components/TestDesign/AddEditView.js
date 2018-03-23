@@ -2,19 +2,19 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import AddEditTestCase from "./AddEditTestCaseContainer";
-import TestPlans from "./TestPlansContainer";
+
 
 class AddEditView extends React.Component {
     render() {
-        const { mode, testID, testPlanID } = this.props;
+        const { testID, testPlanID } = this.props;
         return (<div className="test-design add-edit">
             <AddEditTestCase testPlanID={testPlanID} testID={testID} />
         </div>);
     }
 }
 AddEditView.propTypes = {
-    mode: PropTypes.string,
-    testID: PropTypes.number
+    testID: PropTypes.number,
+    testPlanID: PropTypes.number
 };
 
 export default AddEditView;

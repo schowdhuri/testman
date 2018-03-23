@@ -16,7 +16,7 @@ function* getTestPlans() {
         });
         yield put(rcvTestPlans(response.json));
     } catch(ex) {
-        console.log(ex);
+        console.log(ex); // eslint-disable-line no-console
         Alert.error("Failed to fetch test plans. " + (ex && ex.text || ""));
     }
     yield put(setLoading(REQ_TEST_PLANS, false));

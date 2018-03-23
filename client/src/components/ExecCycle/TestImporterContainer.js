@@ -24,12 +24,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
             ownProps.onClose();
     },
     onInit(execCycle) {
-        // dispatch(actions.initEditExecCycle(execCycle));
         dispatch(actions.reqExecCycle(execCycle.id));
-    },
-    onSave(execCycle, selectedItems) {
-        // dispatch(actions.reqImportTests(execCycle, selectedItems));
-        console.log("save: ", selectedItems)
     }
 });
 

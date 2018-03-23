@@ -1,3 +1,4 @@
+import Alert from "react-s-alert";
 import React from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
@@ -9,8 +10,6 @@ import {
     FormGroup,
     Well
 } from "react-bootstrap";
-
-import createTempAttachment from "utils/Shared/createTempAttachment";
 
 import Attachment from "components/Shared/Attachment";
 import NewComment from "./NewComment";
@@ -76,7 +75,6 @@ class Comment extends React.Component {
         const { data, onDownloadAttachment, onSaveAttachment } = this.props;
         const {
             attachments,
-            created,
             modified,
             content,
             user
@@ -155,7 +153,9 @@ class Comment extends React.Component {
     }
 }
 Comment.propTypes = {
+    content: PropTypes.string,
     data: PropTypes.shape({
+        id: PropTypes.number,
         attachments: PropTypes.arrayOf(PropTypes.shape({
             id: PropTypes.number,
             name: PropTypes.string,
@@ -171,7 +171,9 @@ Comment.propTypes = {
     }).isRequired,
     onAddAttachment: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
+    onDownloadAttachment: PropTypes.func.isRequired,
     onRemoveAttachment: PropTypes.func.isRequired,
+    onSaveAttachment: PropTypes.func.isRequired,
     onUpdate: PropTypes.func.isRequired
 }
 

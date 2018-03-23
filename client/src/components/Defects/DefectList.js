@@ -1,9 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import {
-    Table
-} from "react-bootstrap";
+import { Table } from "react-bootstrap";
 
 import ListItem from "./DefectListItem";
 import Toolbar from "./Toolbar";
@@ -33,8 +30,7 @@ class DefectList extends React.Component {
         const {
             allowDelete,
             allSelected,
-            defects,
-            selected
+            defects
         } = this.props;
         return (<div className="defects-list">
             <Toolbar allowDelete={allowDelete} onDelete={this.bulkDelete} />
@@ -65,5 +61,21 @@ class DefectList extends React.Component {
         </div>);
     }
 }
+DefectList.propTypes = {
+    allowDelete: PropTypes.bool,
+    allSelected: PropTypes.bool,
+    defects: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    })),
+    fetchDefects: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    onToggleSelect: PropTypes.func.isRequired,
+    onToggleSelectAll: PropTypes.func.isRequired,
+    selected: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    }))
+};
 
 export default DefectList;

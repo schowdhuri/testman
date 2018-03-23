@@ -24,7 +24,7 @@ function* delTestRuns(action) {
         Alert.success(`Deleted ${idArr.length} tests`);
         yield put(rcvDeleteTestRuns(response.json));
     } catch(ex) {
-        console.log(ex);
+        console.log(ex); // eslint-disable-line no-console
         Alert.error("Failed to delete tests. " + (ex && ex.text || ""));
     }
     yield put(setLoading(REQ_DEL_TEST_RUNS, false));

@@ -16,7 +16,8 @@ class TestDesign extends React.Component {
 }
 TestDesign.propTypes = {
     mode: PropTypes.string,
-    testID: PropTypes.number
+    testID: PropTypes.number,
+    testPlanID: PropTypes.number
 };
 
 export default TestDesign;

@@ -9,7 +9,7 @@ class Description extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: "",
+            value: props.value || "",
             editMode: false,
             mouseDownInside: false
         };
@@ -23,7 +23,6 @@ class Description extends React.Component {
         this.onClickOutside = this.onClickOutside.bind(this);
     }
     componentDidMount() {
-        this.setState({ value: this.props.value });
         document.addEventListener("mousedown", this.onClickOutside, false);
     }
     componentWillReceiveProps(nextProps) {
@@ -46,7 +45,6 @@ class Description extends React.Component {
             this.props.onChange(ev.target.value);
     }
     handleEdit(ev) {
-        console.log("clicked")
         ev.preventDefault();
         this.setState({ editMode: true });
     }
@@ -110,5 +108,11 @@ class Description extends React.Component {
         </div>);
     }
 }
+Description.propTypes = {
+    onChange: PropTypes.func.isRequired,
+    onUpdate: PropTypes.func.isRequired,
+    placeholder: PropTypes.string,
+    value: PropTypes.string
+};
 
 export default Description;

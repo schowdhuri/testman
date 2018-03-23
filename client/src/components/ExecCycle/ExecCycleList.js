@@ -83,8 +83,19 @@ class ExecCycleList extends React.Component {
     }
 }
 ExecCycleList.propTypes = {
+    execCycleId: PropTypes.number,
+    execCycles: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    })),
+    onDeleteExecCycle: PropTypes.func.isRequired,
+    onSelect: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
     reqExecCycles: PropTypes.func.isRequired,
-    onSelect: PropTypes.func.isRequired
+    selected: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    })
 };
 
 export default ExecCycleList;

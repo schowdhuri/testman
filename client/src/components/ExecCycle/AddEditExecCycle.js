@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import Alert from "react-s-alert";
 import {
     Button,
-    ButtonToolbar,
     ControlLabel,
     FormControl,
     FormGroup,
@@ -70,7 +69,6 @@ class AddEditExecCycle extends React.Component {
                 </FormGroup>
             </Modal.Body>
             <Modal.Footer>
-                {!id || <Button bsStyle="danger" onClick={this.handleDelete}>Delete</Button>}
                 <Button onClick={this.handleClose}>Cancel</Button>
                 <Button bsStyle="success" onClick={this.handleSave}>Save</Button>
             </Modal.Footer>
@@ -78,7 +76,17 @@ class AddEditExecCycle extends React.Component {
     }
 }
 AddEditExecCycle.propTypes = {
-
+    show: PropTypes.bool.isRequired,
+    execCycle: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        testRuns: PropTypes.arrayOf(PropTypes.shape({
+            id: PropTypes.number.isRequired,
+            name: PropTypes.string.isRequired
+        }))
+    }),
+    onClose: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired
 };
 
 export default AddEditExecCycle;

@@ -31,7 +31,8 @@ class DefectToolbar extends React.Component {
     }
 }
 DefectToolbar.propTypes = {
-
+    allowDelete: PropTypes.bool,
+    onDelete: PropTypes.func.isRequired
 };
 
 export default DefectToolbar;

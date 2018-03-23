@@ -40,8 +40,8 @@ class TestRunList extends React.Component {
     hideSelector() {
         this.toggleSelector(false);
     }
-    importTests(data) {
-        console.log("import: ", data);
+    importTests() {
+        // console.log("import: ", data);
     }
     showSelector() {
         this.toggleSelector(true);
@@ -111,5 +111,34 @@ class TestRunList extends React.Component {
         </div>);
     }
 }
+TestRunList.propTypes = {
+    allowDeleteTestRuns: PropTypes.bool,
+    allowEndExec: PropTypes.bool,
+    allowStartExec: PropTypes.bool,
+    allTestRunsSelected: PropTypes.bool,
+    execCycle: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    }),
+    execCycleId: PropTypes.number,
+    fetchTestRuns: PropTypes.func.isRequired,
+    isInProgress: PropTypes.bool,
+    onChangeTestRunStatus: PropTypes.func.isRequired,
+    onDeleteTestRuns: PropTypes.func.isRequired,
+    onEndExec: PropTypes.func.isRequired,
+    onStartExec: PropTypes.func.isRequired,
+    onToggleImportDialog: PropTypes.func.isRequired,
+    onToggleSelect: PropTypes.func.isRequired,
+    onToggleSelectAll: PropTypes.func.isRequired,
+    selectedTestRuns: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    })),
+    showImportDialog: PropTypes.bool,
+    testRuns: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    }))
+};
 
 export default TestRunList;

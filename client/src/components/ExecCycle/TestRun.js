@@ -4,14 +4,9 @@ import { Link } from "react-router-dom";
 import {
     Button,
     ButtonToolbar,
-    Col,
-    ControlLabel,
     DropdownButton,
-    FormControl,
-    FormGroup,
     MenuItem,
     Panel,
-    Row,
     Table
 } from "react-bootstrap";
 
@@ -67,7 +62,7 @@ class TestRun extends React.Component {
             showDefectModal: false
         });
     }
-    hideSelectDefectModal(defects) {
+    hideSelectDefectModal() {
         this.setState({
             showSelectDefectModal: false
         });
@@ -85,8 +80,6 @@ class TestRun extends React.Component {
     render() {
         const {
             isInProgress,
-            mode,
-            testRunId,
             testRun
         } = this.props;
         const { defects, testCase } = testRun;
@@ -193,8 +186,19 @@ class TestRun extends React.Component {
     }
 }
 TestRun.propTypes = {
-    mode: PropTypes.string,
-    testRunId: PropTypes.number
+    isInProgress: PropTypes.bool,
+    testRunId: PropTypes.number,
+    execCycleId: PropTypes.number,
+    onCancel: PropTypes.func.isRequired,
+    onChangeStatus: PropTypes.func.isRequired,
+    onInit: PropTypes.func.isRequired,
+    onLinkDefects: PropTypes.func.isRequired,
+    onSaveDefect: PropTypes.func.isRequired,
+    onUnlinkDefect: PropTypes.func.isRequired,
+    testRun: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    })
 };
 
 export default TestRun;

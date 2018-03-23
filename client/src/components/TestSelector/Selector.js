@@ -17,7 +17,7 @@ class Selector extends React.Component {
         this.handleSave = this.handleSave.bind(this);
         this.handleEnter = this.handleEnter.bind(this);
     }
-    componentDidMount() {
+    componentWillMount() {
         this.setState({
             preSelectedItems: this.props.selectedItems
         });
@@ -48,7 +48,7 @@ class Selector extends React.Component {
             selectedItems,
             show
         } = this.props;
-        
+
         return (<Modal show={show} onEnter={this.handleEnter} className="test-case-selector-modal">
             <Modal.Header>
                 <Modal.Title>Import Test Cases</Modal.Title>
@@ -75,5 +75,37 @@ class Selector extends React.Component {
         </Modal>);
     }
 }
+Selector.propTypes = {
+    allowAdd: PropTypes.bool,
+    allowAddFolder: PropTypes.bool,
+    importActionContract: PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        key: PropTypes.string.isRequired,
+        extra: PropTypes.shape({
+            execCycle: PropTypes.shape({
+                id: PropTypes.number,
+                name: PropTypes.string
+            })
+        }).isRequired
+    }),
+    items: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    })),
+    onChangePath: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired,
+    onDeselect: PropTypes.func.isRequired,
+    onInit: PropTypes.func.isRequired,
+    onDeselectAll: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
+    onSelect: PropTypes.func.isRequired,
+    onSelectAll: PropTypes.func.isRequired,
+    readOnly: PropTypes.bool,
+    selectedItems: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    })),
+    show: PropTypes.bool
+};
 
 export default Selector;

@@ -2,10 +2,10 @@ import { connect } from "react-redux";
 import TestPlans from "./TestPlans";
 
 import * as actions from "actions/TestDesign";
-import { redirectToTestPlan } from "actions/Shared";
 
 import { getTestPlans } from "selectors/TestDesign";
 import { isLoading } from "selectors/Shared";
+
 
 const mapStateToProps = state => ({
     isLoading: isLoading(state),

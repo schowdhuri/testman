@@ -19,7 +19,7 @@ function* getTestRun(action) {
         });
         yield put(rcvTestRun(response.json));
     } catch(ex) {
-        console.log(ex);
+        console.log(ex); // eslint-disable-line no-console
         Alert.error("Failed to fetch test. " + (ex && ex.text || ""));
     }
     yield put(setLoading(REQ_TEST_RUN, false));

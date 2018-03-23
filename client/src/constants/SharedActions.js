@@ -17,3 +17,5 @@ export const REQ_ATTACH_TO_COMM     = "REQ_ATTACH_TO_COMM";
 export const RCV_ATTACH_TO_COMM     = "RCV_ATTACH_TO_COMM";
 export const REQ_SAVE_COMMENT       = "REQ_SAVE_COMMENT";
 export const RCV_SAVE_COMMENT       = "RCV_SAVE_COMMENT";
+export const REQ_DELETE_COMMENT     = "REQ_DELETE_COMMENT";
+export const RCV_DELETE_COMMENT     = "RCV_DELETE_COMMENT";

@@ -59,6 +59,8 @@ class ListA extends React.Component {
     }
 }
 ListA.propTypes = {
+    allowAdd: PropTypes.bool,
+    allowAddFolder: PropTypes.bool,
     allowSelectAll: PropTypes.bool,
     filterText: PropTypes.string,
     onFilter: PropTypes.func.isRequired,

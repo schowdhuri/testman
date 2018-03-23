@@ -1,5 +1,5 @@
 import Alert from "react-s-alert";
-import { call, put, take, takeEvery } from "redux-saga/effects";
+import { call, put, takeEvery } from "redux-saga/effects";
 
 import request from "utils/Shared/request";
 
@@ -17,7 +17,7 @@ function* getExecCycle(action) {
         });
         yield put(rcvExecCycle(response.json));
     } catch(ex) {
-        console.log(ex);
+        console.log(ex); // eslint-disable-line no-console
         Alert.error("Failed to fetch execution cycle");
     }
     yield put(setLoading(REQ_EXEC_CYCLE, false));

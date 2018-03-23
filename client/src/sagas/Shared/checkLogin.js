@@ -1,4 +1,3 @@
-import Alert from "react-s-alert";
 import { call, put, takeEvery } from "redux-saga/effects";
 
 import request from "utils/Shared/request";
@@ -15,8 +14,7 @@ function* checkLogin() {
         });
         yield put(rcvLoginStatus(true, response.json));
     } catch(ex) {
-        console.log(ex);
-        // Alert.error("Failed to fetch users");
+        console.log(ex); // eslint-disable-line no-console
         yield put(rcvLoginStatus(false, null));
     }
     yield put(setLoading(REQ_LOGIN_STATUS, false));

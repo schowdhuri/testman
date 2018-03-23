@@ -39,10 +39,9 @@ function* saveComment(action) {
                 dataType: "json"
             });
         }
-        console.log(entity, entityId)
         yield put(rcvSaveComment(response.json, entity, entityId));
     } catch(ex) {
-        console.log(ex);
+        console.log(ex); // eslint-disable-line no-console
         Alert.error("Failed to save comment");
     }
     yield put(setLoading(REQ_SAVE_COMMENT, false));

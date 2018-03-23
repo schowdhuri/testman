@@ -5,6 +5,7 @@ import {
     redirectToDefects,
     reqAttachToDefectComment,
     reqDeleteAttachment,
+    reqDeleteComment,
     reqDownloadAttachment,
     reqSaveDefectComment,
     reqUpdateAttachment,
@@ -57,7 +58,7 @@ const mapDispatchToProps = dispatch => ({
         dispatch(reqDeleteAttachment(attachment));
     },
     onDeleteComment(id) {
-        dispatch(actions.reqDeleteComment(id));
+        dispatch(reqDeleteComment(id));
     },
     onDeleteTestCase(id) {
         dispatch(actions.deleteTestCase(id));
@@ -80,14 +81,6 @@ const mapDispatchToProps = dispatch => ({
         dispatch(reqSaveDefectComment(comment, defectId));
     }
 });
-
-const mergeProps = (ownProps, stateProps, dispatchProps) => {
-    return {
-        ...ownProps,
-        ...stateProps,
-        ...dispatchProps
-    };
-};
 
 const AddEditDefectContainer = connect(mapStateToProps, mapDispatchToProps)(AddEditDefect);
 

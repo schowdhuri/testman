@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 
 import AddEditExecCycle from "./AddEditExecCycle";
+
 
 class ExecCycleToolbar extends React.Component {
     constructor(props) {
@@ -38,5 +38,8 @@ class ExecCycleToolbar extends React.Component {
         </div>);
     }
 }
+ExecCycleToolbar.propTypes = {
+    onSave: PropTypes.func.isRequired
+};
 
 export default ExecCycleToolbar;

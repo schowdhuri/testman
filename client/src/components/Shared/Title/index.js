@@ -7,7 +7,7 @@ class Title extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: "",
+            value: props.value || "",
             editMode: false,
             mouseDownInside: false
         };
@@ -21,7 +21,6 @@ class Title extends React.Component {
         this.onClickOutside = this.onClickOutside.bind(this);
     }
     componentDidMount() {
-        this.setState({ value: this.props.value });
         document.addEventListener("mousedown", this.onClickOutside, false);
     }
     componentWillReceiveProps(nextProps) {
@@ -96,5 +95,11 @@ class Title extends React.Component {
         </div>);
     }
 }
+Title.propTypes = {
+    onChange: PropTypes.func.isRequired,
+    onUpdate: PropTypes.func.isRequired,
+    placeholder: PropTypes.string,
+    value: PropTypes.string
+};
 
 export default Title;

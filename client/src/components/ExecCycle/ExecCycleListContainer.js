@@ -2,10 +2,10 @@ import { connect } from "react-redux";
 import ExecCycleList from "./ExecCycleList";
 
 import * as actions from "actions/ExecCycle";
-import { redirectToTestPlan } from "actions/Shared";
 
 import { getExecCycles, getSelectedExecCycle } from "selectors/ExecCycle";
 import { isLoading } from "selectors/Shared";
+
 
 const mapStateToProps = state => ({
     selected: getSelectedExecCycle(state),

@@ -4,15 +4,15 @@ import hashHistory from "utils/Shared/history";
 
 import * as ACTIONS from "constants/SharedActions";
 
-function* redirectToTestDesign() {
+function redirectToTestDesign() {
     hashHistory.push("/design");
 }
 
-function* redirectToExecCycle() {
+function redirectToExecCycle() {
     hashHistory.push("/execution");
 }
 
-function* redirectToDefects() {
+function redirectToDefects() {
     hashHistory.push("/defects");
 }
 

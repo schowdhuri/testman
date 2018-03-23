@@ -22,7 +22,7 @@ function* getDefect(action) {
         });
         yield put(rcvDefect(response.json));
     } catch(ex) {
-        console.log(ex);
+        console.log(ex); // eslint-disable-line no-console
         Alert.error("Failed to fetch defect. " + (ex && ex.text || ""));
     }
     yield put(setLoading(REQ_DEFECT, false));

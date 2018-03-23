@@ -24,7 +24,7 @@ function* delDefects(action) {
         Alert.success(`Deleted ${idArr.length} defects`);
         yield put(rcvDeleteDefects(response.json));
     } catch(ex) {
-        console.log(ex);
+        console.log(ex); // eslint-disable-line no-console
         Alert.error("Failed to delete defects. " + (ex && ex.text || ""));
     }
     yield put(setLoading(REQ_DELETE_DEFECTS, false));

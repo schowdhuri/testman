@@ -55,6 +55,6 @@ const mergeProps = (ownProps, stateProps, dispatchProps) => {
     };
 };
 
-const TestRunContainer = connect(mapStateToProps, mapDispatchToProps)(TestRun);
+const TestRunContainer = connect(mapStateToProps, mapDispatchToProps, mergeProps)(TestRun);
 
 export default TestRunContainer;

@@ -83,33 +83,6 @@ export const rcvSaveTestPlan = testPlan => ({
     testPlan
 });
 
-export const changeTCComment = value => ({
-    type: ACTIONS.CHANGE_TC_COMMENT,
-    value
-});
-
-export const reqSaveTCComment = (testCaseId, value, id) => ({
-    type: ACTIONS.REQ_SAVE_TC_COMMENT,
-    testCaseId,
-    value,
-    id
-});
-
-export const rcvSaveTCComment = value => ({
-    type: ACTIONS.RCV_SAVE_TC_COMMENT,
-    value
-});
-
-export const reqDeleteComment = id => ({
-    type: ACTIONS.REQ_DELETE_COMMENT,
-    id
-});
-
-export const rcvDeleteComment = id => ({
-    type: ACTIONS.RCV_DELETE_COMMENT,
-    id
-});
-
 export const reqUploadTests = (testPlanId, file) => ({
     type: ACTIONS.REQ_UPLOAD_TESTS,
     testPlanId,

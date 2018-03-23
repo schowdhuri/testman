@@ -84,6 +84,20 @@ class Attachment extends React.Component {
     }
 }
 Attachment.propTypes = {
+    attachment: PropTypes.shape({
+        created: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        path: PropTypes.string.isRequired,
+        user: PropTypes.shape({
+            name: PropTypes.string.isRequired
+        })
+    }).isRequired,
+    allowDelete: PropTypes.bool,
+    allowEdit: PropTypes.bool,
+    allowDownload: PropTypes.bool,
+    onDelete: PropTypes.func.isRequired,
+    onDownload: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired
 
 };
 

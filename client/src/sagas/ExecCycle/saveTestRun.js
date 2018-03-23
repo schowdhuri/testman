@@ -14,8 +14,7 @@ function* saveTestRun(action) {
     const { testRun } = action;
     const execCycleId = testRun.execCycle.id;
     if(!testRun.id && !execCycleId) {
-        console.log("execCycleId required to create new TestRun");
-        return;
+        throw new Error("execCycleId required to create new TestRun");
     }
     const validationResult = validateTestRun(testRun);
     if(!validationResult.valid) {
@@ -43,7 +42,7 @@ function* saveTestRun(action) {
         }
         yield put(rcvSaveTestRun(response.json));
     } catch(ex) {
-        console.log(ex);
+        console.log(ex); // eslint-disable-line no-console
         Alert.error("Failed to save test. " + (ex && ex.text || ""));
     }
     yield put(setLoading(REQ_SAVE_TR, false));

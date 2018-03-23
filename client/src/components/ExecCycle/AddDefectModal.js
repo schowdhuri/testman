@@ -16,11 +16,6 @@ class AddDefectModal extends React.Component {
         this.handleClose = this.handleClose.bind(this);
         this.handleSave = this.handleSave.bind(this);
     }
-    componentDidMount() {
-        // this.setState({
-        //     preSelectedItems: this.props.selectedItems
-        // });
-    }
     handleChangeDescr(description) {
         this.setState({ description });
     }
@@ -38,7 +33,7 @@ class AddDefectModal extends React.Component {
     }
     render() {
         const { show } = this.props;
-        const { name, description } = this.state;
+        const { name } = this.state;
         return (<Modal show={show} className="add-defect-modal">
             <Modal.Header>
                 <Modal.Title>Add Defect</Modal.Title>
@@ -55,5 +50,10 @@ class AddDefectModal extends React.Component {
         </Modal>);
     }
 }
+AddDefectModal.propTypes = {
+    show: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired
+};
 
 export default AddDefectModal;

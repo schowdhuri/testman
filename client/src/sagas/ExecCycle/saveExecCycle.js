@@ -38,7 +38,7 @@ function* saveExecCycle(action) {
         Alert.success("Saved");
         yield put(rcvSaveExecCycle(response.json));
     } catch(ex) {
-        console.log(ex);
+        console.log(ex); // eslint-disable-line no-console
         Alert.error("Failed to save exec cycle");
     }
     yield put(setLoading(REQ_EC_SAVE, false));

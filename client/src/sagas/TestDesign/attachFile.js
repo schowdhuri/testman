@@ -1,12 +1,10 @@
-import Alert from "react-s-alert";
-import { call, put, take, takeEvery } from "redux-saga/effects";
-
-import request from "utils/Shared/request";
+import { put, take, takeEvery } from "redux-saga/effects";
 
 import { REQ_ATTACH_TO_TC, RCV_TC_SAVE } from "constants/TestDesignActions";
 import { RCV_UPLOAD_FILES } from "constants/SharedActions";
 import { rcvAttachToTestCase, reqSaveTestCase } from "actions/TestDesign";
 import { reqUploadFiles, setLoading } from "actions/Shared";
+
 
 function* attachToTestCase(action) {
     const { testPlanId, testCase, file } = action;

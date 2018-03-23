@@ -120,3 +120,13 @@ export const rcvSaveComment = (comment, entity, entityId) => ({
     comment,
     [entity]: entityId
 });
+
+export const reqDeleteComment = id => ({
+    type: ACTIONS.REQ_DELETE_COMMENT,
+    id
+});
+
+export const rcvDeleteComment = id => ({
+    type: ACTIONS.RCV_DELETE_COMMENT,
+    id
+});

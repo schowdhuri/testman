@@ -3,31 +3,39 @@ import PropTypes from "prop-types";
 
 import Selector from "components/TestSelector";
 
-class TestImporter extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleInit = this.handleInit.bind(this);
-        this.handleSave = this.handleSave.bind(this);
-    }
-    handleInit() {
-        this.props.onInit(this.props.execCycle);
-    }
-    handleSave(selectedItems, preSelectedItems) {
-        this.props.onSave(
-            this.props.execCycle,
-            selectedItems,
-            preSelectedItems
-        );
-    }
-    render() {
-        const { show, onClose, importActionContract } = this.props;
-        return (<Selector
-            show={show}
-            importActionContract={importActionContract}
-            onInit={this.handleInit}
-            onClose={onClose}
-            onSave={this.handleSave} />);
-    }
-}
+const TestImporter = props => {
+    const {
+        execCycle,
+        importActionContract,
+        onClose,
+        onInit,
+        show
+    } = props;
 
+    const handleInit = () => props.onInit(props.execCycle)
+    return (<Selector
+        show={show}
+        importActionContract={importActionContract}
+        onInit={handleInit}
+        onClose={onClose} />);
+};
+TestImporter.propTypes = {
+    execCycle: PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string
+    }),
+    importActionContract: PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        key: PropTypes.string.isRequired,
+        extra: PropTypes.shape({
+            execCycle: PropTypes.shape({
+                id: PropTypes.number,
+                name: PropTypes.string
+            })
+        }).isRequired
+    }),
+    onClose: PropTypes.func.isRequired,
+    onInit: PropTypes.func.isRequired,
+    show: PropTypes.bool
+}
 export default TestImporter;

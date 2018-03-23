@@ -2,7 +2,6 @@ import { connect } from "react-redux";
 import Selector from "./Selector";
 
 import * as actions from "actions/TestSelector";
-import { reqTestCases } from "actions/TestDesign";
 
 import {
     getAllItems,
@@ -11,6 +10,7 @@ import {
 } from "selectors/TestSelector";
 
 import { isLoading } from "selectors/Shared";
+
 
 const mapStateToProps = state => ({
     isLoading: isLoading(state),

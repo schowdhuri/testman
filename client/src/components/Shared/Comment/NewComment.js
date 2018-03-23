@@ -17,7 +17,7 @@ import Attachment from "components/Shared/Attachment";
 
 
 class NewComment extends React.Component {
-    constructor(props) {
+    constructor() {
         super(...arguments);
         this.state = {
             value: "",
@@ -41,7 +41,6 @@ class NewComment extends React.Component {
                     createTempAttachment(file)
                 ]
             });
-            console.log(file.type);
         }
     }
     handleChange(ev) {

@@ -1,12 +1,12 @@
 import * as ACTIONS from "constants/ExecCyclesActions";
 import { RCV_DELETE_DEFECT } from "constants/DefectsActions";
+import { RCV_SAVE_COMMENT, RCV_DELETE_COMMENT } from "constants/SharedActions";
 
 const initialState = {
     name: "",
     testCase: {},
     defects: [],
     comments: [],
-    newComment: {},
     status: "New"
 };
 
@@ -21,7 +21,7 @@ const addEditExecCycle = (state=initialState, action) => {
                 name: action.testRun.testCase.name,
                 defects: action.testRun.defects || []
             };
-        
+
         case ACTIONS.RCV_ADD_NEW_DEFECT: {
             const { defect } = action;
             if(!state.defects.find(d => d.id==defect.id)) {
@@ -51,7 +51,6 @@ const addEditExecCycle = (state=initialState, action) => {
                     ...newDefects
                 ]
             };
-            break;
         }
 
         case RCV_DELETE_DEFECT:
@@ -70,14 +69,8 @@ const addEditExecCycle = (state=initialState, action) => {
             break;
         }
 
-        case ACTIONS.CHANGE_TR_COMMENT:
-            return {
-                ...state,
-                newComment: action.value
-            };
-
-        case ACTIONS.RCV_SAVE_TR_COMMENT: {
-            const comment = action.value;
+        case RCV_SAVE_COMMENT: {
+            const { comment } = action;
             const index = state.comments.findIndex(c => c.id==comment.id);
             if(index == -1) {
                 return {
@@ -85,8 +78,7 @@ const addEditExecCycle = (state=initialState, action) => {
                     comments: [
                         comment,
                         ...state.comments,
-                    ],
-                    newComment: initialState.newComment
+                    ]
                 };
             }
             return {
@@ -95,12 +87,11 @@ const addEditExecCycle = (state=initialState, action) => {
                     ...state.comments.slice(0, index),
                     comment,
                     ...state.comments.slice(index + 1)
-                ],
-                newComment: initialState.newComment
+                ]
             };
         }
 
-        case ACTIONS.RCV_DELETE_COMMENT: {
+        case RCV_DELETE_COMMENT: {
             const { id } = action;
             const index = state.comments.findIndex(c => c.id==id);
             if(index != -1) {

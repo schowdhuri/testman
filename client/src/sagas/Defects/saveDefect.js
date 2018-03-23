@@ -8,7 +8,6 @@ import { rcvSaveDefect } from "actions/Defects";
 import { redirectToDefects, setLoading } from "actions/Shared";
 
 import buildDefect from "utils/Defects/buildDefect";
-import validateDefect from "utils/Defects/validateDefect";
 
 function* saveDefect(action) {
     const { defect, redirect } = action;
@@ -36,7 +35,7 @@ function* saveDefect(action) {
         if(redirect)
             yield put(redirectToDefects());
     } catch(ex) {
-        console.log(ex);
+        console.log(ex); // eslint-disable-line no-console
         Alert.error("Failed to save defect. " + (ex && ex.text || ""));
     }
     yield put(setLoading(REQ_SAVE_DEFECT, false));

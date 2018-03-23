@@ -39,7 +39,7 @@ function* saveTestPlan(action) {
         Alert.success("Saved");
         yield put(rcvSaveTestPlan(response.json));
     } catch(ex) {
-        console.log(ex);
+        console.log(ex); // eslint-disable-line no-console
         Alert.error("Failed to save test plan");
     }
     yield put(setLoading(REQ_TP_SAVE, false));

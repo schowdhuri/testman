@@ -1,7 +1,4 @@
-import Alert from "react-s-alert";
-import { call, put, take, takeEvery } from "redux-saga/effects";
-
-import request from "utils/Shared/request";
+import { put, take, takeEvery } from "redux-saga/effects";
 
 import {
     REQ_ATTACH_TO_COMM,
@@ -9,8 +6,13 @@ import {
     RCV_UPLOAD_FILES
 } from "constants/SharedActions";
 
-import { rcvAttachToComment, reqSaveComment } from "actions/Shared";
-import { reqUploadFiles, setLoading } from "actions/Shared";
+import {
+    rcvAttachToComment,
+    reqSaveComment,
+    reqUploadFiles,
+    setLoading
+} from "actions/Shared";
+
 
 function* attachToComment(action) {
     const { file, comment, entity, entityId } = action;

@@ -1,7 +1,4 @@
-import Alert from "react-s-alert";
-import { call, put, take, takeEvery } from "redux-saga/effects";
-
-import request from "utils/Shared/request";
+import { put, take, takeEvery } from "redux-saga/effects";
 
 import { REQ_ADD_NEW_DEFECT } from "constants/ExecCyclesActions";
 import { RCV_SAVE_DEFECT } from "constants/DefectsActions";
@@ -12,15 +9,6 @@ import { setLoading } from "actions/Shared";
 
 function* addNewDefect(action) {
     const { defect, testRun } = action;
-    // const testRunExists = defect.testRuns.find(tr => tr.id==testRun.id);
-    // if(!testRunExists) {
-    //     testRuns = [
-    //         ...defect.testRuns,
-    //         testRun
-    //     ];
-    // } else {
-    //     testRuns = defect.testRuns;
-    // }
     yield put(setLoading(REQ_ADD_NEW_DEFECT, true));
     yield put(reqSaveDefect({
         ...defect,

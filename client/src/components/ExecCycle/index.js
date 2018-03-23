@@ -14,5 +14,10 @@ class ExecCycle extends React.Component {
             : <TestRun execCycleId={execCycleId} testRunId={testRunId} />
     }
 }
+ExecCycle.propTypes = {
+    mode: PropTypes.string.isRequired,
+    execCycleId: PropTypes.number,
+    testRunId: PropTypes.number
+};
 
 export default ExecCycle;

@@ -40,7 +40,6 @@ const addEditDefect = (state=initialState, action) => {
                     ...newTests
                 ]
             };
-            break;
         }
 
         case ACTIONS.CHANGE_DF_ASSIGNEE:

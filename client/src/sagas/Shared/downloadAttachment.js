@@ -1,5 +1,4 @@
-import Alert from "react-s-alert";
-import { call, put, takeEvery } from "redux-saga/effects";
+import { put, takeEvery } from "redux-saga/effects";
 
 import { REQ_DOWNLOAD_ATTACH } from "constants/SharedActions";
 import { setLoading } from "actions/Shared";

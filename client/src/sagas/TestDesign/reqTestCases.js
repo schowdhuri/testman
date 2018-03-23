@@ -23,7 +23,7 @@ function* getTestCases(action) {
         });
         yield put(rcvTestCases(testPlanId, response.json));
     } catch(ex) {
-        console.log(ex);
+        console.log(ex); // eslint-disable-line no-console
         Alert.error("Failed to fetch tests. " + (ex && ex.text || ""));
     }
     yield put(setLoading(REQ_TEST_CASES, false));

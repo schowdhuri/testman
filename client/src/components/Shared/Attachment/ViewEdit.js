@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Dropzone from "react-dropzone";
 import { Button, Modal } from "react-bootstrap";
 
 import Title from "components/Shared/Title";
@@ -29,8 +28,6 @@ class ViewEdit extends React.Component {
             attachment,
             isImage,
             onCancel,
-            onSave,
-            onDelete,
             onDownload,
             show
         } = this.props;

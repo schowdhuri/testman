@@ -47,12 +47,10 @@ const findPath = (arr, item, path=[]) => {
 };
 
 const addChildren = (arr=[], children=[], path=[]) => {
-    let curLevel = arr;
     let node;
     for(let i=0; i<path.length; i++) {
         const levelId = path[i].id;
         node = arr.find(n => n.id===levelId);
-        curLevel = node.items;
     }
     node.items = children;
 };

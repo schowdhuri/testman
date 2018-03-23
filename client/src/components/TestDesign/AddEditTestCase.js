@@ -1,14 +1,11 @@
+import Alert from "react-s-alert";
 import React from "react";
 import PropTypes from "prop-types";
 import {
     Button,
     ButtonToolbar,
-    ControlLabel,
-    FormControl,
-    FormGroup,
     Panel,
-    Table,
-    Well
+    Table
 } from "react-bootstrap";
 import Dropzone from "react-dropzone";
 
@@ -25,7 +22,6 @@ class AddEditTestCase extends React.Component {
         this.handleAttach = this.handleAttach.bind(this);
         this.handleAttachFileToComment = this.handleAttachFileToComment.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-        this.handleChangeComment = this.handleChangeComment.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleDeleteComment = this.handleDeleteComment.bind(this);
         this.handleSave = this.handleSave.bind(this);
@@ -59,9 +55,6 @@ class AddEditTestCase extends React.Component {
     handleCancel() {
         this.props.onCancel();
     }
-    handleChangeComment(ev) {
-        this.props.onChangeComment(ev.target.value);
-    }
     handleDelete() {
         if(confirm("Delete this test case?")) {
             this.props.onDelete(
@@ -93,7 +86,6 @@ class AddEditTestCase extends React.Component {
     }
     render() {
         const {
-            mode,
             onChangeDescription,
             onChangeName,
             onDeleteAttachment,
@@ -105,7 +97,6 @@ class AddEditTestCase extends React.Component {
 
         const {
             description,
-            defects=[],
             comments=[]
         } = testCase;
 
@@ -194,8 +185,29 @@ class AddEditTestCase extends React.Component {
     }
 }
 AddEditTestCase.propTypes = {
-    mode: PropTypes.string,
-    testID: PropTypes.number
+    defect: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    }),
+    onAttachFile: PropTypes.func.isRequired,
+    onAttachFileToComment: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    onChangeDescription: PropTypes.func.isRequired,
+    onChangeName: PropTypes.func.isRequired,
+    onDeleteAttachment: PropTypes.func.isRequired,
+    onDownloadAttachment: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    onDeleteComment: PropTypes.func.isRequired,
+    onInit: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
+    onSaveAttachment: PropTypes.func.isRequired,
+    onSaveComment: PropTypes.func.isRequired,
+    testID: PropTypes.number,
+    testCase: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    }),
+    testPlanID: PropTypes.number
 };
 
 export default AddEditTestCase;

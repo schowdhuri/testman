@@ -8,7 +8,7 @@ import "sass/components/TestDesign.scss";
 
 class ListView extends React.Component {
     render() {
-        const { mode, testID, testPlanID } = this.props;
+        const { testPlanID } = this.props;
         return (<div className="test-design list">
             <TestPlans />
             <div className="test-cases">
@@ -18,8 +18,7 @@ class ListView extends React.Component {
     }
 }
 ListView.propTypes = {
-    mode: PropTypes.string,
-    testID: PropTypes.number
+    testPlanID: PropTypes.number
 };
 
 export default ListView;

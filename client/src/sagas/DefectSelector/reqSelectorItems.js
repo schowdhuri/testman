@@ -1,4 +1,3 @@
-import Alert from "react-s-alert";
 import { put, take, takeEvery } from "redux-saga/effects";
 
 import { REQ_ITEMS } from "constants/DefectSelectorActions";

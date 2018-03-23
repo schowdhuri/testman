@@ -1,4 +1,4 @@
-import { createSelector } from "reselect";
+// import { createSelector } from "reselect";
 
 export const getAllItems = state => state.defectSelector.all;
 export const getPath = state => state.defectSelector.path;

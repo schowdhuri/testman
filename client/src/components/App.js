@@ -27,7 +27,8 @@ App.propTypes = {
         PropTypes.node,
         PropTypes.array
     ]),
-    isLoading: PropTypes.bool.isRequired
+    isLoading: PropTypes.bool.isRequired,
+    navId: PropTypes.string
 };
 
 export default App;

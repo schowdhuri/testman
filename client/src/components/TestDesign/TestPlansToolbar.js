@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 
 import AddEditTestPlan from "./AddEditTestPlan";
+
 
 class TestPlansToolbar extends React.Component {
     constructor(props) {
@@ -38,5 +38,8 @@ class TestPlansToolbar extends React.Component {
         </div>);
     }
 }
+TestPlansToolbar.propTypes = {
+    onSave: PropTypes.func.isRequired
+};
 
 export default TestPlansToolbar;

@@ -12,15 +12,13 @@ const parseSelectorData = (arr, path) => {
                 path,
                 selectable: true
             }));
-    } else {
-        return arr.map(tc => ({
-            id: tc.id,
-            name: tc.name,
-            testPlan: tc.testPlan,
-            path
-        }));
     }
-    return [];
+    return arr.map(tc => ({
+        id: tc.id,
+        name: tc.name,
+        testPlan: tc.testPlan,
+        path
+    }));
 };
 
 export default parseSelectorData;

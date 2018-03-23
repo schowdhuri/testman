@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import PropTypes from "prop-types";
 import { Router, Route, Switch } from "react-router-dom";
 import history from "utils/Shared/history";
 import { Provider } from "react-redux";

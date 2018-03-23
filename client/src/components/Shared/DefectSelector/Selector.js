@@ -11,16 +11,11 @@ class Selector extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            preSelectedItems: []
+            preSelectedItems: props.selectedItems || []
         };
         this.handleClose = this.handleClose.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleEnter = this.handleEnter.bind(this);
-    }
-    componentDidMount() {
-        this.setState({
-            preSelectedItems: this.props.selectedItems
-        });
     }
     handleClose() {
         this.props.onClose(this.state.preSelectedItems);
@@ -75,5 +70,28 @@ class Selector extends React.Component {
         </Modal>);
     }
 }
+Selector.propTypes = {
+    allowAdd: PropTypes.bool,
+    allowAddFolder: PropTypes.bool,
+    importActionContract: PropTypes.object,
+    items: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    })),
+    onClose: PropTypes.func.isRequired,
+    onChangePath: PropTypes.func.isRequired,
+    onDeselect: PropTypes.func.isRequired,
+    onDeselectAll: PropTypes.func.isRequired,
+    onInit: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
+    onSelect: PropTypes.func.isRequired,
+    onSelectAll: PropTypes.func.isRequired,
+    readOnly: PropTypes.bool,
+    selectedItems: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    })),
+    show: PropTypes.bool
+};
 
 export default Selector;

@@ -16,7 +16,7 @@ function* deleteAttachment(action) {
         });
         yield put(rcvDeleteAttachment(response.json));
     } catch(ex) {
-        console.log(ex);
+        console.log(ex); // eslint-disable-line no-console
         Alert.error(ex && ex.text || "Unable to save");
     }
     yield put(setLoading(REQ_DELETE_ATTACH, false));

@@ -4,10 +4,7 @@ import PropTypes from "prop-types";
 import Dropzone from "react-dropzone";
 import {
     Col,
-    ControlLabel,
     DropdownButton,
-    FormControl,
-    FormGroup,
     MenuItem,
     Row
 } from "react-bootstrap";
@@ -53,7 +50,6 @@ const AddEditDefectForm = props => {
     const handleChangeAssignee = val => onChangeAssignee
         ? onChangeAssignee(val)
         : null;
-    const handleChangeDescription = ev => onChangeDescription(ev.target.value);
     const handleChangeStatus = val => onChangeStatus
         ? onChangeStatus(val)
         : null;
@@ -121,10 +117,33 @@ const AddEditDefectForm = props => {
     </Dropzone>);
 };
 AddEditDefectForm.propTypes = {
+    assignee: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        email: PropTypes.string.isRequired
+    }),
+    attachments: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        path: PropTypes.string.isRequired
+    })),
+    defectId: PropTypes.number,
     description: PropTypes.string,
     name: PropTypes.string,
+    onAttachFile: PropTypes.func.isRequired,
+    onChangeAssignee: PropTypes.func.isRequired,
     onChangeDescription: PropTypes.func.isRequired,
-    onChangeName: PropTypes.func.isRequired
+    onChangeName: PropTypes.func.isRequired,
+    onChangeStatus: PropTypes.func.isRequired,
+    onDeleteAttachment: PropTypes.func.isRequired,
+    onDownloadAttachment: PropTypes.func.isRequired,
+    onSaveAttachment: PropTypes.func.isRequired,
+    status: PropTypes.string.isRequired,
+    users: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        email: PropTypes.string.isRequired
+    }))
 };
 
 export default AddEditDefectForm;

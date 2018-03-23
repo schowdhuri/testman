@@ -20,7 +20,7 @@ function* deleteExecCycles(action) {
             yield put(redirectToExecCycle());
         }
     } catch(ex) {
-        console.log(ex);
+        console.log(ex); // eslint-disable-line no-console
         Alert.error("Failed to delete execution cycle. " + (ex && ex.text || ""));
     }
     yield put(setLoading(REQ_DEL_EC, false));

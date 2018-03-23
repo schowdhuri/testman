@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 
 import {
     Button,
-    ButtonToolbar,
     ControlLabel,
     FormControl,
     FormGroup,
@@ -66,7 +65,13 @@ class AddEditTestPlan extends React.Component {
     }
 }
 AddEditTestPlan.propTypes = {
-    
+    show: PropTypes.bool,
+    testPlan: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    }),
+    onClose: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired
 };
 
 export default AddEditTestPlan;

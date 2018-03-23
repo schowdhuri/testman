@@ -17,7 +17,7 @@ function* getDefects() {
         });
         yield put(rcvDefects(response.json));
     } catch(ex) {
-        console.log(ex);
+        console.log(ex); // eslint-disable-line no-console
         Alert.error("Failed to fetch defects. " + (ex && ex.text || ""));
     }
     yield put(setLoading(REQ_DEFECTS, false));

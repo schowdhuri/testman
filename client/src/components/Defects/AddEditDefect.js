@@ -3,9 +3,6 @@ import PropTypes from "prop-types";
 import {
     Button,
     ButtonToolbar,
-    ControlLabel,
-    FormControl,
-    FormGroup,
     Panel,
     Table
 } from "react-bootstrap";
@@ -115,7 +112,6 @@ class AddEditDefect extends React.Component {
             onDeleteAttachment,
             onDownloadAttachment,
             onSaveAttachment,
-            selectedTestCases,
             users
         } = this.props;
         const { testCases, comments } = defect;
@@ -160,10 +156,10 @@ class AddEditDefect extends React.Component {
                         <Panel.Title componentClass="h3">Linked Test Cases</Panel.Title>
                     </Panel.Heading>
                     <Panel.Body>
-                        {defect.testCases.length
+                        {testCases && testCases.length
                             ? <Table hover>
                                 <tbody>
-                                    {defect.testCases.map(tc =>
+                                    {testCases.map(tc =>
                                         <LinkedTest
                                             key={`tc-${tc.id}`}
                                             testCase={tc}
@@ -204,7 +200,38 @@ class AddEditDefect extends React.Component {
     }
 }
 AddEditDefect.propTypes = {
-    defectID: PropTypes.number
+    assignee: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        email: PropTypes.string.isRequired
+    }),
+    defect: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    }),
+    defectID: PropTypes.number,
+    onAddTests: PropTypes.func.isRequired,
+    onAttachFileToComment: PropTypes.func.isRequired,
+    onAttachFile: PropTypes.func.isRequired,
+    onInit: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    onChangeAssignee: PropTypes.func.isRequired,
+    onChangeDescription: PropTypes.func.isRequired,
+    onChangeName: PropTypes.func.isRequired,
+    onChangeStatus: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    onDeleteAttachment: PropTypes.func.isRequired,
+    onDeleteComment: PropTypes.func.isRequired,
+    onDeleteTestCase: PropTypes.func.isRequired,
+    onDownloadAttachment: PropTypes.func.isRequired,
+    onSave: PropTypes.func.isRequired,
+    onSaveComment: PropTypes.func.isRequired,
+    onSaveAttachment: PropTypes.func.isRequired,
+    users: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        email: PropTypes.string.isRequired
+    }))
 };
 
 export default AddEditDefect;

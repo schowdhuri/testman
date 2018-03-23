@@ -22,7 +22,7 @@ function* linkDefects(action) {
         });
         yield put(rcvLinkDefects(defects, testRun));
     } catch(ex) {
-        console.log(ex);
+        console.log(ex); // eslint-disable-line no-console
         Alert.error("Failed to link defects: " + (ex && ex.text || ""));
     }
     yield put(setLoading(REQ_LINK_DEFECTS, false));

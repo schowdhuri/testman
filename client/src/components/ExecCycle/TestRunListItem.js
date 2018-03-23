@@ -56,7 +56,14 @@ const TestRun = props => {
     </tr>);
 };
 TestRun.propTypes = {
-
+    allowChangeStatus: PropTypes.bool,
+    execCycleId: PropTypes.number,
+    onChangeStatus: PropTypes.func.isRequired,
+    onToggle: PropTypes.func.isRequired,
+    testRun: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    })
 };
 
 export default TestRun;

@@ -18,7 +18,7 @@ function* unlinkDefect(action) {
         });
         yield put(rcvUnlinkDefect(testRun, defect));
     } catch(ex) {
-        console.log(ex);
+        console.log(ex); // eslint-disable-line no-console
         Alert.error("Failed to unlink defect: " + (ex && ex.text || ""));
     }
     yield put(setLoading(REQ_UNLINK_DEFECT, false));

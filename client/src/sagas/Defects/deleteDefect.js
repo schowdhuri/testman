@@ -20,7 +20,7 @@ function* delDefect(action) {
         if(redirect)
             yield put(redirectToDefects());
     } catch(ex) {
-        console.log(ex);
+        console.log(ex); // eslint-disable-line no-console
         Alert.error("Failed to delete defect. " + (ex && ex.text || ""));
     }
     yield put(setLoading(REQ_DELETE_DEFECT, false));

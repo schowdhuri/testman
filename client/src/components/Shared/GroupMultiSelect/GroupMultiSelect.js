@@ -67,6 +67,8 @@ class GroupMultiSelect extends React.Component {
     }
 }
 GroupMultiSelect.propTypes = {
+    allowAdd: PropTypes.bool,
+    allowAddFolder: PropTypes.bool,
     cid: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number

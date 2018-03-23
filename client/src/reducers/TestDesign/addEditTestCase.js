@@ -34,12 +34,6 @@ const testCases = (state=initialState, action) => {
                 name: action.value
             };
 
-        case ACTIONS.CHANGE_TC_COMMENT:
-            return {
-                ...state,
-                newComment: action.value
-            };
-
         case RCV_SAVE_COMMENT: {
 
             const { testCase, comment } = action;

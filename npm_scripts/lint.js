@@ -8,7 +8,7 @@ const cli = new CLIEngine({ fix: true });
 
 const report = cli.executeOnFiles([
     "common/**/*.js",
-    // "client/**/*.js",
+    "client/src/**/*.js",
     "server/**/*.js"
 ]);
 

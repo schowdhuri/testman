@@ -11,13 +11,6 @@ const initialState = {
 const addEditExecCycle = (state=initialState, action) => {
     const { type } = action;
     switch(type) {
-
-        case ACTIONS.CHANGE_EC_NAME:
-            return {
-                ...state,
-                name: action.value
-            };
-
         case ACTIONS.RESET_EC_ADD_EDIT:
             return initialState;
 

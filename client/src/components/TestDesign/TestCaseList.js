@@ -33,7 +33,7 @@ class TestCaseList extends React.Component {
         this.props.onUploadTests(this.props.testPlan.id, file);
         this.hideUploadTestCases();
     }
-    hideUploadTestCases(fie) {
+    hideUploadTestCases() {
         this.setState({ showUploadTestCases: false });
     }
     showUploadTestCases() {
@@ -83,5 +83,18 @@ class TestCaseList extends React.Component {
         </div>);
     }
 }
+TestCaseList.propTypes = {
+    testPlan: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    }),
+    testPlanID: PropTypes.number,
+    fetchTestCases: PropTypes.func.isRequired,
+    onUploadTests: PropTypes.func.isRequired,
+    testCases: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired
+    }))
+};
 
 export default TestCaseList;

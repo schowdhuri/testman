@@ -5,8 +5,7 @@ import request from "utils/Shared/request";
 
 import { REQ_TC_SAVE } from "constants/TestDesignActions";
 import { rcvSaveTestCase } from "actions/TestDesign";
-import { redirectToTestDesign } from "actions/Shared";
-import { setLoading } from "actions/Shared";
+import { redirectToTestDesign, setLoading } from "actions/Shared";
 
 import validateTestCase from "utils/TestDesign/validateTestCase";
 import buildTestCase from "utils/TestDesign/buildTestCase";
@@ -46,7 +45,7 @@ function* saveTestCase(action) {
         if(redirect)
             yield put(redirectToTestDesign());
     } catch(ex) {
-        console.log(ex);
+        console.log(ex); // eslint-disable-line no-console
         Alert.error("Failed to save test case");
     }
     yield put(setLoading(REQ_TC_SAVE, false));
