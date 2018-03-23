@@ -12,7 +12,8 @@ const TestImporter = props => {
         show
     } = props;
 
-    const handleInit = () => props.onInit(props.execCycle)
+    const handleInit = () => onInit(execCycle);
+
     return (<Selector
         show={show}
         importActionContract={importActionContract}

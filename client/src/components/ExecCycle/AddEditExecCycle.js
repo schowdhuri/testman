@@ -86,6 +86,7 @@ AddEditExecCycle.propTypes = {
         }))
     }),
     onClose: PropTypes.func.isRequired,
+    onDelete: PropTypes.func,
     onSave: PropTypes.func.isRequired
 };
 

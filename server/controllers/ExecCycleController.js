@@ -1,39 +1,16 @@
 const { ArrayCollection } = require("wetland");
 
 const ExecCycle = require("../models/ExecCycle");
-const TestRun = require("../models/TestRun");
 const TestCase = require("../models/TestCase");
 
 const HttpError = require("../helpers/HttpError");
 
-const _getTestRuns = async (execCycleId, manager) => {
-    const repository = manager.getRepository(TestRun);
-    const qb = repository.getQueryBuilder("tr");
-
-    const testRuns = await qb
-        .leftJoin("tr.execcycle", "ec")
-        .leftJoin("tr.testcase", "tc")
-        .select("tr.id", "tc.id", "tc.name", "ec.id", "tr.status")
-        .where({ "ec.id": execCycleId })
-        .getQuery()
-        .execute();
-
-    return testRuns.map(testRun => ({
-        id: testRun["tr.id"],
-        status: testRun["tr.status"],
-        execCycle: testRun["ec.id"],
-        name: testRun["tc.name"],
-        testCase: testRun["tc.id"]
-    }));
-};
 
 const _getTestCases = async (idArr, manager) => {
     const repository = manager.getRepository(TestCase);
-    const testCases = [];
-    for(let i=0; i<idArr.length; i++) {
-        const testCase = await repository.findOne(idArr[i]);
-        testCases.push(testCase);
-    }
+    const pArr = idArr.map(id => repository.findOne(id));
+    const testCases = await Promise.all(pArr);
+
     return testCases;
 };
 
@@ -41,24 +18,20 @@ const findAll = async (wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(ExecCycle);
 
-    let execCycles = await repository.find();
-    execCycles = execCycles || [];
-    for(let i=0; i<execCycles.length; i++) {
-        const testRuns = await _getTestRuns(execCycles[i].id, manager);
-        execCycles[i].testRuns = testRuns;
-        delete execCycles.testruns;
-    }
+    let execCycles = await repository.findAll();
+
     return execCycles;
 };
 
 const findById = async (id, wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(ExecCycle);
-    const execCycle = await repository.findOne(id);
 
-    const testRuns = await _getTestRuns(execCycle.id, manager);
-    execCycle.testRuns = testRuns;
-    delete execCycle.testruns;
+    const execCycle = await repository.getDetails(id);
+
+    if(!execCycle)
+        throw new HttpError(404, "Not found");
+
     return execCycle;
 };
 
@@ -93,7 +66,7 @@ const update = async (id, data, wetland) => {
     if(!execCycle)
         throw new HttpError(404, `ExecCycle with id ${id} not found`);
     const testCases = await _getTestCases(data.testCases, manager);
-    const testRuns = await _getTestRuns(id, manager);
+    const testRuns = await repository.getTestRuns(id);
 
     const newTestCases = testCases
         .filter(tc => !testRuns.find(tr => tr.testCase==tc.id));

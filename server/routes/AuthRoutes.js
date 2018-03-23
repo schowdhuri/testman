@@ -9,6 +9,12 @@ const authRoutes = app => {
             })
         );
 
+    app.route("/logout")
+        .get((req, res) => {
+            req.logout();
+            res.redirect("/");
+        });
+
     app.route("/auth/google/callback")
         .get(
             passport.authenticate("google", {

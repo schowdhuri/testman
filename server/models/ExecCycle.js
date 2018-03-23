@@ -1,7 +1,10 @@
 "use strict";
 
+const ExecCycleRepository = require("../repositories/ExecCycle");
+
 class ExecCycle {
     static setMapping(mapping) {
+        mapping.entity({ repository: ExecCycleRepository });
         mapping.field("created", {
             type: "datetime",
             nullable: true

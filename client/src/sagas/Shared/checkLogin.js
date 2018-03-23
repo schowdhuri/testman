@@ -12,10 +12,10 @@ function* checkLogin() {
             url: "/api/login",
             type: "get"
         });
-        yield put(rcvLoginStatus(true, response.json));
+        yield put(rcvLoginStatus(response.json));
     } catch(ex) {
         console.log(ex); // eslint-disable-line no-console
-        yield put(rcvLoginStatus(false, null));
+        yield put(rcvLoginStatus(null));
     }
     yield put(setLoading(REQ_LOGIN_STATUS, false));
 }

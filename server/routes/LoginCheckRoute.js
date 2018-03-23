@@ -7,7 +7,11 @@ const loginCheckRoute = app => {
     app.route("/api/login")
         .get((req, res) => {
             if(req.user) {
-                res.json(true);
+                res.json({
+                    id: req.user.id,
+                    name: req.user.name,
+                    email: req.user.email
+                });
             } else {
                 sendError(new HttpError(401, "Not authorized"), res);
             }
