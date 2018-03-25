@@ -55,7 +55,8 @@ const defectRoutes = app => {
                 const result = await controller.update(
                     req.params.id,
                     req.body,
-                    req.wetland
+                    req.wetland,
+                    req.user
                 );
                 res.json(result);
             } catch(ex) {

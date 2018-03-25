@@ -106,8 +106,6 @@ const update = async (id, data, wetland, user) => {
     if(!STATES.find(s => s==data.status))
         throw new HttpError(400, "Invalid status");
 
-    delete data.defects;
-
     const manager  = wetland.getManager();
     const repository = manager.getRepository(TestRun);
     const populator = wetland.getPopulator(manager);
@@ -116,20 +114,24 @@ const update = async (id, data, wetland, user) => {
 
     if(!testRun)
         throw new HttpError(404, `TestRun with id ${id} not found`);
-    data.testcase = {
-        id: data.testCase
+
+    const obj = {
+        status: data.status,
+        testcase: {
+            id: data.testCase
+        },
+        user: {
+            id: user.id
+        }
     };
     if(data.status != testRun.status) {
         // status being changed
         if(data.status==STATES[0])
-            testRun.runDate = null;
+            obj.runDate = null;
         else
-            testRun.runDate = new Date();
+            obj.runDate = new Date();
     }
-    data.user = {
-        id: user.id
-    };
-    populator.assign(TestRun, data, testRun, true);
+    populator.assign(TestRun, obj, testRun, true);
     await manager.flush();
 
     return findById(id, wetland);

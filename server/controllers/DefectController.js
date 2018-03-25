@@ -86,7 +86,7 @@ const create = async (data, wetland, user) => {
     return await findById(defect.id, wetland);
 };
 
-const update = async (id, data, wetland) => {
+const update = async (id, data, wetland, user) => {
     if(!id)
         throw new HttpError(400, "id is required");
     if(!data)
@@ -104,7 +104,11 @@ const update = async (id, data, wetland) => {
         throw new HttpError(404, `Defect with id ${id} not found`);
 
     const arrTestCases = new ArrayCollection();
-    const obj = {};
+    const obj = {
+        user: {
+            id: user.id
+        }
+    };
     obj.status = data.status;
     if(defect.description) {
         obj.description = {
