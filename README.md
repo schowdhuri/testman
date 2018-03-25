@@ -25,6 +25,7 @@ npm start
 Head to http://localhost:3200/
 
 ### Warning: Expect nightly breaking changes!
+[Roadmap to v1.0](https://github.com/schowdhuri/testman/projects/1?fullscreen=true)
 
 ## License
 MIT
