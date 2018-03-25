@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Test Management Tool",
   "main": "app.js",
+  "engines": {
+    "node": ">=8.0"
+  },
   "scripts": {
     "start": "./node_modules/nodemon/bin/nodemon.js app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
