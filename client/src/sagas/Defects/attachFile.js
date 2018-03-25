@@ -15,7 +15,7 @@ function* attachToDefect(action) {
     // add to defect
     defect.description.attachments.push(uploadResult.files[0]);
     // save defect
-    yield put(reqSaveDefect(defect, false));
+    yield put(reqSaveDefect(defect, null, false));
     const result = yield take(RCV_SAVE_DEFECT);
     yield put(rcvAttachToDefect(uploadResult.files[0], result.defect));
     yield put(setLoading(REQ_ATTACH_TO_DEFECT, false));

@@ -19,14 +19,14 @@ const findById = async (id, wetland) => {
     return await repository.getDetails(id);
 };
 
-const create = async (testPlanId, obj, wetland, user) => {
-    if(!obj.name)
+const create = async (testPlanId, data, wetland, user) => {
+    if(!data.name)
         throw new HttpError(400, "name is required");
 
-    const data = {
-        name: obj.name,
+    const obj = {
+        name: data.name,
         description: {
-            value: obj.description || ""
+            value: data.description.value || ""
         },
         testplan: {
             id: testPlanId
@@ -35,11 +35,18 @@ const create = async (testPlanId, obj, wetland, user) => {
             id: user.id
         }
     };
+
+    if(data.description.attachments && data.description.attachments.length) {
+        const arrAttachments = new ArrayCollection();
+        data.description.attachments.forEach(a => arrAttachments.push({ id: a.id }));
+        obj.description.attachments = arrAttachments;
+    }
+
     const manager  = wetland.getManager();
     const populator = wetland.getPopulator(manager);
     const repository = manager.getRepository(TestCase);
 
-    const testCase = populator.assign(TestCase, data);
+    const testCase = populator.assign(TestCase, obj, null, true);
     await manager.persist(testCase).flush();
 
     return await repository.getDetails(testCase.id);
@@ -127,12 +134,15 @@ const update = async (id, data, wetland, user) => {
     };
     if(testCase.description) {
         obj.description = {
-            id: testCase.description.id
+            id: testCase.description.id,
         };
     } else {
         obj.description = {};
     }
-    if(data.description) {
+    if(data.description.value) {
+        obj.description.value = data.description.value;
+    }
+    if(data.description.attachments) {
         const arrAttachments = new ArrayCollection();
         obj.description.value = data.description.value;
         data.description.attachments.forEach(file => arrAttachments.push({

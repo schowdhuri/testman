@@ -7,6 +7,8 @@ import {
     Table
 } from "react-bootstrap";
 
+import createTempAttachment from "utils/Shared/createTempAttachment";
+
 import Comment from "components/Shared/Comment";
 
 import DefectForm from "./AddEditDefectForm";
@@ -17,6 +19,7 @@ class AddEditDefect extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            attachments: [],
             showImportDialog: false
         };
         this.handleAddTests = this.handleAddTests.bind(this);
@@ -26,6 +29,7 @@ class AddEditDefect extends React.Component {
         this.handleChangeAssignee = this.handleChangeAssignee.bind(this);
         this.handleChangeName = this.handleChangeName.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleDeleteAttachment = this.handleDeleteAttachment.bind(this);
         this.handleDeleteComment = this.handleDeleteComment.bind(this);
         this.handleDeleteTestCase = this.handleDeleteTestCase.bind(this);
         this.handleChangeDescr = this.handleChangeDescr.bind(this);
@@ -45,11 +49,23 @@ class AddEditDefect extends React.Component {
         this.props.onAddTests(testCases);
         this.hideSelector();
     }
+    handleAttachFile(file) {
+        if(this.props.isEditMode) {
+            this.props.onAttachFile(
+                file,
+                this.props.defect
+            );
+        } else {
+            this.setState({
+                attachments: [
+                    ...this.state.attachments,
+                    createTempAttachment(file)
+                ]
+            });
+        }
+    }
     handleAttachFileToComment(file, comment) {
         this.props.onAttachFileToComment(file, comment, this.props.defectID);
-    }
-    handleAttachFile(file) {
-        this.props.onAttachFile(file, this.props.defect);
     }
     handleCancel() {
         this.props.onCancel();
@@ -71,6 +87,20 @@ class AddEditDefect extends React.Component {
         if(confirm(`Delete this defect?`))
             this.props.onDelete(this.props.defect.id);
     }
+    handleDeleteAttachment(attachment) {
+        if(this.props.isEditMode) {
+            this.props.onDeleteAttachment(attachment);
+        } else {
+            const index = this.state.attachments.findIndex(a =>
+                attachment.id==a.id);
+            this.setState({
+                attachments: [
+                    ...this.state.attachments.slice(0, index),
+                    ...this.state.attachments.slice(index + 1)
+                ]
+            });
+        }
+    }
     handleDeleteComment(commentId) {
         this.props.onDeleteComment(commentId);
     }
@@ -78,7 +108,11 @@ class AddEditDefect extends React.Component {
         this.props.onDeleteTestCase(testCaseId);
     }
     handleSave() {
-        this.props.onSave(this.props.defect);
+        this.props.onSave(
+            this.props.defect,
+            this.state.attachments.map(a => a.file),
+            !Boolean(this.props.defect.id)
+        );
     }
     handleSaveComment(value, attachments) {
         this.props.onSaveComment(
@@ -109,6 +143,7 @@ class AddEditDefect extends React.Component {
         const {
             defectID,
             defect,
+            isEditMode,
             onDeleteAttachment,
             onDownloadAttachment,
             onSaveAttachment,
@@ -116,12 +151,26 @@ class AddEditDefect extends React.Component {
         } = this.props;
         const { testCases, comments } = defect;
         const { showImportDialog } = this.state;
+        const attachments = isEditMode
+            ? defect.description.attachments
+            : this.state.attachments;
         return (<div className="add-edit-defect">
             <div className="action-bar header-gradient-1">
                 <ButtonToolbar>
-                    {!defectID || <Button bsSize="small" bsStyle="danger" onClick={this.handleDelete}>Delete</Button>}
-                    <Button bsSize="small" onClick={this.handleCancel}>Close</Button>
-                    <Button bsSize="small" bsStyle="success" onClick={this.handleSave}>Save</Button>
+                    {!defectID || <Button
+                        bsSize="small"
+                        bsStyle="danger"
+                        onClick={this.handleDelete}
+                    >Delete</Button>}
+                    <Button
+                        bsSize="small"
+                        onClick={this.handleCancel}
+                    >Close</Button>
+                    <Button
+                        bsSize="small"
+                        bsStyle="success"
+                        onClick={this.handleSave}
+                    >Save</Button>
                 </ButtonToolbar>
                 {defectID ? <h3>Edit Defect</h3> : <h3>Add Defect</h3>}
             </div>
@@ -130,10 +179,11 @@ class AddEditDefect extends React.Component {
                     <Panel.Body>
                         <DefectForm
                             assignee={defect.assignee}
+                            attachments={attachments}
                             defectId={defect.id}
-                            name={defect.name}
                             description={defect.description.value}
-                            attachments={defect.description.attachments}
+                            isEditMode={isEditMode}
+                            name={defect.name}
                             status={defect.status}
                             users={users}
                             onAttachFile={this.handleAttachFile}
@@ -141,14 +191,18 @@ class AddEditDefect extends React.Component {
                             onChangeName={this.handleChangeName}
                             onChangeDescription={this.handleChangeDescr}
                             onChangeStatus={this.handleChangeStatus}
-                            onDeleteAttachment={onDeleteAttachment}
+                            onDeleteAttachment={this.handleDeleteAttachment}
                             onDownloadAttachment={onDownloadAttachment}
                             onSaveAttachment={onSaveAttachment} />
                     </Panel.Body>
                 </Panel>
                 <Panel className="testcases">
                     <Panel.Heading>
-                        <Button bsStyle="link" className="btn-add-test" onClick={this.showSelector}>
+                        <Button
+                            bsStyle="link"
+                            className="btn-add-test"
+                            onClick={this.showSelector}
+                        >
                             <i className="glyphicon glyphicon-plus text-info" />
                             {" "}
                             <span className="text-info">New</span>
@@ -159,11 +213,10 @@ class AddEditDefect extends React.Component {
                         {testCases && testCases.length
                             ? <Table hover>
                                 <tbody>
-                                    {testCases.map(tc =>
-                                        <LinkedTest
-                                            key={`tc-${tc.id}`}
-                                            testCase={tc}
-                                            onDelete={this.handleDeleteTestCase} />)}
+                                    {testCases.map(tc => <LinkedTest
+                                        key={`tc-${tc.id}`}
+                                        testCase={tc}
+                                        onDelete={this.handleDeleteTestCase} />)}
                                 </tbody>
                             </Table>
                             : <p className="empty-message">No linked tests</p>}
@@ -206,10 +259,11 @@ AddEditDefect.propTypes = {
         email: PropTypes.string.isRequired
     }),
     defect: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired
+        id: PropTypes.number,
+        name: PropTypes.string
     }),
     defectID: PropTypes.number,
+    isEditMode: PropTypes.bool.isRequired,
     onAddTests: PropTypes.func.isRequired,
     onAttachFileToComment: PropTypes.func.isRequired,
     onAttachFile: PropTypes.func.isRequired,

@@ -7,6 +7,7 @@ import {
 } from "constants/SharedActions";
 
 const initialState = {
+    id: null,
     name: "",
     description: {
         value: "",

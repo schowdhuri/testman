@@ -1,18 +1,21 @@
 import Alert from "react-s-alert";
-import { call, put, takeEvery } from "redux-saga/effects";
+import { call, put, take, takeEvery } from "redux-saga/effects";
 
 import request from "utils/Shared/request";
 
 import { REQ_TC_SAVE } from "constants/TestDesignActions";
+import { RCV_UPLOAD_FILES } from "constants/SharedActions";
+
 import { rcvSaveTestCase } from "actions/TestDesign";
-import { redirectToTestDesign, setLoading } from "actions/Shared";
+import { redirectToTestDesign, reqUploadFiles, setLoading } from "actions/Shared";
 
 import validateTestCase from "utils/TestDesign/validateTestCase";
 import buildTestCase from "utils/TestDesign/buildTestCase";
 import parseTestCase from "utils/TestDesign/parseTestCase";
 
+
 function* saveTestCase(action) {
-    const { testPlanId, testCase, redirect } = action;
+    const { testPlanId, testCase, files, redirect } = action;
     if(!testPlanId) {
         Alert.error("testPlanId not found");
         return;
@@ -33,6 +36,12 @@ function* saveTestCase(action) {
                 dataType: "json"
             });
         } else {
+            // upload files, if any
+            if(files.length) {
+                yield put(reqUploadFiles(files));
+                const uploadResult = yield take(RCV_UPLOAD_FILES);
+                testCase.description.attachments = uploadResult.files;
+            }
             response = yield call(request, {
                 url: `/api/testcase?testplan=${testPlanId}`,
                 type: "post",

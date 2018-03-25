@@ -9,6 +9,8 @@ import {
 } from "react-bootstrap";
 import Dropzone from "react-dropzone";
 
+import createTempAttachment from "utils/Shared/createTempAttachment";
+
 import Attachment from "components/Shared/Attachment";
 import Comment from "components/Shared/Comment";
 import Description from "components/Shared/Description";
@@ -19,10 +21,14 @@ import LinkedDefect from "./LinkedDefect";
 class AddEditTestCase extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            attachments: []
+        };
         this.handleAttach = this.handleAttach.bind(this);
         this.handleAttachFileToComment = this.handleAttachFileToComment.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleDeleteAttachment = this.handleDeleteAttachment.bind(this);
         this.handleDeleteComment = this.handleDeleteComment.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleSaveComment = this.handleSaveComment.bind(this);
@@ -38,7 +44,20 @@ class AddEditTestCase extends React.Component {
                 Alert.error("Invalid file");
                 return;
             }
-            this.props.onAttachFile(file, this.props.testCase, this.props.testPlanID);
+            if(this.props.isEditMode) {
+                this.props.onAttachFile(
+                    file,
+                    this.props.testCase,
+                    this.props.testPlanID
+                );
+            } else {
+                this.setState({
+                    attachments: [
+                        ...this.state.attachments,
+                        createTempAttachment(file)
+                    ]
+                });
+            }
         }
     }
     handleAttachFileToComment(file, comment) {
@@ -48,9 +67,6 @@ class AddEditTestCase extends React.Component {
             this.props.testCase.id,
             this.props.testPlanID
         );
-    }
-    handleAttachFile(file) {
-        this.props.onAttachFile(file, this.props.defect);
     }
     handleCancel() {
         this.props.onCancel();
@@ -63,11 +79,29 @@ class AddEditTestCase extends React.Component {
             );
         }
     }
+    handleDeleteAttachment(attachment) {
+        if(this.props.editMode) {
+            this.props.onDeleteAttachment(attachment);
+        } else {
+            const index = this.state.attachments.findIndex(a => attachment.id==a.id);
+            this.setState({
+                attachments: [
+                    ...this.state.attachments.slice(0, index),
+                    ...this.state.attachments.slice(index + 1)
+                ]
+            });
+        }
+    }
     handleDeleteComment(commentId) {
         this.props.onDeleteComment(commentId);
     }
     handleSave() {
-        this.props.onSave(this.props.testPlanID, this.props.testCase);
+        this.props.onSave(
+            this.props.testPlanID,
+            this.props.testCase,
+            this.state.attachments.map(a => a.file),
+            !this.props.editMode
+        );
     }
     handleSaveComment(value, attachments) {
         this.props.onSaveComment(
@@ -86,6 +120,7 @@ class AddEditTestCase extends React.Component {
     }
     render() {
         const {
+            isEditMode,
             onChangeDescription,
             onChangeName,
             onDeleteAttachment,
@@ -99,6 +134,10 @@ class AddEditTestCase extends React.Component {
             description,
             comments=[]
         } = testCase;
+
+        const attachments = isEditMode
+            ? description.attachments
+            : this.state.attachments;
 
         return (<div className="add-edit-tc">
             <div className="action-bar header-gradient-1">
@@ -129,10 +168,12 @@ class AddEditTestCase extends React.Component {
                                 onUpdate={onChangeDescription} />
 
                             <div className="attachments">
-                                {description.attachments.map(attachment => <Attachment
+                                {attachments.map(attachment => <Attachment
                                     key={`attachment-${attachment.name}`}
                                     attachment={attachment}
-                                    onDelete={onDeleteAttachment}
+                                    allowEdit={isEditMode}
+                                    allowDownload={isEditMode}
+                                    onDelete={this.handleDeleteAttachment}
                                     onDownload={onDownloadAttachment}
                                     onSave={onSaveAttachment} />)}
                             </div>
@@ -189,6 +230,7 @@ AddEditTestCase.propTypes = {
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired
     }),
+    isEditMode: PropTypes.bool.isRequired,
     onAttachFile: PropTypes.func.isRequired,
     onAttachFileToComment: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
@@ -204,8 +246,8 @@ AddEditTestCase.propTypes = {
     onSaveComment: PropTypes.func.isRequired,
     testID: PropTypes.number,
     testCase: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired
+        id: PropTypes.number,
+        name: PropTypes.string
     }),
     testPlanID: PropTypes.number
 };

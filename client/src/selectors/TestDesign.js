@@ -17,4 +17,9 @@ export const getTestCases = createSelector(
     (testCases, testPlan) => testPlan && testCases[testPlan.id] || []
 );
 
-export const getTestCaseAddEditState = state=> state.testDesign.addEditTestCase;
+export const getTestCaseAddEditState = state=> state.testDesign.addEdit;
+
+export const isEditMode = createSelector(
+    getTestCaseAddEditState,
+    addEdit => Boolean(addEdit.id)
+);

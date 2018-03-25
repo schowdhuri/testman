@@ -14,11 +14,12 @@ import {
     reqUpdateAttachment
 } from "actions/Shared";
 
-import { getTestCaseAddEditState } from "selectors/TestDesign";
+import { getTestCaseAddEditState, isEditMode } from "selectors/TestDesign";
 import { isLoading } from "selectors/Shared";
 
 
 const mapStateToProps = state => ({
+    isEditMode: isEditMode(state),
     isLoading: isLoading(state),
     testCase: getTestCaseAddEditState(state)
 });
@@ -57,8 +58,13 @@ const mapDispatchToProps = dispatch => ({
         if(id)
             dispatch(actions.reqTestCase(id));
     },
-    onSave(testPlanID, testCase) {
-        dispatch(actions.reqSaveTestCase(testPlanID, testCase));
+    onSave(testPlanID, testCase, files, redirect) {
+        dispatch(actions.reqSaveTestCase(
+            testPlanID,
+            testCase,
+            files,
+            redirect
+        ));
     },
     onSaveAttachment(attachment) {
         dispatch(reqUpdateAttachment(attachment));

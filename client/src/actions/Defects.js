@@ -43,9 +43,10 @@ export const changeDefectStatus = value => ({
     value
 });
 
-export const reqSaveDefect = (defect, redirect=false) => ({
+export const reqSaveDefect = (defect, files=[], redirect=false) => ({
     type: ACTIONS.REQ_SAVE_DEFECT,
     defect,
+    files,
     redirect
 });
 

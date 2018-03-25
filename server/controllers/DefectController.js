@@ -27,17 +27,16 @@ const findById = async (id, wetland) => {
 
 const _getTestCases = async (tcIDs, manager) => { // TODO move to DefectRepo
     const repository = manager.getRepository(TestCase);
-    const arrTestCases = new ArrayCollection();
     tcIDs = tcIDs.filter(tcID => tcID);
-    let testCases = [];
-    for(let i=0; i<tcIDs.length; i++) {
-        const testCase = await repository.findOne(tcIDs[i]);
-        testCases.push(testCase);
-    }
+
+    const pArr = tcIDs.map(id => repository.findOne(id));
+    let testCases = await Promise.all(pArr);
+
     testCases = testCases.filter(tc => tc);
     if(!testCases.length)
         throw new HttpError(400, "No valid tests found");
 
+    const arrTestCases = new ArrayCollection();
     testCases.forEach(tc => arrTestCases.push(tc));
     return arrTestCases;
 };
@@ -49,10 +48,11 @@ const create = async (data, wetland, user) => {
         throw new HttpError(400, "description is required");
     if(!data.testCases || !data.testCases.length)
         throw new HttpError(400, "Defect must be tagged to one or more tests");
+
     const obj = {
         name: data.name,
         description: {
-            value: data.description || ""
+            value: data.description.value || ""
         },
         user: {
             id: user.id
@@ -61,11 +61,19 @@ const create = async (data, wetland, user) => {
     if(data.status)
         obj.status = data.status;
 
-    const arrTestRuns = new ArrayCollection();
-    data.testRuns.forEach(tr => arrTestRuns.push({
-        id: tr
-    }));
-    obj.testruns = arrTestRuns;
+    if(data.testRuns && data.testRuns.length) {
+        const arrTestRuns = new ArrayCollection();
+        data.testRuns.forEach(tr => arrTestRuns.push({
+            id: tr
+        }));
+        obj.testruns = arrTestRuns;
+    }
+
+    if(data.description.attachments && data.description.attachments.length) {
+        const arrAttachments = new ArrayCollection();
+        data.description.attachments.forEach(a => arrAttachments.push({ id: a.id }));
+        obj.description.attachments = arrAttachments;
+    }
 
     const manager  = wetland.getManager();
     const populator = wetland.getPopulator(manager);
@@ -74,12 +82,8 @@ const create = async (data, wetland, user) => {
     obj.testcases = testCases;
     let defect = populator.assign(Defect, obj, null, true);
     await manager.persist(defect).flush();
-    defect = {
-        ...defect,
-        testCases: defect.testcases
-    };
-    delete defect.testCases;
-    return defect;
+
+    return await findById(defect.id, wetland);
 };
 
 const update = async (id, data, wetland) => {
@@ -101,6 +105,7 @@ const update = async (id, data, wetland) => {
 
     const arrTestCases = new ArrayCollection();
     const obj = {};
+    obj.status = data.status;
     if(defect.description) {
         obj.description = {
             id: defect.description.id

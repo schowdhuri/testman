@@ -9,7 +9,7 @@ import redirectSaga from "./redirects";
 import reqUsers from "./reqUsers";
 import saveComment from "./saveComment";
 import updateAttachment from "./updateAttachment";
-import uploadFile from "./uploadFile";
+import uploadFiles from "./uploadFiles";
 
 function* sharedSaga() {
     yield spawn(attachFileToComment);
@@ -20,7 +20,7 @@ function* sharedSaga() {
     yield spawn(redirectSaga);
     yield spawn(reqUsers);
     yield spawn(saveComment);
-    yield spawn(uploadFile);
+    yield spawn(uploadFiles);
     yield spawn(updateAttachment);
 }
 

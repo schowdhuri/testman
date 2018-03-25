@@ -14,6 +14,11 @@ export const getDefects = createSelector(
 
 export const getDefectAddEditState = state => state.defects.addEdit;
 
+export const isEditMode = createSelector(
+    getDefectAddEditState,
+    addEdit => Boolean(addEdit.id)
+);
+
 export const areAllDefectsSelected = createSelector(
     [ getAllDefects, getSelectedDefects ],
     (all, selected) => {

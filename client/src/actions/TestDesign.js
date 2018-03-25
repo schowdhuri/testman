@@ -34,10 +34,12 @@ export const rcvTestCase = testCase => ({
     testCase
 });
 
-export const reqSaveTestCase = (testPlanId, testCase) => ({
+export const reqSaveTestCase = (testPlanId, testCase, files=[], redirect=false) => ({
     type: ACTIONS.REQ_TC_SAVE,
     testPlanId,
-    testCase
+    testCase,
+    files,
+    redirect
 });
 
 export const rcvSaveTestCase = (testPlanId, testCase) => ({

@@ -14,11 +14,12 @@ import {
 
 import AddEditDefect from "./AddEditDefect";
 
-import { getDefectAddEditState } from "selectors/Defects";
+import { getDefectAddEditState, isEditMode } from "selectors/Defects";
 import { getSelected } from "selectors/TestSelector";
 import { getUsers, isLoading } from "selectors/Shared";
 
 const mapStateToProps = state => ({
+    isEditMode: isEditMode(state),
     isLoading: isLoading(state),
     defect: getDefectAddEditState(state),
     selectedTestCases: getSelected(state),
@@ -71,8 +72,8 @@ const mapDispatchToProps = dispatch => ({
         dispatch(actions.reqDefect(id));
         dispatch(reqUsers());
     },
-    onSave(defect) {
-        dispatch(actions.reqSaveDefect(defect));
+    onSave(defect, files, redirect) {
+        dispatch(actions.reqSaveDefect(defect, files, redirect));
     },
     onSaveAttachment(attachment) {
         dispatch(reqUpdateAttachment(attachment));

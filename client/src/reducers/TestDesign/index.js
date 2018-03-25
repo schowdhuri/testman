@@ -1,11 +1,11 @@
 import { combineReducers } from "redux";
 
 import testPlans from "./testPlans";
-import addEditTestCase from "./addEditTestCase";
+import addEdit from "./addEdit";
 
 const designReducer = combineReducers({
     testPlans,
-    addEditTestCase
+    addEdit
 });
 
 export default designReducer;

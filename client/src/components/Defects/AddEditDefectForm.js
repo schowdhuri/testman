@@ -23,6 +23,7 @@ const AddEditDefectForm = props => {
         attachments,
         defectId,
         description,
+        isEditMode,
         name,
         onAttachFile,
         onChangeAssignee,
@@ -108,6 +109,8 @@ const AddEditDefectForm = props => {
             <Col md={12} className="attachments">
                 {attachments.map(attachment => <Attachment
                     key={`attachment-${attachment.name}`}
+                    allowDownload={isEditMode}
+                    allowEdit={isEditMode}
                     attachment={attachment}
                     onDelete={onDeleteAttachment}
                     onDownload={onDownloadAttachment}
@@ -123,12 +126,13 @@ AddEditDefectForm.propTypes = {
         email: PropTypes.string.isRequired
     }),
     attachments: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired,
+        id: PropTypes.number,
         name: PropTypes.string.isRequired,
         path: PropTypes.string.isRequired
     })),
     defectId: PropTypes.number,
     description: PropTypes.string,
+    isEditMode: PropTypes.bool,
     name: PropTypes.string,
     onAttachFile: PropTypes.func.isRequired,
     onChangeAssignee: PropTypes.func.isRequired,
@@ -138,7 +142,7 @@ AddEditDefectForm.propTypes = {
     onDeleteAttachment: PropTypes.func.isRequired,
     onDownloadAttachment: PropTypes.func.isRequired,
     onSaveAttachment: PropTypes.func.isRequired,
-    status: PropTypes.string.isRequired,
+    status: PropTypes.string,
     users: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,
