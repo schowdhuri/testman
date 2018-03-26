@@ -103,10 +103,14 @@ class CommentRepository extends EntityRepository {
             "tc.id": testCaseId
         }, {
             populate: [
-                { "testcases": "tc" },
+                {"testcases": "tc" },
+                { "tc.testplan": "testplan" },
                 "content",
                 "user"
-            ]
+            ],
+            orderBy: {
+                created: "desc"
+            }
         });
         if(!comments)
             return [];
@@ -122,7 +126,10 @@ class CommentRepository extends EntityRepository {
                 { "defects": "d" },
                 "content",
                 "user"
-            ]
+            ],
+            orderBy: {
+                created: "desc"
+            }
         });
         if(!comments)
             return [];

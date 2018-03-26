@@ -1,0 +1,68 @@
+.dashboard {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 16px;
+    padding: 16px;
+
+    .assigned-defects {
+        .defect {
+            color: #606061;
+            display: flex;
+            font-size: 1.25rem;
+            .defect-id {
+                flex: 1;
+            }
+            .name {
+                flex: 9;
+                overflow: hidden;
+                padding: 0 5px;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .status {
+                flex: 1;
+                padding: 0 5px;
+            }
+            .raised-date {
+                flex: 2;
+                padding: 0 5px;
+            }
+            .raised-by {
+                flex: 2;
+                padding: 0 5px;
+            }
+        }
+    }
+    .exec-cycles {
+        .exec-cycle {
+            font-size: 1.25rem;
+            display: flex;
+            .name {
+                flex: 1;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .progress {
+                flex: 2;
+                height: 8px;
+                margin: 5px;
+            }
+        }
+    }
+    .recent-comments {
+        .well {
+            font-size: 1.25rem;
+
+            .text,
+            .commenter,
+            .comment-time {
+                color: #999;
+                font-size: 1.1rem;
+            }
+            .glyphicon-time {
+                margin: 0 5px 0 10px;
+            }
+        }
+    }
+}
