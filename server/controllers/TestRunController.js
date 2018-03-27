@@ -24,6 +24,9 @@ const findAll = async (execCycleId, wetland) => {
         .getQuery()
         .getResult();
 
+    if(!testRuns)
+        return [];
+
     return testRuns.map(tr => {
         const testRun = {
             ...tr,

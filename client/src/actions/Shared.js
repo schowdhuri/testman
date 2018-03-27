@@ -1,5 +1,9 @@
 import * as ACTIONS from "constants/SharedActions";
 
+export const setupInvalidateSession = () => ({
+    type: ACTIONS.SETUP_SESSION_INV
+});
+
 export const reqLoginStatus = () => ({
     type: ACTIONS.REQ_LOGIN_STATUS
 });
@@ -25,6 +29,10 @@ export const redirectToDefects = () => ({
 
 export const redirectToExecCycle = () => ({
     type: ACTIONS.REDIRECT_EXEC_CYCLE
+});
+
+export const redirectToLogin = () => ({
+    type: ACTIONS.REDIRECT_LOGIN
 });
 
 export const reqUsers = () => ({

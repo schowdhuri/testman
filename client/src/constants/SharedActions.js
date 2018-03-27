@@ -1,9 +1,12 @@
 export const IS_LOADING             = "IS_LOADING";
+export const SETUP_SESSION_INV      = "SETUP_SESSION_INV";
+export const SESSION_INVALIDATE     = "SESSION_INVALIDATE";
 export const REQ_LOGIN_STATUS       = "REQ_LOGIN_STATUS";
 export const RCV_LOGIN_STATUS       = "RCV_LOGIN_STATUS";
 export const REDIRECT_TEST_DESIGN   = "REDIRECT_TEST_DESIGN";
 export const REDIRECT_DEFECTS       = "REDIRECT_DEFECTS";
 export const REDIRECT_EXEC_CYCLE    = "REDIRECT_EXEC_CYCLE";
+export const REDIRECT_LOGIN         = "REDIRECT_LOGIN";
 export const REQ_USERS              = "REQ_USERS";
 export const RCV_USERS              = "RCV_USERS";
 export const REQ_UPLOAD_FILES       = "REQ_UPLOAD_FILES";

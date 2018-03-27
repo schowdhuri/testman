@@ -7,7 +7,7 @@ import Header from "./Shared/Header";
 
 class App extends React.Component {
     componentDidMount() {
-        this.props.checkLogin();
+        this.props.onInit();
     }
     render() {
         const { navId } = this.props;
@@ -22,13 +22,13 @@ class App extends React.Component {
     }
 }
 App.propTypes = {
-    checkLogin: PropTypes.func.isRequired,
     children: PropTypes.oneOfType([
         PropTypes.node,
         PropTypes.array
     ]),
     isLoading: PropTypes.bool.isRequired,
-    navId: PropTypes.string
+    navId: PropTypes.string,
+    onInit: PropTypes.func.isRequired
 };
 
 export default App;

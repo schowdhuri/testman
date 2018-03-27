@@ -31,6 +31,29 @@ const getFormData = jsonData => {
     });
     return fd;
 };
+
+const cbQ = {
+    complete: [],
+    success: [],
+    error: []
+};
+const onComplete = cb => {
+    if(typeof(cb)==="function")
+        cbQ.complete.push(cb);
+};
+const onSuccess = cb => {
+    if(typeof(cb)==="function") {
+        cbQ.success.push(cb);
+        cbQ.complete.push(cb);
+    }
+};
+const onError = cb => {
+    if(typeof(cb)==="function") {
+        cbQ.error.push(cb);
+        cbQ.complete.push(cb);
+    }
+};
+
 /**
 * @param {Object} options
 *   @param {String} options.url - relative or absolute (starting with http) URL
@@ -42,7 +65,7 @@ const getFormData = jsonData => {
                             - FormData for dataType=form or unknown dataType
 *   @param {Object) [headers] - HTTP headers
 */
-function request(options) {
+const request = options => {
     if(!options || !options.url) {
         return Promise.reject("URL required");
     }
@@ -103,7 +126,17 @@ function request(options) {
         url += qString;
     }
     return fetch(url, params).then(response => {
+        cbQ.complete.forEach(cb => {
+            setTimeout(() => {
+                cb(response);
+            }, 0);
+        });
         if(response.ok) {
+            cbQ.success.forEach(cb => {
+                setTimeout(() => {
+                    cb(response);
+                }, 0);
+            });
             if(isJSON(response)) {
                 return response.text().then(text => {
                     try {
@@ -123,6 +156,7 @@ function request(options) {
                     }
                 });
             }
+            cbQ.forEach(cb => cb(response));
             return response.text().then(text => Promise.resolve({
                 status: response.status,
                 statusText: response.statusText,
@@ -131,6 +165,11 @@ function request(options) {
         }
         // process error
         if(isJSON(response)) {
+            cbQ.error.forEach(cb => {
+                setTimeout(() => {
+                    cb(response);
+                }, 0);
+            });
             return response.text().then(text => {
                 try {
                     const errorJSON = JSON.parse(text);
@@ -156,6 +195,37 @@ function request(options) {
             text
         }));
     });
-}
+};
+request.on = (event, cb) => {
+    if(event==="success") {
+        onSuccess(cb);
+        onComplete(cb);
+    }
+    if(event==="error") {
+        onError(cb);
+        onComplete(cb);
+    }
+    if(event==="complete") {
+        onComplete(cb);
+    }
+};
+request.off = (event, cb) => {
+    if(event==="success") {
+        const index = cbQ.success.findIndex(f => f===cb);
+        if(index != -1) {
+            cbQ.success.splice(index, 1);
+        }
+    }
+    if(event==="error") {
+        const index = cbQ.error.findIndex(f => f===cb);
+        if(index != -1) {
+            cbQ.error.splice(index, 1);
+        }
+    }
+    const index = cbQ.error.findIndex(f => f===cb);
+    if(index != -1) {
+        cbQ.complete.splice(index, 1);
+    }
+};
 
 export default request;

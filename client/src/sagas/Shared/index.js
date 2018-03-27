@@ -1,7 +1,9 @@
 import { spawn } from "redux-saga/effects";
 
-import attachFileToComment from "./attachFileToComment";
+import setupInvalidateSession from "./setupInvalidateSession";
 import checkLogin from "./checkLogin";
+
+import attachFileToComment from "./attachFileToComment";
 import deleteAttachment from "./deleteAttachment";
 import deleteComment from "./deleteComment";
 import downloadAttachment from "./downloadAttachment";
@@ -12,6 +14,7 @@ import updateAttachment from "./updateAttachment";
 import uploadFiles from "./uploadFiles";
 
 function* sharedSaga() {
+    yield spawn(setupInvalidateSession);
     yield spawn(attachFileToComment);
     yield spawn(checkLogin);
     yield spawn(deleteAttachment);

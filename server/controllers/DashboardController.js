@@ -13,8 +13,9 @@ const getSummary = async (wetland, user) => {
     const manager = wetland.getManager();
     const commentRepo = manager.getRepository(Comment);
     const ecRepo = manager.getRepository(ExecCycle);
-    const execCycles = await ecRepo.find({ status: "In Progress"}, { limit: 10 });
-
+    let execCycles = await ecRepo.find({ status: "In Progress"}, { limit: 10 });
+    if(!execCycles)
+        execCycles = [];
     const pArrECDetails = execCycles.map(ec => ecRepo.getDetails(ec.id));
     let ecDetails = await Promise.all(pArrECDetails);
 
@@ -33,7 +34,7 @@ const getSummary = async (wetland, user) => {
 
     // get defects recently tagged
     const defectRepo = manager.getRepository(Defect);
-    const defectsAssigned = await defectRepo.find({
+    let defectsAssigned = await defectRepo.find({
         "a.id": user.id
     }, {
         populate: [
@@ -42,14 +43,16 @@ const getSummary = async (wetland, user) => {
         ],
         limit: 10
     });
-
+    if(!defectsAssigned)
+        defectsAssigned = [];
     // defects raised by this user
-    const defectsRaised = await defectRepo.find({
+    let defectsRaised = await defectRepo.find({
         "u.id": user.id
     }, {
         populate: [{ user: "u" }]
     });
-
+    if(!defectsRaised)
+        defectsRaised = [];
     const allDefectIds = defectsRaised.map(d => d.id);
     defectsAssigned.forEach(d => allDefectIds.push(d.id));
 
@@ -60,11 +63,13 @@ const getSummary = async (wetland, user) => {
 
     // test cases added by this user
     const testCaseRepo = manager.getRepository(TestCase);
-    const testCasesAdded = await testCaseRepo.find({
+    let testCasesAdded = await testCaseRepo.find({
         "u.id": user.id
     }, {
         populate: [{ user: "u" }]
     });
+    if(!testCasesAdded)
+        testCasesAdded = [];
     // comments on all testCases added by this user
     const pArrTestCaseComments = testCasesAdded.map(testCase =>
         commentRepo.findByTestCase(testCase.id));

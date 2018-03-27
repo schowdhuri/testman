@@ -16,8 +16,13 @@ function redirectToDefects() {
     hashHistory.push("/defects");
 }
 
+function redirectToLogin() {
+    window.location.href = "/login";
+}
+
 export default function* () {
     yield spawn(takeEvery, ACTIONS.REDIRECT_TEST_DESIGN, redirectToTestDesign);
     yield spawn(takeEvery, ACTIONS.REDIRECT_EXEC_CYCLE, redirectToExecCycle);
     yield spawn(takeEvery, ACTIONS.REDIRECT_DEFECTS, redirectToDefects);
+    yield spawn(takeEvery, ACTIONS.REDIRECT_LOGIN, redirectToLogin);
 };

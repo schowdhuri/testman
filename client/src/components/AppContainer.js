@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 
 import App from "./App";
 
-import { reqLoginStatus } from "actions/Shared";
+import { reqLoginStatus, setupInvalidateSession } from "actions/Shared";
 
 import { isLoading } from "selectors/Shared";
 
@@ -11,7 +11,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    checkLogin() {
+    onInit() {
+        dispatch(setupInvalidateSession());
         dispatch(reqLoginStatus());
     }
 });
