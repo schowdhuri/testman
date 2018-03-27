@@ -57,6 +57,7 @@ class TestRunList extends React.Component {
     }
     render() {
         const {
+            allowAddTestRuns,
             allowDeleteTestRuns,
             allowEndExec,
             allowStartExec,
@@ -71,6 +72,7 @@ class TestRunList extends React.Component {
 
         return (<div className="test-runs-list">
             <TestRunsToolbar
+                allowAdd={allowAddTestRuns}
                 allowDelete={allowDeleteTestRuns}
                 allowEnd={allowEndExec}
                 allowStart={allowStartExec}
@@ -112,6 +114,7 @@ class TestRunList extends React.Component {
     }
 }
 TestRunList.propTypes = {
+    allowAddTestRuns: PropTypes.bool,
     allowDeleteTestRuns: PropTypes.bool,
     allowEndExec: PropTypes.bool,
     allowStartExec: PropTypes.bool,

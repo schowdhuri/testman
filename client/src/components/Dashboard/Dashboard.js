@@ -59,6 +59,7 @@ class Dashboard extends React.Component {
                 <Panel className="exec-cycles">
                     <Panel.Heading>In Progress</Panel.Heading>
                     <Panel.Body>
+                        {!execCycles.length ? <em>None</em> : null}
                         {execCycles.map(execCycle => {
                             const total = execCycle.failed +
                                 execCycle.passed +

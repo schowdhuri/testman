@@ -4,6 +4,7 @@ import TestRunList from "./TestRunList";
 import * as actions from "actions/ExecCycle";
 
 import {
+    allowAddTestRun,
     allowDeleteTestRun,
     allowEndExec,
     allowStartExec,
@@ -14,9 +15,11 @@ import {
     areAllTestRunsSelected,
     showImportDialog
 } from "selectors/ExecCycle";
+
 import { isLoading } from "selectors/Shared";
 
 const mapStateToProps = state => ({
+    allowAddTestRuns: allowAddTestRun(state),
     allowDeleteTestRuns: allowDeleteTestRun(state),
     allowEndExec: allowEndExec(state),
     allowStartExec: allowStartExec(state),

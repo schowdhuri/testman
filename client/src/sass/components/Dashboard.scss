@@ -37,6 +37,10 @@
         .exec-cycle {
             font-size: 1.25rem;
             display: flex;
+            margin: 10px 0;
+            &:first-child {
+                margin-top: 0;
+            }
             .name {
                 flex: 1;
                 overflow: hidden;

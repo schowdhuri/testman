@@ -25,6 +25,7 @@ class TestRunToolbar extends React.Component {
     }
     render() {
         const {
+            allowAdd,
             allowDelete,
             allowEnd,
             allowStart,
@@ -33,7 +34,7 @@ class TestRunToolbar extends React.Component {
             onDelete
         } = this.props;
         return (<div className="toolbar">
-            {execCycle
+            {execCycle && allowAdd
                 ? <OverlayTrigger placement="bottom" overlay={addTooltip}>
                     <Button bsStyle="link" onClick={onAdd}>
                         <i className="glyphicon glyphicon-plus text-info" />
@@ -70,6 +71,7 @@ class TestRunToolbar extends React.Component {
     }
 }
 TestRunToolbar.propTypes = {
+    allowAdd: PropTypes.bool,
     allowDelete: PropTypes.bool,
     allowEnd: PropTypes.bool,
     allowStart: PropTypes.bool,

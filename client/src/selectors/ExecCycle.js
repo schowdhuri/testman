@@ -53,9 +53,14 @@ export const getTestRuns = createSelector(
 export const getTestRunAddEditState = state=> state.execCycle.addEdit;
 export const showImportDialog = state => state.execCycle.importTestDialog;
 
+export const allowAddTestRun = createSelector(
+    getSelectedExecCycle,
+    execCycle => execCycle && execCycle.status != "Completed"
+);
+
 export const allowDeleteTestRun = createSelector(
-    getSelectedTestRuns,
-    selected => Boolean(selected.length)
+    [ getSelectedExecCycle, getSelectedTestRuns ],
+    (execCycle, testRuns) => execCycle && testRuns.length && execCycle.status != "Completed"
 );
 
 export const isInProgress = createSelector(
