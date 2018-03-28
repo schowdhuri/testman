@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
+import CloneExecCycle from "./CloneExecCycle";
 import EditExecCycle from "./AddEditExecCycle";
 import ExecCycleToolbar from "./ExecCycleToolbar";
 
@@ -9,12 +10,16 @@ class ExecCycleList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            cloneDialog: false,
             editDialog: false
         };
+        this.handleClone = this.handleClone.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleSelect = this.handleSelect.bind(this);
+        this.hideCloneDialog = this.hideCloneDialog.bind(this);
         this.hideEditDialog = this.hideEditDialog.bind(this);
+        this.showCloneDialog = this.showCloneDialog.bind(this);
         this.showEditDialog = this.showEditDialog.bind(this);
     }
     componentDidMount() {
@@ -32,6 +37,10 @@ class ExecCycleList extends React.Component {
             this.handleSelect(nextProps.execCycleId);
         }
     }
+    handleClone(id, cloneType) {
+        this.hideCloneDialog();
+        this.props.onClone(id, cloneType);
+    }
     handleDelete(execCycle) {
         this.props.onDeleteExecCycle(execCycle);
         this.hideEditDialog();
@@ -45,8 +54,18 @@ class ExecCycleList extends React.Component {
             id: execCycleId
         });
     }
+    hideCloneDialog() {
+        this.setState({ cloneDialog: false, execCycle: {} });
+    }
     hideEditDialog() {
         this.setState({ editDialog: false, execCycle: {} });
+    }
+    showCloneDialog(execCycle, ev) {
+        ev.preventDefault();
+        this.setState({
+            execCycle,
+            cloneDialog: true
+        });
     }
     showEditDialog(execCycle, ev) {
         ev.preventDefault();
@@ -57,7 +76,7 @@ class ExecCycleList extends React.Component {
     }
     render() {
         const { execCycles } = this.props;
-        const { editDialog, execCycle } = this.state;
+        const { cloneDialog, editDialog, execCycle } = this.state;
         return (<div className="cycles">
             <ExecCycleToolbar onSave={this.props.onSave} />
             <ul>
@@ -68,11 +87,19 @@ class ExecCycleList extends React.Component {
                     <Link to={`/execution/${ec.id}`}>
                         {ec.name}
                         <button className="btn btn-link btn-edit" onClick={ev => this.showEditDialog(ec, ev)}>
-                            <i className="glyphicon glyphicon-pencil" />
+                            <i className="glyphicon glyphicon-pencil text-info" />
+                        </button>
+                        <button className="btn btn-link btn-clone" onClick={ev => this.showCloneDialog(ec, ev)}>
+                            <i className="glyphicon glyphicon-duplicate text-info" />
                         </button>
                     </Link>
                 </li>))}
             </ul>
+            <CloneExecCycle
+                show={cloneDialog}
+                execCycle={execCycle}
+                onClose={this.hideCloneDialog}
+                onClone={this.handleClone} />
             <EditExecCycle
                 show={editDialog}
                 execCycle={execCycle}

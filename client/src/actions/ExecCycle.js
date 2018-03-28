@@ -172,3 +172,14 @@ export const rcvUnlinkDefect = (testRun, defect) => ({
     testRun,
     defect
 });
+
+export const reqCloneExecCycle = (id, cloneType) => ({
+    type: ACTIONS.REQ_CLONE_EC,
+    id,
+    cloneType
+});
+
+export const rcvCloneExecCycle = execCycle => ({
+    type: ACTIONS.RCV_CLONE_EC,
+    execCycle
+});

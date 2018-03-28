@@ -33,3 +33,5 @@ export const REQ_LINK_DEFECTS       = "REQ_LINK_DEFECTS";
 export const RCV_LINK_DEFECTS       = "RCV_LINK_DEFECTS";
 export const REQ_UNLINK_DEFECT      = "REQ_UNLINK_DEFECT";
 export const RCV_UNLINK_DEFECT      = "RCV_UNLINK_DEFECT";
+export const REQ_CLONE_EC           = "REQ_CLONE_EC";
+export const RCV_CLONE_EC           = "RCV_CLONE_EC";

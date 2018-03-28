@@ -78,8 +78,8 @@ class AddEditExecCycle extends React.Component {
 AddEditExecCycle.propTypes = {
     show: PropTypes.bool.isRequired,
     execCycle: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
+        id: PropTypes.number,
+        name: PropTypes.string,
         testRuns: PropTypes.arrayOf(PropTypes.shape({
             id: PropTypes.number.isRequired,
             name: PropTypes.string.isRequired

@@ -28,6 +28,17 @@ const execCycleList = (state=initialState, action) => {
             };
         }
 
+        case ACTIONS.RCV_CLONE_EC: {
+            const { execCycle } = action;
+            return {
+                ...state,
+                all: [
+                    ...state.all,
+                    execCycle
+                ]
+            };
+        }
+
         case ACTIONS.SELECT_EXEC_CYCLE: {
             const { execCycle } = action;
             const match = state.all.find(ec => ec.id == execCycle.id);

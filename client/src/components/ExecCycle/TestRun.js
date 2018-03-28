@@ -127,7 +127,11 @@ class TestRun extends React.Component {
                                         onSelect={() => this.handleChangeStatus(s)}
                                     >{s}</MenuItem>))}
                                 </DropdownButton>
-                                : <Button bsSize="small" bsStyle="warning" disabled>{testRun.status}</Button>}
+                                : <Button
+                                    bsSize="small"
+                                    bsStyle={TR_COLORS[testRun.status]}
+                                    disabled
+                                >{testRun.status}</Button>}
                         </div>
                         Execution Details
                     </Panel.Heading>
@@ -136,7 +140,7 @@ class TestRun extends React.Component {
                             ? <p className="description">{testCase.description.value}</p>
                             : null}
                         {testRun.runDate
-                            ? <p className="run-date">{dateFormat(testRun.runDate)}</p>
+                            ? <p className="run-date">Last run: {dateFormat(testRun.runDate)}</p>
                             : null}
                     </Panel.Body>
                 </Panel>

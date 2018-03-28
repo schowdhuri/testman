@@ -5,12 +5,15 @@ const TestCase = require("../models/TestCase");
 
 const HttpError = require("../helpers/HttpError");
 
+const CLONE_TYPES = require("../../common/constants/ExecCycleCloneTypes");
+
 
 const _getTestCases = async (idArr, manager) => {
     const repository = manager.getRepository(TestCase);
     const pArr = idArr.map(id => repository.findOne(id));
     const testCases = await Promise.all(pArr);
-
+    if(!testCases)
+        return [];
     return testCases;
 };
 
@@ -108,7 +111,7 @@ const update = async (id, data, wetland) => {
     const updated = populator.assign(ExecCycle, data, execCycle, true);
     await manager.flush();
 
-    return updated;
+    return findById(updated.id, wetland);
 };
 
 const remove = async (id, wetland) => {
@@ -160,6 +163,51 @@ const endExec = async (id, wetland) => {
     return execCycle;
 };
 
+const createClone = async (id, data, wetland) => {
+    if(!id)
+        throw new HttpError(400, "id is required");
+
+    let cloneType = data && data.type;
+    
+    const manager = wetland.getManager();
+    const repository = manager.getRepository(ExecCycle);
+    const populator = wetland.getPopulator(manager);
+
+    const execCycle = await repository.findOne(id);
+    if(!execCycle)
+        throw new HttpError(404, `ExecCycle with id ${id} not found`);
+
+    const testRuns = await repository.getTestRuns(
+        id,
+        cloneType==CLONE_TYPES.FAILED
+            ? "Fail"
+            : cloneType==CLONE_TYPES.UNFINISHED
+                ? "New"
+                : null
+    );
+    // copy test cases
+    const testCaseIds = testRuns.map(tr => tr.testCase);
+    const testCases = await _getTestCases(testCaseIds, manager);
+    
+    const arrTestRuns = new ArrayCollection();
+    testRuns.forEach((tr, index) => arrTestRuns.push({
+        name: testCases[index].name,
+        testcase: {
+            id: testCases[index].id
+        },
+        defects: tr.defects.map(defId => ({
+            id: defId
+        }))
+    }));
+    const obj = {
+        name: `Copy of ${execCycle.name}`,
+        testruns: arrTestRuns
+    };
+    const newExecCycle = populator.assign(ExecCycle, obj, null, true);
+    await manager.persist(newExecCycle).flush();
+    return findById(newExecCycle.id, wetland);
+};
+
 module.exports = {
     findAll,
     findById,
@@ -167,5 +215,6 @@ module.exports = {
     update,
     remove,
     startExec,
-    endExec
+    endExec,
+    createClone
 };

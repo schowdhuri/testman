@@ -1,6 +1,7 @@
 import { spawn } from "redux-saga/effects";
 
 import addNewDefect from "./addNewDefect";
+import cloneExecCycle from "./cloneExecCycle";
 import importTests from "./importTests";
 import linkDefects from "./linkDefects";
 import reqDeleteExecCycle from "./reqDeleteExecCycle";
@@ -16,6 +17,7 @@ import unlinkDefect from "./unlinkDefect";
 
 function* execCyclesSaga() {
     yield spawn(addNewDefect);
+    yield spawn(cloneExecCycle);
     yield spawn(importTests);
     yield spawn(linkDefects);
     yield spawn(reqDeleteExecCycle);

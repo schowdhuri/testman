@@ -14,8 +14,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    reqExecCycles() {
-        dispatch(actions.reqExecCycles());
+    onClone(id, cloneType) {
+        dispatch(actions.reqCloneExecCycle(id, cloneType));
     },
     onDeleteExecCycle(execCycle) {
         dispatch(actions.reqDeleteExecCycle(execCycle));
@@ -25,6 +25,9 @@ const mapDispatchToProps = dispatch => ({
     },
     onSelect(execCycle) {
         dispatch(actions.selectExecCycle(execCycle));
+    },
+    reqExecCycles() {
+        dispatch(actions.reqExecCycles());
     }
 });
 

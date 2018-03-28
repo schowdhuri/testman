@@ -6,28 +6,31 @@ const dateFormat = require("../../common/utils/dateFormat");
 
 
 class ExecCycleRepository extends EntityRepository {
-    async getTestRuns(id) {
+    async getTestRuns(id, status) {
         const manager = this.getEntityManager();
         const testRunRepo = manager.getRepository(TestRun);
         const qb = testRunRepo.getQueryBuilder("tr");
 
-        const testRuns = await qb
+        let query = qb
             .leftJoin("tr.execcycle", "ec")
             .leftJoin("tr.testcase", "tc")
-            .select("tr.id", "tc.id", "tc.name", "ec.id", "tr.status")
-            .where({ "ec.id": id })
-            .getQuery()
-            .execute();
+            .leftJoin("tr.defects", "def")
+            .select("tr.id", "tc.id", "tc.name", "ec.id", "tr.status", "def.id")
+            .where({ "ec.id": id });
+        if(status)
+            query = query.where(({ "tr.status": status }));
+
+        const testRuns = await query.getQuery().getResult();
 
         if(!testRuns)
             return [];
-
         return testRuns.map(testRun => ({
-            id: testRun["tr.id"],
-            status: testRun["tr.status"],
-            execCycle: testRun["ec.id"],
-            name: testRun["tc.name"],
-            testCase: testRun["tc.id"]
+            id: testRun.id,
+            name: testRun.testcase.name,
+            status: testRun.status,
+            execCycle: testRun.execcycle.id,
+            testCase: testRun.testcase.id,
+            defects: testRun.defects.map(def => def.id)
         }));
     }
 
