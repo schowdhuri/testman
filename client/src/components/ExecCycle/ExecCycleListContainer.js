@@ -2,6 +2,7 @@ import { connect } from "react-redux";
 import ExecCycleList from "./ExecCycleList";
 
 import * as actions from "actions/ExecCycle";
+import { redirectToExecCycle } from "actions/Shared";
 
 import { getExecCycles, getSelectedExecCycle } from "selectors/ExecCycle";
 import { isLoading } from "selectors/Shared";
@@ -23,8 +24,10 @@ const mapDispatchToProps = dispatch => ({
     onSave(execCycle) {
         dispatch(actions.reqSaveExecCycle(execCycle));
     },
-    onSelect(execCycle) {
+    onSelect(execCycle, redirect) {
         dispatch(actions.selectExecCycle(execCycle));
+        if(redirect)
+            dispatch(redirectToExecCycle(execCycle.id));
     },
     reqExecCycles() {
         dispatch(actions.reqExecCycles());

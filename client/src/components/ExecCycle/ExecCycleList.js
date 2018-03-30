@@ -23,19 +23,22 @@ class ExecCycleList extends React.Component {
         this.showEditDialog = this.showEditDialog.bind(this);
     }
     componentDidMount() {
-        if(this.props.execCycleId &&
-            (!this.props.selected || this.props.selected.id != this.props.execCycleId)
-        ) {
-            this.handleSelect(this.props.execCycleId);
+        if(!this.props.execCycleId && this.props.selected && this.props.selected.id) {
+            this.handleSelect(this.props.selected.id, true);
+        } else {
+            this.props.reqExecCycles();
         }
-        this.props.reqExecCycles();
     }
     componentWillReceiveProps(nextProps) {
-        if(nextProps.execCycleId &&
-            (!this.props.selected || this.props.selected.id != nextProps.execCycleId)
-        ) {
-            this.handleSelect(nextProps.execCycleId);
-        }
+        const redirect = Boolean(!this.props.execCycleId &&
+            nextProps.selected &&
+            nextProps.selected.id);
+
+        const newId = nextProps.execCycleId ||
+            nextProps.selected && nextProps.selected.id;
+
+        if(newId)
+            this.handleSelect(newId, redirect);
     }
     handleClone(id, cloneType) {
         this.hideCloneDialog();
@@ -49,10 +52,10 @@ class ExecCycleList extends React.Component {
         this.props.onSave(data);
         this.hideEditDialog();
     }
-    handleSelect(execCycleId) {
+    handleSelect(execCycleId, redirect) {
         this.props.onSelect({
             id: execCycleId
-        });
+        }, redirect);
     }
     hideCloneDialog() {
         this.setState({ cloneDialog: false, execCycle: {} });

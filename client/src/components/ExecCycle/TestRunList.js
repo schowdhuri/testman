@@ -21,12 +21,17 @@ class TestRunList extends React.Component {
         this.toggleSelector = this.toggleSelector.bind(this);
     }
     componentDidMount() {
-        if(this.props.execCycle && this.props.execCycleId == this.props.execCycle.id)
+        console.log("CDM: ", this.props.execCycle && this.props.execCycle.id)
+        if(this.props.execCycle && this.props.execCycle.id)
             this.props.fetchTestRuns(this.props.execCycle);
     }
     componentWillReceiveProps(nextProps) {
-        if((nextProps.execCycle != this.props.execCycle ||
-            (nextProps.execCycle && this.props.execCycle && nextProps.execCycle.id != this.props.execCycle.id))
+        if(
+            (nextProps.execCycle && !this.props.execCycle) ||
+            (nextProps.execCycle &&
+                this.props.execCycle &&
+                nextProps.execCycle.id != this.props.execCycle.id
+            )
         ) {
             this.props.fetchTestRuns(nextProps.execCycle);
         }
