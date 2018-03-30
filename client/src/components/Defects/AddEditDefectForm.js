@@ -62,17 +62,17 @@ const AddEditDefectForm = props => {
         disableClick={true}
         onDrop={handleAttach}
     >
-        <Row>
-            <Col md={10}>
+        <div className="wrapper">
+            <div className="title-container">
                 <Title placeholder="Name" onUpdate={onChangeName} value={name} />
-            </Col>
-            <Col md={2} className="text-right">
+            </div>
+            <div className="status-container">
                 {defectId
                     ? <DropdownButton
-                        bsStyle={DEF_COLORS[status]}
-                        bsSize="small"
-                        title={status}
-                        id="status-dd"
+                            bsStyle={DEF_COLORS[status]}
+                            bsSize="small"
+                            title={status}
+                            id="status-dd"
                     >
                         {DEF_STATES.map(s => (<MenuItem
                             key={s}
@@ -80,17 +80,15 @@ const AddEditDefectForm = props => {
                         >{s}</MenuItem>))}
                     </DropdownButton>
                     : null}
-            </Col>
-        </Row>
-         <Row>
-            <Col md={10}>
+                </div>
+            <div className="description-container">
                 <Description
                     placeholder="Description"
                     onUpdate={onChangeDescription}
                     onUpload={handleAttach}
                     value={description} />
-            </Col>
-            <Col md={2} className="assignee text-right">
+            </div>
+            <div className="assignee-container">
                 {users
                     ? <DropdownButton
                         bsSize="small"
@@ -103,10 +101,8 @@ const AddEditDefectForm = props => {
                         >{u.name}</MenuItem>))}
                     </DropdownButton>
                     : null}
-            </Col>
-        </Row>
-        <Row>
-            <Col md={12} className="attachments">
+            </div>
+            <div className="attachments">
                 {attachments.map(attachment => <Attachment
                     key={`attachment-${attachment.name}`}
                     allowDownload={isEditMode}
@@ -115,8 +111,8 @@ const AddEditDefectForm = props => {
                     onDelete={onDeleteAttachment}
                     onDownload={onDownloadAttachment}
                     onSave={onSaveAttachment} />)}
-            </Col>
-        </Row>
+            </div>
+        </div>
     </Dropzone>);
 };
 AddEditDefectForm.propTypes = {
@@ -134,7 +130,7 @@ AddEditDefectForm.propTypes = {
     description: PropTypes.string,
     isEditMode: PropTypes.bool,
     name: PropTypes.string,
-    onAttachFile: PropTypes.func.isRequired,
+    onAttachFile: PropTypes.func,
     onChangeAssignee: PropTypes.func.isRequired,
     onChangeDescription: PropTypes.func.isRequired,
     onChangeName: PropTypes.func.isRequired,

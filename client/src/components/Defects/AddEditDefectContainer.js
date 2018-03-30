@@ -69,8 +69,9 @@ const mapDispatchToProps = dispatch => ({
     },
     onInit(id) {
         dispatch(actions.resetAddEdit());
-        dispatch(actions.reqDefect(id));
         dispatch(reqUsers());
+        if(id)
+            dispatch(actions.reqDefect(id));
     },
     onSave(defect, files, redirect) {
         dispatch(actions.reqSaveDefect(defect, files, redirect));
@@ -83,6 +84,12 @@ const mapDispatchToProps = dispatch => ({
     }
 });
 
-const AddEditDefectContainer = connect(mapStateToProps, mapDispatchToProps)(AddEditDefect);
+const mergeProps = (stateProps, dispatchProps, ownProps) => ({
+    ...stateProps,
+    ...dispatchProps,
+    ...ownProps
+});
+
+const AddEditDefectContainer = connect(mapStateToProps, mapDispatchToProps, mergeProps)(AddEditDefect);
 
 export default AddEditDefectContainer;

@@ -120,3 +120,13 @@
         text-decoration: none;
     }
 }
+
+.add-defect-modal {
+    .container {
+        padding: 0;
+        width: 100%;
+    }
+    .panel.testcases .panel-body {
+        padding: 0;
+    }
+}

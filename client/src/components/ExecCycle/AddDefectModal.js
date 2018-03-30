@@ -2,51 +2,62 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Button, Modal } from "react-bootstrap";
 
-import DefectForm from "components/Defects/AddEditDefectForm";
+import AddEditDefect from "components/Defects/AddEditDefectContainer";
+
+
+const ActionBar = props => {
+    const { onSave, onCancel } = props;
+    return (<div className="custom-actionbar modal-footer">
+        <Button onClick={onCancel}>Cancel</Button>
+        <Button bsStyle="success" onClick={onSave}>Save</Button>
+    </div>);
+};
 
 class AddDefectModal extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            name: "",
-            description: ""
-        };
-        this.handleChangeDescr = this.handleChangeDescr.bind(this);
-        this.handleChangeName = this.handleChangeName.bind(this);
+        
         this.handleClose = this.handleClose.bind(this);
         this.handleSave = this.handleSave.bind(this);
-    }
-    handleChangeDescr(description) {
-        this.setState({ description });
-    }
-    handleChangeName(name) {
-        this.setState({ name });
     }
     handleClose() {
         this.props.onClose();
     }
-    handleSave() {
-        this.props.onSave({
-            name: this.state.name,
-            description: this.state.description
-        });
+    handleSave(defect, files) {
+        console.log(defect, files)
+        const { testCase } = this.props;
+        this.props.onSave(
+            {
+                ...defect,
+                testCases: [{
+                    id: testCase.id,
+                    name: testCase.name,
+                    testPlan: testCase.testPlan.id
+                }]
+            },
+            files
+        );
     }
     render() {
-        const { show } = this.props;
-        const { name } = this.state;
+        const { show, testCase } = this.props;
+        const linkedTestCases = [{
+            id: testCase.id,
+            name: testCase.name,
+            testPlan: testCase.testPlan && testCase.testPlan.id
+        }];
         return (<Modal show={show} className="add-defect-modal">
             <Modal.Header>
                 <Modal.Title>Add Defect</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <DefectForm
-                    onChangeName={this.handleChangeName}
-                    onChangeDescription={this.handleChangeDescr} />
+                <AddEditDefect
+                    allowAddTestCase={false}
+                    allowDeleteTestCase={false}
+                    ActionBar={ActionBar}
+                    testCases={linkedTestCases}
+                    onCancel={this.handleClose}
+                    onSave={this.handleSave} />
             </Modal.Body>
-            <Modal.Footer>
-                <Button onClick={this.handleClose}>Cancel</Button>
-                <Button bsStyle="success" onClick={this.handleSave} disabled={!name.length}>Save</Button>
-            </Modal.Footer>
         </Modal>);
     }
 }

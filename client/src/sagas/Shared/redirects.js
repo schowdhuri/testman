@@ -4,12 +4,20 @@ import hashHistory from "utils/Shared/history";
 
 import * as ACTIONS from "constants/SharedActions";
 
-function redirectToTestDesign() {
-    hashHistory.push("/design");
+function redirectToTestDesign(action) {
+    const { id } = action;
+    if(id)
+        hashHistory.push(`/design/${id}`);
+    else
+        hashHistory.push("/design");
 }
 
-function redirectToExecCycle() {
-    hashHistory.push("/execution");
+function redirectToExecCycle(action) {
+    const { id } = action;
+    if(id)
+        hashHistory.push(`/execution/${id}`);
+    else
+        hashHistory.push("/execution");
 }
 
 function redirectToDefects() {

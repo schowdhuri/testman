@@ -56,6 +56,10 @@ const findById = async (id, wetland) => {
         modified: dateFormat(testRun.modified),
         runDate: testRun.runDate && dateFormat(testRun.runDate) || null
     };
+    
+    if(!testRun.testCase)
+        throw new HttpError(500, "Invalid testRun");
+
     const testCase = await getTestCase(testRun.testCase.id, wetland);
     testRun = {
         ...testRun,

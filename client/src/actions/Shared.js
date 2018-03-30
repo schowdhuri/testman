@@ -19,16 +19,19 @@ export const setLoading = (id, status) => ({
     status
 });
 
-export const redirectToTestDesign = () => ({
-    type: ACTIONS.REDIRECT_TEST_DESIGN
+export const redirectToTestDesign = id => ({
+    type: ACTIONS.REDIRECT_TEST_DESIGN,
+    id
 });
 
-export const redirectToDefects = () => ({
-    type: ACTIONS.REDIRECT_DEFECTS
+export const redirectToDefects = id => ({
+    type: ACTIONS.REDIRECT_DEFECTS,
+    id
 });
 
-export const redirectToExecCycle = () => ({
-    type: ACTIONS.REDIRECT_EXEC_CYCLE
+export const redirectToExecCycle = id => ({
+    type: ACTIONS.REDIRECT_EXEC_CYCLE,
+    id
 });
 
 export const redirectToLogin = () => ({

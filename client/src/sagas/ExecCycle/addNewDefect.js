@@ -8,15 +8,19 @@ import { reqSaveDefect } from "actions/Defects";
 import { setLoading } from "actions/Shared";
 
 function* addNewDefect(action) {
-    const { defect, testRun } = action;
+    const { defect, files, testRun } = action;
     yield put(setLoading(REQ_ADD_NEW_DEFECT, true));
-    yield put(reqSaveDefect({
-        ...defect,
-        testCases: [{
-            id: testRun.testCase.id
-        }],
-        testRuns: [ testRun ]
-    }));
+    yield put(reqSaveDefect(
+        {
+            ...defect,
+            testCases: [{
+                id: testRun.testCase.id
+            }],
+            testRuns: [ testRun ]
+        },
+        files,
+        false
+    ));
     const result = yield take(RCV_SAVE_DEFECT);
     yield put(rcvAddNewDefect(result.defect));
     yield put(setLoading(REQ_ADD_NEW_DEFECT, false));

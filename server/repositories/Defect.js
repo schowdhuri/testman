@@ -56,13 +56,15 @@ class DefectRepository extends EntityRepository {
             name: tc.name,
             testPlan: tc.testplan && tc.testplan.id
         }));
-        const testRuns = defect.testruns.map(tr => ({
-            id: tr.id,
-            status: tr.status,
-            testCase: {
-                id: tr.testcase.id
-            }
-        }));
+        const testRuns = defect.testruns
+            .filter(tr => tr.testcase)
+            .map(tr => ({
+                id: tr.id,
+                status: tr.status,
+                testCase: {
+                    id: tr.testcase.id
+                }
+            }));
         const { testcases, testruns, ...others } = defect; // eslint-disable-line no-unused-vars
         const manager = this.getEntityManager();
         const commentRepo = manager.getRepository(Comment);

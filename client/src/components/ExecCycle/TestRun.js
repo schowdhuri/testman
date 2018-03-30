@@ -41,7 +41,7 @@ class TestRun extends React.Component {
         this.props.onInit(this.props.execCycleId, this.props.testRunId);
     }
     handleCancel() {
-        this.props.onCancel();
+        this.props.onCancel(this.props.execCycleId);
     }
     handleChangeStatus(newStatus) {
         this.props.onChangeStatus(this.props.testRun, newStatus);
@@ -50,8 +50,8 @@ class TestRun extends React.Component {
         this.props.onLinkDefects(defects, this.props.testRun);
         this.hideSelectDefectModal();
     }
-    handleSaveDefect(defect) {
-        this.props.onSaveDefect(defect, this.props.testRun);
+    handleSaveDefect(defect, files) {
+        this.props.onSaveDefect(defect, files, this.props.testRun);
         this.hideDefectModal();
     }
     handleUnlinkDefect(defect) {
@@ -180,6 +180,7 @@ class TestRun extends React.Component {
             </div>
             <DefectModal
                 show={showDefectModal}
+                testCase={testRun.testCase}
                 onSave={this.handleSaveDefect}
                 onClose={this.hideDefectModal} />
             <DefectSelector
@@ -192,7 +193,7 @@ class TestRun extends React.Component {
 TestRun.propTypes = {
     isInProgress: PropTypes.bool,
     testRunId: PropTypes.number,
-    execCycleId: PropTypes.number,
+    execCycleId: PropTypes.number.isRequired,
     onCancel: PropTypes.func.isRequired,
     onChangeStatus: PropTypes.func.isRequired,
     onInit: PropTypes.func.isRequired,
@@ -200,8 +201,8 @@ TestRun.propTypes = {
     onSaveDefect: PropTypes.func.isRequired,
     onUnlinkDefect: PropTypes.func.isRequired,
     testRun: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired
+        id: PropTypes.number,
+        name: PropTypes.string
     })
 };
 

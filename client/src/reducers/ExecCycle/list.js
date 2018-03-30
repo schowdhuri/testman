@@ -24,7 +24,10 @@ const execCycleList = (state=initialState, action) => {
             }
             return {
                 ...state,
-                all: execCycles
+                all: execCycles,
+                selected: execCycles.length
+                    ? execCycles[0]
+                    : null
             };
         }
 

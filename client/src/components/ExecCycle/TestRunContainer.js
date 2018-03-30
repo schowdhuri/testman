@@ -21,9 +21,9 @@ const mapDispatchToProps = dispatch => ({
     onLinkDefects(defects, testRun) {
         dispatch(actions.reqLinkDefects(testRun, defects));
     },
-    onCancel() {
+    onCancel(execCycleId) {
         dispatch(actions.resetTRAddEdit());
-        dispatch(redirectToExecCycle());
+        dispatch(redirectToExecCycle(execCycleId));
     },
     onChangeStatus(testRun, status) {
         dispatch(actions.reqSaveTestRun({
@@ -39,8 +39,8 @@ const mapDispatchToProps = dispatch => ({
         dispatch(actions.reqExecCycles());
         dispatch(actions.reqTestRun(id));
     },
-    onSaveDefect(defect, testRun) {
-        dispatch(actions.reqAddNewDefect(defect, testRun));
+    onSaveDefect(defect, files, testRun) {
+        dispatch(actions.reqAddNewDefect(defect, files, testRun));
     },
     onUnlinkDefect(testRun, defect) {
         dispatch(actions.reqUnlinkDefect(testRun, defect));

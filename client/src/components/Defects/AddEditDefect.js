@@ -41,9 +41,7 @@ class AddEditDefect extends React.Component {
         this.showSelector = this.showSelector.bind(this);
     }
     componentDidMount() {
-        if(this.props.defectID) {
-            this.props.onInit(this.props.defectID);
-        }
+        this.props.onInit(this.props.defectID);
     }
     handleAddTests(testCases) {
         this.props.onAddTests(testCases);
@@ -141,6 +139,9 @@ class AddEditDefect extends React.Component {
     }
     render() {
         const {
+            allowAddTestCase=true,
+            allowDeleteTestCase=true,
+            ActionBar,
             defectID,
             defect,
             isEditMode,
@@ -149,31 +150,34 @@ class AddEditDefect extends React.Component {
             onSaveAttachment,
             users
         } = this.props;
-        const { testCases, comments } = defect;
+        const { comments } = defect;
+        const testCases = this.props.testCases || defect.testCases;
         const { showImportDialog } = this.state;
         const attachments = isEditMode
             ? defect.description.attachments
             : this.state.attachments;
         return (<div className="add-edit-defect">
-            <div className="action-bar header-gradient-1">
-                <ButtonToolbar>
-                    {!defectID || <Button
-                        bsSize="small"
-                        bsStyle="danger"
-                        onClick={this.handleDelete}
-                    >Delete</Button>}
-                    <Button
-                        bsSize="small"
-                        onClick={this.handleCancel}
-                    >Close</Button>
-                    <Button
-                        bsSize="small"
-                        bsStyle="success"
-                        onClick={this.handleSave}
-                    >Save</Button>
-                </ButtonToolbar>
-                {defectID ? <h3>Edit Defect</h3> : <h3>Add Defect</h3>}
-            </div>
+            {!ActionBar
+                ? <div className="action-bar header-gradient-1">
+                    <ButtonToolbar>
+                        {!defectID || <Button
+                            bsSize="small"
+                            bsStyle="danger"
+                            onClick={this.handleDelete}
+                        >Delete</Button>}
+                        <Button
+                            bsSize="small"
+                            onClick={this.handleCancel}
+                        >Close</Button>
+                        <Button
+                            bsSize="small"
+                            bsStyle="success"
+                            onClick={this.handleSave}
+                        >Save</Button>
+                    </ButtonToolbar>
+                    {defectID ? <h3>Edit Defect</h3> : <h3>Add Defect</h3>}
+                </div>
+                : null}
             <div className="container">
                 <Panel>
                     <Panel.Body>
@@ -198,15 +202,17 @@ class AddEditDefect extends React.Component {
                 </Panel>
                 <Panel className="testcases">
                     <Panel.Heading>
-                        <Button
-                            bsStyle="link"
-                            className="btn-add-test"
-                            onClick={this.showSelector}
-                        >
-                            <i className="glyphicon glyphicon-plus text-info" />
-                            {" "}
-                            <span className="text-info">New</span>
-                        </Button>
+                        {allowAddTestCase
+                            ? <Button
+                                bsStyle="link"
+                                className="btn-add-test"
+                                onClick={this.showSelector}
+                            >
+                                <i className="glyphicon glyphicon-plus text-info" />
+                                {" "}
+                                <span className="text-info">New</span>
+                            </Button>
+                            : null}
                         <Panel.Title componentClass="h3">Linked Test Cases</Panel.Title>
                     </Panel.Heading>
                     <Panel.Body>
@@ -215,6 +221,7 @@ class AddEditDefect extends React.Component {
                                 <tbody>
                                     {testCases.map(tc => <LinkedTest
                                         key={`tc-${tc.id}`}
+                                        allowDelete={allowDeleteTestCase}
                                         testCase={tc}
                                         onDelete={this.handleDeleteTestCase} />)}
                                 </tbody>
@@ -244,6 +251,11 @@ class AddEditDefect extends React.Component {
                     </Panel>
                     : null}
             </div>
+            {ActionBar
+                ? <ActionBar
+                    onSave={this.handleSave}
+                    onCancel={this.handleCancel} />
+                : null}
             <SelectorModal
                 allowAddFolder={false}
                 show={showImportDialog}
@@ -253,6 +265,7 @@ class AddEditDefect extends React.Component {
     }
 }
 AddEditDefect.propTypes = {
+    actionbar: PropTypes.bool,
     assignee: PropTypes.shape({
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,

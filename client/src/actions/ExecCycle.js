@@ -150,9 +150,10 @@ export const rcvLinkDefects = (defects, testRun) => ({
     testRun
 });
 
-export const reqAddNewDefect = (defect, testRun) => ({
+export const reqAddNewDefect = (defect, files, testRun) => ({
     type: ACTIONS.REQ_ADD_NEW_DEFECT,
     defect,
+    files,
     testRun
 });
 

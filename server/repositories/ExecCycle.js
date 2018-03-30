@@ -56,15 +56,13 @@ class ExecCycleRepository extends EntityRepository {
         if(!execCycles)
             return [];
 
-        const pArr = execCycles.map(execCycle => this.getTestRuns(execCycle.id));
-        const testRuns = await Promise.all(pArr);
+        // return execCycles;
+        // const pArr = execCycles.map(execCycle => this.getTestRuns(execCycle.id));
+        // const testRuns = await Promise.all(pArr);
 
         return execCycles.map((execCycle, index) => {
             const { testruns, ...others } = execCycle; // eslint-disable-line no-unused-vars
-            return {
-                ...others,
-                testRuns: testRuns[index]
-            };
+            return { ...others };
         });
     }
 }
