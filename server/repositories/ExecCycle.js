@@ -60,7 +60,7 @@ class ExecCycleRepository extends EntityRepository {
         // const pArr = execCycles.map(execCycle => this.getTestRuns(execCycle.id));
         // const testRuns = await Promise.all(pArr);
 
-        return execCycles.map((execCycle, index) => {
+        return execCycles.map(execCycle => {
             const { testruns, ...others } = execCycle; // eslint-disable-line no-unused-vars
             return { ...others };
         });

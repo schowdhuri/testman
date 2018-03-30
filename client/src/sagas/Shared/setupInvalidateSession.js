@@ -30,7 +30,7 @@ const createChannel = () => {
 function* setupInvalidateSession() {
     const channel = yield call(createChannel);
     while(true) {
-        const action = yield take(channel);
+        yield take(channel);
         yield put(redirectToLogin());
     }
 }

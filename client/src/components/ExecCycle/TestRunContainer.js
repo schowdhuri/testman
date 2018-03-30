@@ -6,12 +6,14 @@ import { redirectToExecCycle } from "actions/Shared";
 import TestRun from "./TestRun";
 
 import {
+    allowDeleteTestRun,
     getTestRun,
     isInProgress
 } from "selectors/ExecCycle";
 import { isLoading } from "selectors/Shared";
 
 const mapStateToProps = state => ({
+    allowDelete: allowDeleteTestRun(state),
     isInProgress: isInProgress(state),
     isLoading: isLoading(state),
     testRun: getTestRun(state)
@@ -30,6 +32,9 @@ const mapDispatchToProps = dispatch => ({
             ...testRun,
             status
         }));
+    },
+    onDelete(testRun) {
+        dispatch(actions.reqDeleteTestRuns([ testRun.id ]));
     },
     onInit(execCycleId, id) {
         dispatch(actions.resetTRAddEdit());

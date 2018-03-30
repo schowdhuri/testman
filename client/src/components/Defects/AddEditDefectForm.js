@@ -3,10 +3,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import Dropzone from "react-dropzone";
 import {
-    Col,
     DropdownButton,
-    MenuItem,
-    Row
+    MenuItem
 } from "react-bootstrap";
 
 import Attachment from "components/Shared/Attachment";

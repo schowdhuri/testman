@@ -29,6 +29,7 @@ class TestRun extends React.Component {
         };
         this.handleCancel = this.handleCancel.bind(this);
         this.handleChangeStatus = this.handleChangeStatus.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
         this.handleLinkDefects = this.handleLinkDefects.bind(this);
         this.handleSaveDefect = this.handleSaveDefect.bind(this);
         this.handleUnlinkDefect = this.handleUnlinkDefect.bind(this);
@@ -45,6 +46,10 @@ class TestRun extends React.Component {
     }
     handleChangeStatus(newStatus) {
         this.props.onChangeStatus(this.props.testRun, newStatus);
+    }
+    handleDelete() {
+        if(confirm("Delete this test?"))
+            this.props.onDelete(this.props.testRun);
     }
     handleLinkDefects(defects) {
         this.props.onLinkDefects(defects, this.props.testRun);
@@ -79,6 +84,7 @@ class TestRun extends React.Component {
     }
     render() {
         const {
+            allowDelete,
             isInProgress,
             testRun
         } = this.props;
@@ -95,7 +101,9 @@ class TestRun extends React.Component {
                             Defect
                         </Button>
                         : null}
-                    <Button bsSize="small" bsStyle="danger" onClick={this.handleDelete}>Delete</Button>
+                    {allowDelete
+                        ? <Button bsSize="small" bsStyle="danger" onClick={this.handleDelete}>Delete</Button>
+                        : null}
                     <Button bsSize="small" onClick={this.handleCancel}>Close</Button>
                 </ButtonToolbar>
                 <h3>{testRun.name || ""}</h3>
@@ -191,11 +199,13 @@ class TestRun extends React.Component {
     }
 }
 TestRun.propTypes = {
+    allowDelete: PropTypes.bool.isRequired,
     isInProgress: PropTypes.bool,
     testRunId: PropTypes.number,
     execCycleId: PropTypes.number.isRequired,
     onCancel: PropTypes.func.isRequired,
     onChangeStatus: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
     onInit: PropTypes.func.isRequired,
     onLinkDefects: PropTypes.func.isRequired,
     onSaveDefect: PropTypes.func.isRequired,

@@ -118,6 +118,7 @@ ExecCycleList.propTypes = {
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired
     })),
+    onClone: PropTypes.func.isRequired,
     onDeleteExecCycle: PropTypes.func.isRequired,
     onSelect: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,

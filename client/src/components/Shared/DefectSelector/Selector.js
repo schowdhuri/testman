@@ -34,7 +34,6 @@ class Selector extends React.Component {
             allowAdd,
             allowAddFolder,
             items,
-            onChangePath,
             onDeselect,
             onDeselectAll,
             onSelect,
@@ -54,7 +53,7 @@ class Selector extends React.Component {
                         items={items}
                         allowAdd={allowAdd}
                         allowAddFolder={allowAddFolder}
-                        onChangePath={onChangePath}
+                        onChangePath={() => {}}
                         onDeselectAll={onDeselectAll}
                         onDeselectItem={onDeselect}
                         onSelectItem={onSelect}
@@ -79,7 +78,6 @@ Selector.propTypes = {
         name: PropTypes.string.isRequired
     })),
     onClose: PropTypes.func.isRequired,
-    onChangePath: PropTypes.func.isRequired,
     onDeselect: PropTypes.func.isRequired,
     onDeselectAll: PropTypes.func.isRequired,
     onInit: PropTypes.func.isRequired,

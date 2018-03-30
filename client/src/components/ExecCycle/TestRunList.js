@@ -21,7 +21,6 @@ class TestRunList extends React.Component {
         this.toggleSelector = this.toggleSelector.bind(this);
     }
     componentDidMount() {
-        console.log("CDM: ", this.props.execCycle && this.props.execCycle.id)
         if(this.props.execCycle && this.props.execCycle.id)
             this.props.fetchTestRuns(this.props.execCycle);
     }

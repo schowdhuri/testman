@@ -158,6 +158,11 @@ const endExec = async (id, wetland) => {
         throw new HttpError(404, `ExecCycle with id ${id} not found`);
     if(execCycle.status != "In Progress")
         throw new HttpError(400, "Execution can't be stopped");
+    
+    const unfinishedTests = await repository.getTestRuns(id, "New");
+    if(unfinishedTests.length)
+        throw new HttpError(400, "There are unfinished tests. Execution can't be stopped");
+
     execCycle.status = "Completed";
     await manager.flush();
     return execCycle;

@@ -80,7 +80,7 @@ class AddEditTestCase extends React.Component {
         }
     }
     handleDeleteAttachment(attachment) {
-        if(this.props.editMode) {
+        if(this.props.isEditMode) {
             this.props.onDeleteAttachment(attachment);
         } else {
             const index = this.state.attachments.findIndex(a => attachment.id==a.id);
@@ -100,7 +100,7 @@ class AddEditTestCase extends React.Component {
             this.props.testPlanID,
             this.props.testCase,
             this.state.attachments.map(a => a.file),
-            !this.props.editMode
+            !this.props.isEditMode
         );
     }
     handleSaveComment(value, attachments) {

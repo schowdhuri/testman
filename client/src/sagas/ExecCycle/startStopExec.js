@@ -37,7 +37,7 @@ function* end(action) {
         yield put(rcvEndExecCycle(response.json));
     } catch(ex) {
         console.log(ex); // eslint-disable-line no-console
-        Alert.error("Failed to end execution");
+        Alert.error(ex.text || "Failed to stop execution");
     }
     yield put(setLoading(REQ_END_EC, false));
 }

@@ -3,7 +3,7 @@ import React from "react";
 import App from "components/AppContainer";
 import Defects from "components/Defects";
 
-const AddDefectPage = props => {
+const AddDefectPage = () => {
     return (<App navId="defects">
         <Defects mode="add" />
     </App>);

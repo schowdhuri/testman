@@ -17,7 +17,9 @@ function* checkLogin() {
                 yield put(rcvLoginStatus(data.user));
                 return;
             }
-        } catch(ex) {}
+        } catch(ex) {
+            console.log(ex); // eslint-disable-line no-console
+        }
     }
     yield put(setLoading(REQ_LOGIN_STATUS, true));
     try {

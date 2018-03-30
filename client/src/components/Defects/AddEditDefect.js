@@ -265,7 +265,10 @@ class AddEditDefect extends React.Component {
     }
 }
 AddEditDefect.propTypes = {
+    ActionBar: PropTypes.func, // React component
     actionbar: PropTypes.bool,
+    allowAddTestCase: PropTypes.bool,
+    allowDeleteTestCase: PropTypes.bool,
     assignee: PropTypes.shape({
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,
@@ -294,6 +297,10 @@ AddEditDefect.propTypes = {
     onSave: PropTypes.func.isRequired,
     onSaveComment: PropTypes.func.isRequired,
     onSaveAttachment: PropTypes.func.isRequired,
+    testCases: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string
+    })),
     users: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired,

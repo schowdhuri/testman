@@ -121,7 +121,8 @@ Dashboard.propTypes = {
         id: PropTypes.number,
         name: PropTypes.string
     })),
-    isLoading: PropTypes.bool.isRequired
+    isLoading: PropTypes.bool.isRequired,
+    onInit: PropTypes.func.isRequired
 };
 
 export default Dashboard;

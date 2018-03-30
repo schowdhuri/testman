@@ -1,17 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Button, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 
 import AddEditDefect from "components/Defects/AddEditDefectContainer";
 
+import ActionBar from "./AddDefectModalActionBar";
 
-const ActionBar = props => {
-    const { onSave, onCancel } = props;
-    return (<div className="custom-actionbar modal-footer">
-        <Button onClick={onCancel}>Cancel</Button>
-        <Button bsStyle="success" onClick={onSave}>Save</Button>
-    </div>);
-};
 
 class AddDefectModal extends React.Component {
     constructor(props) {
@@ -24,7 +18,6 @@ class AddDefectModal extends React.Component {
         this.props.onClose();
     }
     handleSave(defect, files) {
-        console.log(defect, files)
         const { testCase } = this.props;
         this.props.onSave(
             {
@@ -62,9 +55,17 @@ class AddDefectModal extends React.Component {
     }
 }
 AddDefectModal.propTypes = {
-    show: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    onSave: PropTypes.func.isRequired
+    onSave: PropTypes.func.isRequired,
+    show: PropTypes.bool.isRequired,
+    testCase: PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string,
+        testPlan: PropTypes.shape({
+            id: PropTypes.number,
+            name: PropTypes.string
+        })
+    }),
 };
 
 export default AddDefectModal;

@@ -58,9 +58,14 @@ export const allowAddTestRun = createSelector(
     execCycle => execCycle && execCycle.status != "Completed"
 );
 
-export const allowDeleteTestRun = createSelector(
+export const allowDeleteTestRuns = createSelector(
     [ getSelectedExecCycle, getSelectedTestRuns ],
     (execCycle, testRuns) => Boolean(execCycle && testRuns.length && execCycle.status != "Completed")
+);
+
+export const allowDeleteTestRun = createSelector(
+    getSelectedExecCycle,
+    execCycle => Boolean(execCycle && execCycle.status != "Completed")
 );
 
 export const isInProgress = createSelector(
