@@ -5,8 +5,8 @@ import ExtractTextPlugin from "extract-text-webpack-plugin";
 import ProgressBarPlugin from "progress-bar-webpack-plugin";
 
 const GLOBALS = {
-    "process.env.NODE_ENV": JSON.stringify("development"),
-    __DEV__: true
+    "process.env.NODE_ENV": JSON.stringify("production"),
+    __DEV__: false
 };
 
 // directories
@@ -27,19 +27,10 @@ const entries = glob
                 [parts.name]: filePath
             }
         };
-    }, {}/*, {
-        vendor: [
-            "react",
-            "react-dom"
-        ]
-    }*/);
-
-const vendorChunkNames = Object.keys(entries)
-    .filter(key => key != "vendor")
-    .map(key => key + ".vendor");
+    }, {});
 
 module.exports = {
-    mode: "development",
+    mode: "production",
     context: STATIC_ROOT,
     resolve: {
         modules: [
@@ -51,7 +42,6 @@ module.exports = {
             node_modules: NODE_DIR
         }
     },
-    devtool: "source-map",
     entry: entries,
     target: "web",
     output: {
@@ -111,17 +101,12 @@ module.exports = {
         }]
     },
     plugins: [
-        // new webpack.HotModuleReplacementPlugin(),
         new webpack.DefinePlugin(GLOBALS),
         new webpack.NoEmitOnErrorsPlugin(),
         new ExtractTextPlugin("[name].css"), // relative to output.path
         new webpack.ProvidePlugin({
             "fetch": "imports-loader?this=>global!exports-loader?global.fetch!whatwg-fetch"
         }),
-        new ProgressBarPlugin()/*,
-        new webpack.optimize.CommonsChunkPlugin({
-          names: vendorChunkNames
-        })*/
-    ],
-    watch: true
+        new ProgressBarPlugin()
+    ]
 };
