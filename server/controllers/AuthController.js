@@ -2,13 +2,15 @@ const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 
 const userController = require("./UserController");
 
+const OAUTH_CB_ROOT = require("../constants/paths").OAUTH_CB_ROOT;
+
 const APP_ID = "890243396907-v2beikeggrqe8htni9vhcqg6vibbf6ji.apps.googleusercontent.com";
 const APP_SECRET = "KlTtma0hqyHFy2KwRgRdbB9x";
 
 const createStrategy = wetland => new GoogleStrategy({
     clientID: APP_ID,
     clientSecret: APP_SECRET,
-    callbackURL: "http://localhost:3200/auth/google/callback"
+    callbackURL: `${OAUTH_CB_ROOT}/auth/google/callback`
 },
 (accessToken, refreshToken, profile, cb) => {
     // console.log(profile);
