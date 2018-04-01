@@ -43,8 +43,13 @@ class Selector extends React.Component {
             show
         } = this.props;
 
-        return (<Modal show={show} onEnter={this.handleEnter} className="defect-selector-modal">
-            <Modal.Header>
+        return (<Modal
+            show={show}
+            onEnter={this.handleEnter}
+            className="defect-selector-modal"
+            onHide={this.handleClose}
+        >
+            <Modal.Header closeButton>
                 <Modal.Title>Select Defects</Modal.Title>
             </Modal.Header>
             <Modal.Body>

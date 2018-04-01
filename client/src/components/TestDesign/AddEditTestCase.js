@@ -35,7 +35,7 @@ class AddEditTestCase extends React.Component {
         this.handleUpdateComment = this.handleUpdateComment.bind(this);
     }
     componentDidMount() {
-        this.props.onInit(this.props.testID);
+        this.props.onInit(this.props.testId);
     }
     handleAttach(files) {
         if(files && files.length) {
@@ -48,7 +48,7 @@ class AddEditTestCase extends React.Component {
                 this.props.onAttachFile(
                     file,
                     this.props.testCase,
-                    this.props.testPlanID
+                    this.props.testPlanId
                 );
             } else {
                 this.setState({
@@ -65,7 +65,7 @@ class AddEditTestCase extends React.Component {
             file,
             comment,
             this.props.testCase.id,
-            this.props.testPlanID
+            this.props.testPlanId
         );
     }
     handleCancel() {
@@ -75,7 +75,7 @@ class AddEditTestCase extends React.Component {
         if(confirm("Delete this test case?")) {
             this.props.onDelete(
                 this.props.testCase.id,
-                this.props.testPlanID
+                this.props.testPlanId
             );
         }
     }
@@ -97,7 +97,7 @@ class AddEditTestCase extends React.Component {
     }
     handleSave() {
         this.props.onSave(
-            this.props.testPlanID,
+            this.props.testPlanId,
             this.props.testCase,
             this.state.attachments.map(a => a.file),
             !this.props.isEditMode
@@ -126,7 +126,7 @@ class AddEditTestCase extends React.Component {
             onDeleteAttachment,
             onDownloadAttachment,
             onSaveAttachment,
-            testID,
+            testId,
             testCase
         } = this.props;
 
@@ -142,11 +142,11 @@ class AddEditTestCase extends React.Component {
         return (<div className="add-edit-tc">
             <div className="action-bar header-gradient-1">
                 <ButtonToolbar>
-                    {!testID || <Button bsSize="small" bsStyle="danger" onClick={this.handleDelete}>Delete</Button>}
+                    {!testId || <Button bsSize="small" bsStyle="danger" onClick={this.handleDelete}>Delete</Button>}
                     <Button bsSize="small" onClick={this.handleCancel}>Close</Button>
                     <Button bsSize="small" bsStyle="success" onClick={this.handleSave}>Save</Button>
                 </ButtonToolbar>
-                {testID ? <h3>Edit Test Case</h3> : <h3>Add Test Case</h3>}
+                {testId ? <h3>Edit Test Case</h3> : <h3>Add Test Case</h3>}
             </div>
             <div className="container">
                 <Panel>
@@ -244,12 +244,12 @@ AddEditTestCase.propTypes = {
     onSave: PropTypes.func.isRequired,
     onSaveAttachment: PropTypes.func.isRequired,
     onSaveComment: PropTypes.func.isRequired,
-    testID: PropTypes.number,
+    testId: PropTypes.number,
     testCase: PropTypes.shape({
         id: PropTypes.number,
         name: PropTypes.string
     }),
-    testPlanID: PropTypes.number
+    testPlanId: PropTypes.number
 };
 
 export default AddEditTestCase;

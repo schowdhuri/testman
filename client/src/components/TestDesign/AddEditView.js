@@ -6,15 +6,15 @@ import AddEditTestCase from "./AddEditTestCaseContainer";
 
 class AddEditView extends React.Component {
     render() {
-        const { testID, testPlanID } = this.props;
+        const { testId, testPlanId } = this.props;
         return (<div className="test-design add-edit">
-            <AddEditTestCase testPlanID={testPlanID} testID={testID} />
+            <AddEditTestCase testPlanId={testPlanId} testId={testId} />
         </div>);
     }
 }
 AddEditView.propTypes = {
-    testID: PropTypes.number,
-    testPlanID: PropTypes.number
+    testId: PropTypes.number,
+    testPlanId: PropTypes.number
 };
 
 export default AddEditView;

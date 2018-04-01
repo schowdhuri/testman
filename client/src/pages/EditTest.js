@@ -6,19 +6,19 @@ import App from "components/AppContainer";
 import Design from "components/TestDesign";
 
 const EditTestPage = props => {
-    const { testPlanID, testID } = props.match.params;
+    const { testPlanId, testId } = props.match.params;
     return (<App navId="design">
         <Design
             mode="edit"
-            testPlanID={parseInt(testPlanID)}
-            testID={parseInt(testID)} />
+            testPlanId={parseInt(testPlanId)}
+            testId={parseInt(testId)} />
     </App>);
 };
 EditTestPage.propTypes = {
     match: PropTypes.shape({
         params: PropTypes.shape({
-            testID: PropTypes.string.isRequired,
-            testPlanID: PropTypes.string.isRequired
+            testId: PropTypes.string.isRequired,
+            testPlanId: PropTypes.string.isRequired
         }).isRequired
     }).isRequired
 };

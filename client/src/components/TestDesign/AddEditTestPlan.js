@@ -42,11 +42,15 @@ class AddEditTestPlan extends React.Component {
         });
     }
     render() {
+        const { testPlan } = this.props;
         const { name } = this.state;
 
         return (<Modal show={this.props.show} onHide={this.handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Add Test Plan</Modal.Title>
+                <Modal.Title>
+                    {testPlan && testPlan.id ? "Edit " : "Add "}
+                    Test Plan
+                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <FormGroup controlId="name">
@@ -67,8 +71,8 @@ class AddEditTestPlan extends React.Component {
 AddEditTestPlan.propTypes = {
     show: PropTypes.bool,
     testPlan: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired
+        id: PropTypes.number,
+        name: PropTypes.string
     }),
     onClose: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired

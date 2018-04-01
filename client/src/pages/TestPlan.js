@@ -5,15 +5,13 @@ import { hot } from "react-hot-loader";
 import App from "components/AppContainer";
 import Design from "components/TestDesign";
 
-const AddTestPage = props => {
+const TestPlanPage = props => {
     const { testPlanId } = props.match.params;
     return (<App navId="design">
-        <Design
-            mode="add"
-            testPlanId={parseInt(testPlanId)} />
+        <Design mode="list" testPlanId={parseInt(testPlanId)} />
     </App>);
 };
-AddTestPage.propTypes = {
+TestPlanPage.propTypes = {
     match: PropTypes.shape({
         params: PropTypes.shape({
             testPlanId: PropTypes.string.isRequired
@@ -21,4 +19,5 @@ AddTestPage.propTypes = {
     }).isRequired
 };
 
-export default hot(module)(AddTestPage);
+
+export default hot(module)(TestPlanPage);

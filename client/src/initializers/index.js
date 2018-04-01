@@ -10,6 +10,7 @@ import sagas from "sagas/index";
 
 import HomePage from "pages/Home";
 import DesignPage from "pages/Design";
+import TestPlanPage from "pages/TestPlan";
 import AddTestPage from "pages/AddTest";
 import EditTestPage from "pages/EditTest";
 import ExecCyclesPage from "pages/ExecCycles";
@@ -33,8 +34,9 @@ ReactDOM.render(<Provider store={store}>
         <Switch>
             <Route path="/" exact component={HomePage} />
             <Route path="/design" exact component={DesignPage} />
-            <Route path="/design/testplan/:testPlanID/testcase/add" exact component={AddTestPage} />
-            <Route path="/design/testplan/:testPlanID/testcase/edit/:testID" exact component={EditTestPage} />
+            <Route path="/design/testplan/:testPlanId" exact component={TestPlanPage} />
+            <Route path="/design/testplan/:testPlanId/testcase/add" exact component={AddTestPage} />
+            <Route path="/design/testplan/:testPlanId/testcase/edit/:testId" exact component={EditTestPage} />
             <Route path="/execution" exact component={ExecCyclesPage} />
             <Route path="/execution/:execCycleId" exact component={ExecCyclePage} />
             <Route path="/execution/:execCycleId/test/:testRunId" component={TestRunPage} />

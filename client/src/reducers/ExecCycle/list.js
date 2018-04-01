@@ -4,7 +4,7 @@ const initialState = {
     all: [],
     selected: null,
     statusFilter: null,
-    _tempSelectedId: null,
+    _tempSelectedId: null
 };
 
 const execCycleList = (state=initialState, action) => {

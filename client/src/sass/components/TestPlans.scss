@@ -10,19 +10,28 @@
             color: #999;
             cursor: pointer;
             margin: 0;
-            padding: 8px 16px;
-            &:hover {
-                color: #404041;
-            }
-            &.selected {
+            padding: 0;
+
+            &.selected a {
                 color: #404041;
                 font-weight: bold;
             }
+
+            a {
+                display: block;
+                padding: 8px 16px;
+                text-decoration: none;
+                &:hover {
+                    color: #404041;
+                }
+            }
+
             .btn {
-                float: right;
-                padding: 2px;
-                outline: none;
                 box-shadow: none;
+                float: right;
+                margin-left: 8px;
+                outline: none;
+                padding: 2px;
             }
         }
     }

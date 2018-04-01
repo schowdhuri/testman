@@ -7,7 +7,7 @@ import * as ACTIONS from "constants/SharedActions";
 function redirectToTestDesign(action) {
     const { id } = action;
     if(id)
-        hashHistory.push(`/design/${id}`);
+        hashHistory.push(`/design/testplan/${id}`);
     else
         hashHistory.push("/design");
 }

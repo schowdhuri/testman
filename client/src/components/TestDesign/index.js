@@ -8,16 +8,16 @@ import "sass/components/TestDesign.scss";
 
 class TestDesign extends React.Component {
     render() {
-        const { mode, testID, testPlanID } = this.props;
+        const { mode, testId, testPlanId } = this.props;
         return mode=="list"
-            ? <ListView testPlanID={testPlanID} />
-            : <AddEditView testPlanID={testPlanID} testID={testID} />;
+            ? <ListView testPlanId={testPlanId} />
+            : <AddEditView testPlanId={testPlanId} testId={testId} />;
     }
 }
 TestDesign.propTypes = {
     mode: PropTypes.string,
-    testID: PropTypes.number,
-    testPlanID: PropTypes.number
+    testId: PropTypes.number,
+    testPlanId: PropTypes.number
 };
 
 export default TestDesign;

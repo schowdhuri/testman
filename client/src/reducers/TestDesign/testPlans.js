@@ -3,18 +3,36 @@ import * as ACTIONS from "constants/TestDesignActions";
 const initialState = {
     all: [],
     selected: null,
-    testCases: {}
+    testCases: {},
+    _tempSelectedId: null
 };
 
 const testCases = (state=initialState, action) => {
     const { type } = action;
     switch(type) {
-        case ACTIONS.RCV_TEST_PLANS:
+        case ACTIONS.RCV_TEST_PLANS: {
+            const { testPlans } = action;
+            if(state._tempSelectedId) {
+                const match = testPlans.find(tp => tp.id == state._tempSelectedId);
+                if(match) {
+                    return {
+                        ...state,
+                        all: testPlans,
+                        selected: match,
+                        _tempSelectedId: null
+                    };
+                }
+            }
             return {
                 ...state,
-                all: action.testPlans,
-                selected: state.selected || action.testPlans[0]
+                all: testPlans,
+                selected: state.selected
+                    ? state.selected
+                    : testPlans.length
+                        ? testPlans[0]
+                        : null
             };
+        }
 
         case ACTIONS.RCV_TP_SAVE: {
             const { testPlan } = action;
@@ -38,11 +56,21 @@ const testCases = (state=initialState, action) => {
             };
         }
 
-        case ACTIONS.SELECT_TEST_PLAN:
+        case ACTIONS.SELECT_TEST_PLAN: {
+            const { testPlan } = action;
+            const match = state.all.find(tp => tp.id == testPlan.id);
+            if(!match) {
+                return {
+                    ...state,
+                    selected: null,
+                    _tempSelectedId: testPlan.id
+                };
+            }
             return {
                 ...state,
-                selected: action.testPlan
+                selected: match
             };
+        }
 
         case ACTIONS.RCV_TEST_CASES:
             return {

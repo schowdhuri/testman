@@ -41,8 +41,8 @@ const mapDispatchToProps = dispatch => ({
     onChangeName(val) {
         dispatch(actions.changeTCName(val));
     },
-    onDelete(testCaseId, testPlanID) {
-        dispatch(actions.reqDeleteTestCase(testCaseId, testPlanID));
+    onDelete(testCaseId, testPlanId) {
+        dispatch(actions.reqDeleteTestCase(testCaseId, testPlanId));
     },
     onDeleteAttachment(attachment) {
         dispatch(reqDeleteAttachment(attachment));
@@ -58,9 +58,9 @@ const mapDispatchToProps = dispatch => ({
         if(id)
             dispatch(actions.reqTestCase(id));
     },
-    onSave(testPlanID, testCase, files, redirect) {
+    onSave(testPlanId, testCase, files, redirect) {
         dispatch(actions.reqSaveTestCase(
-            testPlanID,
+            testPlanId,
             testCase,
             files,
             redirect

@@ -49,8 +49,13 @@ class Selector extends React.Component {
             show
         } = this.props;
 
-        return (<Modal show={show} onEnter={this.handleEnter} className="test-case-selector-modal">
-            <Modal.Header>
+        return (<Modal
+            show={show}
+            onEnter={this.handleEnter}
+            className="test-case-selector-modal"
+            onHide={this.handleClose}
+        >
+            <Modal.Header closeButton>
                 <Modal.Title>Import Test Cases</Modal.Title>
             </Modal.Header>
             <Modal.Body>

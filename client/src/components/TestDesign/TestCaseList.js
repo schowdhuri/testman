@@ -19,7 +19,7 @@ class TestCaseList extends React.Component {
         this.showUploadTestCases = this.showUploadTestCases.bind(this);
     }
     componentDidMount() {
-        if(this.props.testPlan && this.props.testPlanID == this.props.testPlan.id)
+        if(this.props.testPlan && this.props.testPlanId == this.props.testPlan.id)
             this.props.fetchTestCases(this.props.testPlan);
     }
     componentWillReceiveProps(nextProps) {
@@ -88,7 +88,7 @@ TestCaseList.propTypes = {
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired
     }),
-    testPlanID: PropTypes.number,
+    testPlanId: PropTypes.number,
     fetchTestCases: PropTypes.func.isRequired,
     onUploadTests: PropTypes.func.isRequired,
     testCases: PropTypes.arrayOf(PropTypes.shape({
