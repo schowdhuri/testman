@@ -35,3 +35,4 @@ export const REQ_UNLINK_DEFECT      = "REQ_UNLINK_DEFECT";
 export const RCV_UNLINK_DEFECT      = "RCV_UNLINK_DEFECT";
 export const REQ_CLONE_EC           = "REQ_CLONE_EC";
 export const RCV_CLONE_EC           = "RCV_CLONE_EC";
+export const CHANGE_STATUS_FILTER   = "CHANGE_EC_STATUS_FILTER";

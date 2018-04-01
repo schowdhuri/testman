@@ -1,4 +1,5 @@
 import React from "react";
+import { hot } from "react-hot-loader";
 
 import App from "components/AppContainer";
 import Dashboard from "components/Dashboard";
@@ -9,4 +10,4 @@ const HomePage = () => {
     </App>);
 };
 
-export default HomePage;
+export default hot(module)(HomePage);

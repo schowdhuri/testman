@@ -1,5 +1,4 @@
 import React from "react";
-import { hot } from "react-hot-loader";
 import ReactDOM from "react-dom";
 import { Router, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
@@ -29,7 +28,7 @@ const sagaMiddleware = createMiddleware();
 const store = configureStore(reducer, sagaMiddleware);
 sagaMiddleware.run(sagas);
 
-let Wrapper = () => (<Provider store={store}>
+ReactDOM.render(<Provider store={store}>
     <Router history={history}>
         <Switch>
             <Route path="/" exact component={HomePage} />
@@ -46,11 +45,4 @@ let Wrapper = () => (<Provider store={store}>
             <Route path="/docs" component={DocsPage} />
         </Switch>
     </Router>
-</Provider>);
-
-if(process.env.NODE_ENV=="development") {
-    console.log("Enabling HOT reload");
-    Wrapper = hot(module)(Wrapper);
-}
-
-ReactDOM.render(<Wrapper />, document.getElementById("app-root"));
+</Provider>, document.getElementById("app-root"));

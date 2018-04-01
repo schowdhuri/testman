@@ -1,18 +1,19 @@
 import { createSelector } from "reselect";
 
-const getAllDefects = state => state.defects.list.all;
 
+const getAllDefects = state => state.defects.list.all;
 export const getSelectedDefects = state => state.defects.list.selected;
+export const getDefectAddEditState = state => state.defects.addEdit;
+export const getStatusFilter = state => state.defects.list.statusFilter;
+export const getAssigneeFilter = state => state.defects.list.assigneeFilter;
 
 export const getDefects = createSelector(
     [ getAllDefects, getSelectedDefects],
     (all, selected) => all.map(defect => ({
-            ...defect,
-            selected: Boolean(selected.find(d => d.id==defect.id))
+        ...defect,
+        selected: Boolean(selected.find(d => d.id==defect.id))
     }))
 );
-
-export const getDefectAddEditState = state => state.defects.addEdit;
 
 export const isEditMode = createSelector(
     getDefectAddEditState,
@@ -29,4 +30,7 @@ export const areAllDefectsSelected = createSelector(
     }
 );
 
-export const allowDelete = createSelector(getSelectedDefects, selected => Boolean(selected.length));
+export const allowDelete = createSelector(
+    getSelectedDefects,
+    selected => Boolean(selected.length)
+);

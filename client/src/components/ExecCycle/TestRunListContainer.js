@@ -11,6 +11,7 @@ import {
     getTestRuns,
     getSelectedExecCycle,
     getSelectedTestRuns,
+    getStatusFilter,
     isInProgress,
     areAllTestRunsSelected,
     showImportDialog
@@ -29,13 +30,17 @@ const mapStateToProps = state => ({
     execCycle: getSelectedExecCycle(state),
     testRuns: getTestRuns(state),
     selectedTestRuns: getSelectedTestRuns(state),
-    showImportDialog: showImportDialog(state)
+    showImportDialog: showImportDialog(state),
+    statusFilter: getStatusFilter(state)
 });
 
 const mapDispatchToProps = dispatch => ({
     fetchTestRuns(execCycle) {
         if(execCycle)
             dispatch(actions.reqTestRuns(execCycle.id));
+    },
+    onChangeStatusFilter(value) {
+        dispatch(actions.changeStatusFilter(value));
     },
     onChangeTestRunStatus(testRun, status) {
         dispatch(actions.reqSaveTestRun({

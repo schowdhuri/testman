@@ -95,6 +95,7 @@ class DefectRepository extends EntityRepository {
             .leftJoin("d.description", "desc")
             .leftJoin("d.testcases", "tc")
             .leftJoin("d.assignee", "assignee")
+            .orderBy("d.created", "desc")
             .select("d", "tc", "desc", "assignee")
             .getQuery()
             .getResult();

@@ -2,6 +2,12 @@ import { createSelector } from "reselect";
 
 const getAllExecCycles = state => state.execCycle.list.all;
 export const getSelectedExecCycle = state => state.execCycle.list.selected;
+export const getStatusFilter = state => state.execCycle.list.statusFilter;
+export const getAddEditState = state => state.execCycle.addEdit;
+const getTestRunMap = state => state.execCycle.testRuns;
+export const getTestRunAddEditState = state=> state.execCycle.addEdit;
+export const showImportDialog = state => state.execCycle.importTestDialog;
+export const getTestRun = state => state.execCycle.testRun;
 
 export const getExecCycles = createSelector(
     [ getAllExecCycles, getSelectedExecCycle ],
@@ -10,9 +16,6 @@ export const getExecCycles = createSelector(
         selected: selected ? ec.id==selected.id : false
     }))
 );
-export const getAddEditState = state => state.execCycle.addEdit;
-
-const getTestRunMap = state => state.execCycle.testRuns;
 
 const getCurrentTestRuns = createSelector(
     [ getTestRunMap, getSelectedExecCycle ],
@@ -50,9 +53,6 @@ export const getTestRuns = createSelector(
     }))
 );
 
-export const getTestRunAddEditState = state=> state.execCycle.addEdit;
-export const showImportDialog = state => state.execCycle.importTestDialog;
-
 export const allowAddTestRun = createSelector(
     getSelectedExecCycle,
     execCycle => execCycle && execCycle.status != "Completed"
@@ -88,5 +88,3 @@ export const allowEndExec = createSelector(
         return true;
     }
 );
-
-export const getTestRun = state => state.execCycle.testRun;

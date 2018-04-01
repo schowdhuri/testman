@@ -4,15 +4,24 @@ import {
     Table
 } from "react-bootstrap";
 
+import STATES from "common/constants/TestRunStates";
+
+import ColumnFilter from "components/Shared/ColumnFilter/index";
+
 import TestImporter from "./TestImporterContainer";
 import TestRunListItem from "./TestRunListItem";
 import TestRunsToolbar from "./TestRunsToolbar";
 
+const testRunStatusFilterOptions = STATES.map(s => ({ id: s, name: s }));
+
+
 class TestRunList extends React.Component {
     constructor(props) {
         super(props);
+        this.applyFilters = this.applyFilters.bind(this);
         this.bulkDelete = this.bulkDelete.bind(this);
         this.handleChangeStatus = this.handleChangeStatus.bind(this);
+        this.handleStatusFilter = this.handleStatusFilter.bind(this);
         this.hideSelector = this.hideSelector.bind(this);
         this.importTests = this.importTests.bind(this);
         this.showSelector = this.showSelector.bind(this);
@@ -35,11 +44,20 @@ class TestRunList extends React.Component {
             this.props.fetchTestRuns(nextProps.execCycle);
         }
     }
+    applyFilters(testRuns) {
+        const { statusFilter } = this.props;
+        if(statusFilter)
+            return testRuns.filter(tr => tr.status == statusFilter.id);
+        return testRuns;
+    }
     bulkDelete() {
         this.props.onDeleteTestRuns(this.props.selectedTestRuns.map(tr => tr.id));
     }
     handleChangeStatus(testRun, status) {
         this.props.onChangeTestRunStatus(testRun, status);
+    }
+    handleStatusFilter(value) {
+        this.props.onChangeStatusFilter(value);
     }
     hideSelector() {
         this.toggleSelector(false);
@@ -71,7 +89,8 @@ class TestRunList extends React.Component {
             onEndExec,
             onStartExec,
             testRuns,
-            showImportDialog
+            showImportDialog,
+            statusFilter
         } = this.props;
 
         return (<div className="test-runs-list">
@@ -96,12 +115,18 @@ class TestRunList extends React.Component {
                         </th>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Status</th>
+                        <th>
+                            Status
+                            <ColumnFilter
+                                items={testRunStatusFilterOptions}
+                                selected={statusFilter}
+                                onChange={this.handleStatusFilter} />
+                        </th>
                         <th>Defects</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {testRuns.map(tr => <TestRunListItem
+                    {this.applyFilters(testRuns).map(tr => <TestRunListItem
                         key={`tr-${tr.id}`}
                         testRun={tr}
                         execCycleId={execCycle.id}
@@ -130,6 +155,7 @@ TestRunList.propTypes = {
     execCycleId: PropTypes.number,
     fetchTestRuns: PropTypes.func.isRequired,
     isInProgress: PropTypes.bool,
+    onChangeStatusFilter: PropTypes.func.isRequired,
     onChangeTestRunStatus: PropTypes.func.isRequired,
     onDeleteTestRuns: PropTypes.func.isRequired,
     onEndExec: PropTypes.func.isRequired,
@@ -142,6 +168,13 @@ TestRunList.propTypes = {
         name: PropTypes.string.isRequired
     })),
     showImportDialog: PropTypes.bool,
+    statusFilter: PropTypes.shape({
+        id: PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.string
+        ]),
+        name: PropTypes.string.isRequired
+    }),
     testRuns: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number.isRequired,
         name: PropTypes.string.isRequired

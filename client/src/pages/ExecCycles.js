@@ -1,4 +1,5 @@
 import React from "react";
+import { hot } from "react-hot-loader";
 
 import App from "components/AppContainer";
 import ExecCycle from "components/ExecCycle";
@@ -9,4 +10,4 @@ const ExecCyclesPage = () => {
     </App>);
 };
 
-export default ExecCyclesPage;
+export default hot(module)(ExecCyclesPage);

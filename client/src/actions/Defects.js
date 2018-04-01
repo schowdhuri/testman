@@ -108,3 +108,13 @@ export const rcvAttachToDefect = (file, defect) => ({
     file,
     defect
 });
+
+export const changeStatusFilter = value => ({
+    type: ACTIONS.CHANGE_STATUS_FILTER,
+    value
+});
+
+export const changeAssigneeFilter = value => ({
+    type: ACTIONS.CHANGE_ASSIGNEE_FILTER,
+    value
+});

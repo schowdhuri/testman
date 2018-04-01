@@ -2,7 +2,9 @@ import * as ACTIONS from "constants/DefectsActions";
 
 const initialState = {
     all: [],
-    selected: []
+    selected: [],
+    assigneeFilter: null,
+    statusFilter: null
 };
 
 const defectsList = (state=initialState, action) => {
@@ -69,6 +71,18 @@ const defectsList = (state=initialState, action) => {
                     : []
             };
         }
+
+        case ACTIONS.CHANGE_ASSIGNEE_FILTER:
+            return {
+                ...state,
+                assigneeFilter: action.value
+            };
+
+        case ACTIONS.CHANGE_STATUS_FILTER:
+            return {
+                ...state,
+                statusFilter: action.value
+            };
 
     }
     return state;

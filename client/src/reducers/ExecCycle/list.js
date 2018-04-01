@@ -3,7 +3,8 @@ import * as ACTIONS from "constants/ExecCyclesActions";
 const initialState = {
     all: [],
     selected: null,
-    _tempSelectedId: null
+    statusFilter: null,
+    _tempSelectedId: null,
 };
 
 const execCycleList = (state=initialState, action) => {
@@ -139,6 +140,11 @@ const execCycleList = (state=initialState, action) => {
             };
         }
 
+        case ACTIONS.CHANGE_STATUS_FILTER:
+            return {
+                ...state,
+                statusFilter: action.value
+            };
     }
     return state;
 };

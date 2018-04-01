@@ -184,3 +184,8 @@ export const rcvCloneExecCycle = execCycle => ({
     type: ACTIONS.RCV_CLONE_EC,
     execCycle
 });
+
+export const changeStatusFilter = value => ({
+    type: ACTIONS.CHANGE_STATUS_FILTER,
+    value
+});

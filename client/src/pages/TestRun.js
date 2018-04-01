@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { hot } from "react-hot-loader";
 
 import App from "components/AppContainer";
 import ExecCycle from "components/ExecCycle";
@@ -22,4 +23,4 @@ TestRunPage.propTypes = {
     }).isRequired
 };
 
-export default TestRunPage;
+export default hot(module)(TestRunPage);

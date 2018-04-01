@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { hot } from "react-hot-loader";
 
 import App from "components/AppContainer";
 import ExecCycle from "components/ExecCycle";
@@ -19,4 +20,4 @@ ExecCyclePage.propTypes = {
 };
 
 
-export default ExecCyclePage;
+export default hot(module)(ExecCyclePage);
