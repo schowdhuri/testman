@@ -9,7 +9,7 @@
   "scripts": {
     "start": "./node_modules/nodemon/bin/nodemon.js app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "node_modules/.bin/babel-node node_modules/.bin/webpack --config webpack.config.dev.js",
+    "dev": "NODE_ENV=development ./node_modules/nodemon/bin/nodemon.js app.js",
     "build": "node_modules/.bin/babel-node node_modules/.bin/webpack --config webpack.config.prod.js",
     "migrate": "node_modules/.bin/wetland migrator up -r",
     "lint": "node_modules/.bin/babel-node npm_scripts/lint.js"
@@ -58,7 +58,6 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
-    "babel-preset-react-hmre": "^1.1.1",
     "babel-preset-stage-1": "^6.24.1",
     "chalk": "^2.3.2",
     "css-loader": "0.28.11",
@@ -73,6 +72,7 @@
     "node-sass": "^4.7.2",
     "nodemon": "^1.14.11",
     "progress-bar-webpack-plugin": "1.11.0",
+    "react-hot-loader": "^4.0.0",
     "sass-loader": "6.0.7",
     "style-loader": "0.20.3",
     "webpack": "4.4.1",

@@ -1,8 +1,7 @@
-import path from "path";
-import glob from "glob";
-import webpack from "webpack";
-import ExtractTextPlugin from "extract-text-webpack-plugin";
-import ProgressBarPlugin from "progress-bar-webpack-plugin";
+const path = require("path");
+const glob = require("glob");
+const webpack = require("webpack");
+const ProgressBarPlugin = require("progress-bar-webpack-plugin");
 
 const GLOBALS = {
     "process.env.NODE_ENV": JSON.stringify("development"),
@@ -24,7 +23,10 @@ const entries = glob
         return {
             ...obj,
             ...{
-                [parts.name]: filePath
+                [parts.name]: [
+                    filePath,
+                    "webpack-hot-middleware/client"
+                ]
             }
         };
     }, {}/*, {
@@ -51,11 +53,12 @@ module.exports = {
             node_modules: NODE_DIR
         }
     },
-    devtool: "source-map",
+    devtool: "#source-map",
     entry: entries,
     target: "web",
     output: {
         path: DIST_DIR,
+        publicPath: "/static/",
         filename: "[name].min.js"
     },
     module: {
@@ -63,18 +66,28 @@ module.exports = {
             test: /\.js$/,
             include: STATIC_ROOT,
             exclude: [ DIST_DIR, NODE_DIR ],
-            use: {
+            use: [{
                 loader: "babel-loader"
-            }
+            }]
         }, {
             test: /(\.css|\.scss)$/,
-            use: ExtractTextPlugin.extract({
-                fallback: "style-loader",
-                use: [
-                    "css-loader",
-                    "sass-loader"
-                ]
-            })
+            use: [{
+                loader: "style-loader",
+                options: {
+                    hmr: true
+                }
+            }, {
+                loader: "css-loader",
+                options: {
+                    sourceMap: true,
+                    hmr: true
+                }
+            }, {
+                loader: "sass-loader",
+                options: {
+                    sourceMap: true
+                }
+            }]
         }, {
             test: /\.eot(\?v=\d+.\d+.\d+)?$/,
             use: {
@@ -111,17 +124,18 @@ module.exports = {
         }]
     },
     plugins: [
-        // new webpack.HotModuleReplacementPlugin(),
         new webpack.DefinePlugin(GLOBALS),
-        new webpack.NoEmitOnErrorsPlugin(),
-        new ExtractTextPlugin("[name].css"), // relative to output.path
-        new webpack.ProvidePlugin({
-            "fetch": "imports-loader?this=>global!exports-loader?global.fetch!whatwg-fetch"
-        }),
-        new ProgressBarPlugin()/*,
-        new webpack.optimize.CommonsChunkPlugin({
-          names: vendorChunkNames
-        })*/
+        new webpack.NamedModulesPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
+        // new ExtractTextPlugin("[name].css"), // relative to output.path
+        // new webpack.ProvidePlugin({
+        //     "fetch": "imports-loader?this=>global!exports-loader?global.fetch!whatwg-fetch"
+        // }),
+        new ProgressBarPlugin()
     ],
+    devServer: {
+        contentBase: './client/dist',
+        hot: true
+    },
     watch: true
 };

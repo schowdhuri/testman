@@ -51,6 +51,21 @@ app.set("view engine", "pug");
 // Routes
 routes(app);
 
+// HMR setup (dev-only)
+if(process.env.NODE_ENV == "development") {
+    const webpack = require("webpack");
+    const webpackConfig = require("./webpack.config.dev");
+    const webpackDevMiddleware = require("webpack-dev-middleware");
+    const webpackHotMiddleware = require("webpack-hot-middleware");
+
+    const compiler = webpack(webpackConfig);
+    app.use(webpackDevMiddleware(compiler, {
+        noInfo: true,
+        publicPath: webpackConfig.output.publicPath
+    }));
+    app.use(webpackHotMiddleware(compiler));
+}
+
 // Start!
 app.listen(PORT, "127.0.0.1", () => {
     console.log(`Server running on PORT ${PORT}`);
