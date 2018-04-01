@@ -13,7 +13,6 @@ const createStrategy = wetland => new GoogleStrategy({
     callbackURL: `${OAUTH_CB_ROOT}/auth/google/callback`
 },
 (accessToken, refreshToken, profile, cb) => {
-    // console.log(profile);
     userController.findOrCreate(
         profile.id,
         profile.emails[0].value,
