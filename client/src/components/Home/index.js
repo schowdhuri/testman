@@ -20,11 +20,11 @@ const changelog = [{
 }, {
     date: "20180330",
     changes: [
-        "First alpha released"
+        "First alpha release"
     ]
 }];
 
-const LoginApp = () => (<div className="login">
+const HomeApp = () => (<div className="login">
     <section className="login-panel">
         <img src={Logo} alt="TestMan Logo" className="logo" />
         <h1>TestMan</h1>
@@ -53,13 +53,23 @@ const LoginApp = () => (<div className="login">
             height="20px"></iframe>
     </section>
     <section className="changelog">
-        <h2>Changelog</h2>
+        <h2>What's next?</h2>
+        <p>
+            Track progress, see what's cooking and know what to expect next
+            <br/>
+            <a className="btn btn-sm btn-info btn-roadmap" href="https://github.com/schowdhuri/testman/projects/1?fullscreen=true">
+                <i className="glyphicon glyphicon-road" />
+                {" "}
+                v1 Roadmap
+            </a>
+        </p>
 
+        <h2>Changelog</h2>
         {changelog.map(log => (<React.Fragment key={log.date}>
             <h3>{moment(log.date, "YYYYMMDD").format("MMM DD")}</h3>
             <ul>
                 {log.changes.map((change, index) =>
-                    <li key={`change-${index}`}>{change}</li>)}
+                    <li key={`change-${log.date}-${index}`}>{change}</li>)}
             </ul>
         </React.Fragment>))}
     </section>
@@ -70,4 +80,4 @@ const LoginApp = () => (<div className="login">
     </footer>
 </div>);
 
-export default LoginApp;
+export default HomeApp;

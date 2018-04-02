@@ -23,7 +23,6 @@ body {
     margin: 0 auto;
     padding: 60px 20px;
     text-align: center;
-    width: 40%;
     .logo {
         margin-bottom: 30px;
     }
@@ -48,6 +47,10 @@ body {
     font-weight: 300;
     padding: 60px;
 
+    .btn-roadmap {
+        margin: 20px 0 30px;
+    }
+
     h2 {
         margin-bottom: 30px;
     }
@@ -60,13 +63,11 @@ footer {
     background: $gray-darker;
     color: $gray-light;
     font-size: 1.1rem;
-    font-weight: 100;
     padding: 20px;
     position: relative;
     text-align: center;
     iframe {
         position: absolute;
         margin-left: 16px;
-
     }
 }

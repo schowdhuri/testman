@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import Login from "components/Login";
+import HomePage from "pages/Home";
 
 import "sass/login.scss";
 
-ReactDOM.render(<Login />, document.getElementById("app-root"));
+ReactDOM.render(<HomePage />, document.getElementById("app-root"));

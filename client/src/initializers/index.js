@@ -8,7 +8,7 @@ import configureStore from "utils/Shared/store"; // eslint-disable-line import/d
 import reducer from "reducers/index";
 import sagas from "sagas/index";
 
-import HomePage from "pages/Home";
+import DashboardPage from "pages/Dashboard";
 import DesignPage from "pages/Design";
 import TestPlanPage from "pages/TestPlan";
 import AddTestPage from "pages/AddTest";
@@ -32,7 +32,7 @@ sagaMiddleware.run(sagas);
 ReactDOM.render(<Provider store={store}>
     <Router history={history}>
         <Switch>
-            <Route path="/" exact component={HomePage} />
+            <Route path="/" exact component={DashboardPage} />
             <Route path="/design" exact component={DesignPage} />
             <Route path="/design/testplan/:testPlanId" exact component={TestPlanPage} />
             <Route path="/design/testplan/:testPlanId/testcase/add" exact component={AddTestPage} />

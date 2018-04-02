@@ -1,13 +1,10 @@
 import React from "react";
 import { hot } from "react-hot-loader";
 
-import App from "components/AppContainer";
-import Dashboard from "components/Dashboard";
+import Home from "components/Home";
 
 const HomePage = () => {
-    return (<App navId="dashboard">
-        <Dashboard />
-    </App>);
+    return (<Home />);
 };
 
 export default hot(module)(HomePage);
