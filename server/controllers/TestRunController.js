@@ -56,7 +56,7 @@ const findById = async (id, wetland) => {
         modified: dateFormat(testRun.modified),
         runDate: testRun.runDate && dateFormat(testRun.runDate) || null
     };
-    
+
     if(!testRun.testCase)
         throw new HttpError(500, "Invalid testRun");
 
@@ -292,8 +292,9 @@ const bulkRemove = async (payload, wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(TestRun);
 
-    ids.forEach(async id => {
-        const testRun = await repository.findOne(id);
+    const pArr = ids.map(id => repository.findOne(id));
+    const testRuns = await Promise.all(pArr);
+    testRuns.forEach(testRun => {
         if(!testRun)
             throw new HttpError(404, `TestRun #${id} not found`);
         manager.remove(testRun);
