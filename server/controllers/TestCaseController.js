@@ -139,6 +139,9 @@ const update = async (id, data, wetland, user) => {
     } else {
         obj.description = {};
     }
+    if(data.name) {
+        obj.name = data.name;
+    }
     if(data.description.value) {
         obj.description.value = data.description.value;
     }
