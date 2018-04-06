@@ -126,6 +126,21 @@ const testRuns = (state=initialState, action) => {
             }
             break;
         }
+
+        case ACTIONS.RCV_EC_SAVE: {
+            const testRuns = action.execCycle.testRuns.map(tr => ({
+                ...tr,
+                defects: tr.defects.length
+            }));
+            return {
+                ...state,
+                [action.execCycle.id]: {
+                    all: testRuns,
+                    selected: []
+                }
+            };
+        }
+
     }
     return state;
 };

@@ -24,6 +24,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
             ownProps.onClose();
     },
     onInit(execCycle) {
+        console.log("FETCHING ExecCycle: ", execCycle.id)
         dispatch(actions.reqExecCycle(execCycle.id));
     }
 });

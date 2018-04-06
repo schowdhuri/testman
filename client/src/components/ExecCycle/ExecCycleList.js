@@ -37,7 +37,7 @@ class ExecCycleList extends React.Component {
         const newId = nextProps.execCycleId ||
             nextProps.selected && nextProps.selected.id;
 
-        if(newId)
+        if(!nextProps.selected || newId != nextProps.selected.id)
             this.handleSelect(newId, redirect);
     }
     handleClone(id, cloneType) {

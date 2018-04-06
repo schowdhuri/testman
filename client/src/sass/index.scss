@@ -55,6 +55,8 @@ header .navbar-brand {
     text-align: center;
 }
 .s-alert-box {
-    padding: 10px
+    padding: 10px !important;
 }
-
+.s-alert-close {
+    top: 10px !important;
+}
