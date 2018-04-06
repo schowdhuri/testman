@@ -2,6 +2,7 @@ const { ArrayCollection } = require("wetland");
 const parse = require("csv-parse");
 
 const TestCase = require("../models/TestCase");
+const TestRun = require("../models/TestRun");
 
 const HttpError = require("../helpers/HttpError");
 
@@ -166,12 +167,17 @@ const remove = async (id, wetland) => {
 
     const manager = wetland.getManager();
     const repository = manager.getRepository(TestCase);
+    const trRepo = manager.getRepository(TestRun);
 
     const testCase = await repository.findOne(id)
     if(!testCase)
         throw new HttpError(404, `TestCase with id ${id} not found`);
+    const testRuns = await trRepo.getByTestCase(id);
+    if(testRuns.length) {
+        const idArr = testRuns.map(tr => tr.id);
+        throw new HttpError(400, `This test is linked to test runs ${idArr.join(", ")}`);
+    }
     await manager.remove(testCase).flush();
-
     return testCase;
 };
 

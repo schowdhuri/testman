@@ -22,7 +22,7 @@ function* deleteTestCase(action) {
             yield put(redirectToTestDesign());
     } catch(ex) {
         console.log(ex); // eslint-disable-line no-console
-        Alert.error("Failed to delete test case");
+        Alert.error(ex.text || "Failed to delete test case");
     }
     yield put(setLoading(REQ_DEL_TC, false));
 }
