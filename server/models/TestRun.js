@@ -2,8 +2,11 @@
 
 const STATES = require("../../common/constants/TestRunStates");
 
+const TestRunRepository = require("../repositories/TestRun");
+
 class TestRun {
     static setMapping(mapping) {
+        mapping.entity({ repository: TestRunRepository });
         mapping.field("created", {
             type: "datetime",
             nullable: true

@@ -43,34 +43,9 @@ const findAll = async (execCycleId, wetland) => {
 const findById = async (id, wetland) => {
     const manager = wetland.getManager();
     const repository = manager.getRepository(TestRun);
-    let testRun = await repository.findOne(id, {
-        populate: [ "testcase", "testcase.testplan", "execcycle", "defects" ]
-    });
+    const testRun = await repository.getDetails(id);
     if(!testRun)
         throw new HttpError(404, "Not found");
-    testRun = {
-        ...testRun,
-        execCycle: testRun.execcycle,
-        testCase: testRun.testcase,
-        created: dateFormat(testRun.created),
-        modified: dateFormat(testRun.modified),
-        runDate: testRun.runDate && dateFormat(testRun.runDate) || null
-    };
-
-    if(!testRun.testCase)
-        throw new HttpError(500, "Invalid testRun");
-
-    const testCase = await getTestCase(testRun.testCase.id, wetland);
-    testRun = {
-        ...testRun,
-        testCase: {
-            ...testRun.testCase,
-            testPlan: testCase.testplan
-        }
-    };
-    delete testRun.execcycle;
-    delete testRun.testcase;
-    delete testRun.testCase.testplan;
 
     return testRun;
 };

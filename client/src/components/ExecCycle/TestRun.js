@@ -9,6 +9,7 @@ import {
     Panel,
     Table
 } from "react-bootstrap";
+import Markdown from "react-markdown";
 
 import TR_STATES from "common/constants/TestRunStates";
 import TR_COLORS from "constants/TestRunStateColors";
@@ -144,6 +145,9 @@ class TestRun extends React.Component {
                         Execution Details
                     </Panel.Heading>
                     <Panel.Body>
+                        <div className="markdown-static" onClick={this.handleEdit}>
+                            <Markdown source={testCase.description}  />
+                        </div>
                         {testCase && testCase.description && testCase.description.value
                             ? <p className="description">{testCase.description.value}</p>
                             : null}

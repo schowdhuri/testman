@@ -46,7 +46,7 @@ class TestCaseRepository extends EntityRepository {
             "defects",
             "user"
         ];
-        const testCase = await super.findOne(criteria, options);
+        const testCase = await this.findOne(criteria, options);
         if(!testCase)
             return testCase;
         const _defects = testCase.defects.map(d => ({
