@@ -14,7 +14,7 @@ import {
 import Attachment from "components/Shared/Attachment";
 import NewComment from "./NewComment";
 
-import "sass/components/Comment.scss";
+import "./Comment.scss";
 
 class Comment extends React.Component {
     constructor(props) {

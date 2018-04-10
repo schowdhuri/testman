@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import ListA from "./ListA";
 import ListB from "./ListB";
 
-import "sass/components/shared/GroupMultiSelect.scss";
+import "./GroupMultiSelect.scss";
 
 class GroupMultiSelect extends React.Component {
     componentWillMount() {

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import "sass/components/shared/ColumnFilter.scss";
+import "./ColumnFilter.scss";
 
 class ColumnFilter extends React.Component {
     constructor() {

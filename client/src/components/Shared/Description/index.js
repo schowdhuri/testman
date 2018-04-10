@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import TextareaAutosize from 'react-autosize-textarea';
 import Markdown from "react-markdown";
 
-import "sass/components/Description.scss";
+import "./Description.scss";
 
 class Description extends React.Component {
     constructor(props) {

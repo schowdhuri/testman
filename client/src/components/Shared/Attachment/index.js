@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import ViewEdit from "./ViewEdit";
 
-import "sass/components/shared/Attachment.scss";
+import "./Attachment.scss";
 
 class Attachment extends React.Component {
     constructor() {

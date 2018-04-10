@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import EditTestPlan from "./AddEditTestPlan";
 import TestPlansToolbar from "./TestPlansToolbar";
 
-import "sass/components/TestPlans.scss";
+import "./TestPlans.scss";
 
 class TestPlans extends React.Component {
     constructor(props) {

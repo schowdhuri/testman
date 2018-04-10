@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import ListView from "./ListView";
 import TestRun from "./TestRunContainer";
 
-import "sass/components/ExecCycle.scss";
+import "./ExecCycle.scss";
 
 class ExecCycle extends React.Component {
     render() {

@@ -4,6 +4,9 @@ import PropTypes from "prop-types";
 import AddEditView from "./AddEditView";
 import ListView from "./ListView";
 
+import "./Defects.scss";
+
+
 const Defects = props => {
     const { mode, defectID } = props;
     return mode=="list"

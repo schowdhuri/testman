@@ -5,7 +5,7 @@ import { Button, Modal } from "react-bootstrap";
 
 import GroupMultiSelect from "components/Shared/GroupMultiSelect";
 
-import "sass/components/TestCaseSelector.scss";
+import "./TestCaseSelector.scss";
 
 class Selector extends React.Component {
     constructor(props) {

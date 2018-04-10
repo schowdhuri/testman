@@ -5,7 +5,7 @@ import { Button, Modal } from "react-bootstrap";
 
 import GroupMultiSelect from "components/Shared/GroupMultiSelect";
 
-import "sass/components/DefectSelector.scss";
+import "./DefectSelector.scss";
 
 class Selector extends React.Component {
     constructor(props) {

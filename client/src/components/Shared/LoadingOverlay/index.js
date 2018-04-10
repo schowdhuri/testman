@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import "sass/components/LoadingOverlay.scss";
+import "./LoadingOverlay.scss";
 
 const LoadingOverlay = ({ loading, message }) => {
     return (<div className={`loading-overlay ${loading ? "show" : ""}`}>

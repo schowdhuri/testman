@@ -11,7 +11,7 @@ import Markdown from "react-markdown";
 import dateFormat from "common/utils/dateFormat";
 import fromNow from "common/utils/fromNow";
 
-import "sass/components/Dashboard.scss";
+import "./Dashboard.scss";
 
 class Dashboard extends React.Component {
     constructor() {

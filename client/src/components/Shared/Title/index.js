@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import "sass/components/Title.scss";
+import "./Title.scss";
 
 class Title extends React.Component {
     constructor(props) {

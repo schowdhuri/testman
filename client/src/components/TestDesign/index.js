@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import ListView from "./ListView";
 import AddEditView from "./AddEditView";
 
-import "sass/components/TestDesign.scss";
+import "./TestDesign.scss";
 
 class TestDesign extends React.Component {
     render() {
