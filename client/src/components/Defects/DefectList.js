@@ -62,10 +62,13 @@ class DefectList extends React.Component {
             statusFilter
         } = this.props;
 
-        const assigneeList = defects
-            .map(d => d.assignee)
-            .filter(a => a);
-        assigneeList.push({ id: UNASSIGNED, name: UNASSIGNED });
+        const assigneeList = [{ id: UNASSIGNED, name: UNASSIGNED }];
+        defects
+            .filter(d => d && d.assignee)
+            .forEach(d => {
+                if(!assigneeList.find(a => a.id == d.assignee.id))
+                    assigneeList.unshift(d.assignee)
+            });
 
         return (<div className="defects-list">
             <Toolbar allowDelete={allowDelete} onDelete={this.bulkDelete} />

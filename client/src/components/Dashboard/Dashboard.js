@@ -49,7 +49,7 @@ class Dashboard extends React.Component {
                                 <span className="raised-by" title="Created by">
                                     <i className="glyphicon glyphicon-user" />
                                     {" "}
-                                    {defect.user || "< Unknown >"}
+                                    {defect.user && defect.user.name || "< Unknown >"}
                                 </span>
                             </div>)}
                     </Panel.Body>
@@ -85,7 +85,7 @@ class Dashboard extends React.Component {
                                     <Markdown source={comment.name} />
                                 </div>
                                 <span className="commenter">
-                                    {comment.user ? comment.user.name : "Unknown"}
+                                    {comment.user && comment.user.name || "Unknown"}
                                 </span>
                                 <span className="text">{" commented on "}</span>
                                 <span className="entity">

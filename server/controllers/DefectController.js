@@ -61,6 +61,10 @@ const create = async (data, wetland, user) => {
     if(data.status)
         obj.status = data.status;
 
+    if(data.assignee && data.assignee.id) {
+        obj.assignee = { id: data.assignee.id };
+    }
+
     if(data.testRuns && data.testRuns.length) {
         const arrTestRuns = new ArrayCollection();
         data.testRuns.forEach(tr => arrTestRuns.push({
@@ -110,6 +114,8 @@ const update = async (id, data, wetland, user) => {
         }
     };
     obj.status = data.status;
+    if(data.name)
+        obj.name = data.name;
     if(defect.description) {
         obj.description = {
             id: defect.description.id
