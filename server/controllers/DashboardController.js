@@ -78,6 +78,8 @@ const getSummary = async (wetland, user) => {
     let allComments = [];
     allDefectIds.forEach((id, index) => {
         arrDefectComments[index].forEach(comment => {
+            if(allComments.find(existing => existing.id == comment.id))
+                return;
             allComments.push({
                 id: comment.id,
                 name: comment.content,
@@ -91,6 +93,8 @@ const getSummary = async (wetland, user) => {
     });
     testCasesAdded.forEach((testCase, index) => {
         arrTestCaseComments[index].forEach(comment => {
+            if(allComments.find(existing => existing.id == comment.id))
+                return;
             allComments.push({
                 id: comment.id,
                 name: comment.content,
