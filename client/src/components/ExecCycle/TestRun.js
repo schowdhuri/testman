@@ -142,7 +142,7 @@ class TestRun extends React.Component {
                                     disabled
                                 >{testRun.status}</Button>}
                         </div>
-                        Execution Details
+                        Details
                     </Panel.Heading>
                     <Panel.Body>
                         <div className="markdown-static" onClick={this.handleEdit}>

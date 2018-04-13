@@ -14,7 +14,7 @@ import {
 
 function mapStateToProps() {
     const cid = shortId.generate();
-    return function(state, { items }) {
+    return function(state, { items, search }) {
         const localState = state.groupMultiSelect[cid] || {};
         return {
             cid,
@@ -22,7 +22,7 @@ function mapStateToProps() {
             unselectedItems: getUnselectedItems(localState, items),
             path: getPath(localState),
             selectedItems: flattenSelected(localState),
-            showFilter: allowFilter(localState)
+            showFilter: search || allowFilter(localState)
         };
     };
 }

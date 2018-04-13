@@ -64,6 +64,7 @@ class Selector extends React.Component {
                         onSelectItem={onSelect}
                         onSelectAll={onSelectAll}
                         selectedItems={selectedItems}
+                        search={true}
                         readOnly={readOnly} />
                 </div>
             </Modal.Body>
