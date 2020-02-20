@@ -24,3 +24,4 @@ node_modules/
 .data
 .db
 client/dist
+.env

@@ -29,7 +29,7 @@ const HomeApp = () => (<div className="login">
         <img src={Logo} alt="TestMan Logo" className="logo" />
         <h1>TestMan</h1>
         <p className="brief">
-        A Minimalistic, Open-Source Test Case Management tool
+        A Minimalistic, Open-Source Test-Case Management tool
         </p>
         <a className="btn btn-login" href="/auth/google">
             <img src={Button} alt="Sign in with Google" />
@@ -74,7 +74,7 @@ const HomeApp = () => (<div className="login">
         </React.Fragment>))}
     </section>
     <footer>
-        &copy; 2018 Subir Chowdhuri.
+        &copy; 2020 Subir Chowdhuri.
         {" "}
         Code released under the <a href="https://github.com/schowdhuri/testman/blob/master/LICENSE">MIT License</a>
     </footer>

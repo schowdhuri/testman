@@ -4,8 +4,8 @@ const userController = require("./UserController");
 
 const OAUTH_CB_ROOT = require("../constants/paths").OAUTH_CB_ROOT;
 
-const APP_ID = "890243396907-v2beikeggrqe8htni9vhcqg6vibbf6ji.apps.googleusercontent.com";
-const APP_SECRET = "KlTtma0hqyHFy2KwRgRdbB9x";
+const APP_ID = process.env.GOOGLE_OAUTH_APP_ID;
+const APP_SECRET = process.env.GOOGLE_OAUTH_APP_SECRET;
 
 const createStrategy = wetland => new GoogleStrategy({
     clientID: APP_ID,
