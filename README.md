@@ -6,7 +6,7 @@
   <img src="https://img.shields.io/badge/node-%3E=8.x-brightgreen.svg" alt="npm >= 8.x" />
 </h1>
 
-Minimal test management tool
+Minimal test-case management tool
 
 ## Development
 
@@ -14,7 +14,7 @@ Install deps:
 ```
 npm install
 ```
-Generate Bundles (this will also watch for changes):
+Generate production bundles:
 ```
 npm run build
 ```
@@ -26,8 +26,8 @@ npm start
 
 Head to http://localhost:3200/
 
-### Warning: Expect nightly breaking changes!
-Track progress and upcoming changes: [Roadmap to v1.0](https://github.com/schowdhuri/testman/projects/1?fullscreen=true)
+
+PS: TestMan works and is stable. Though, I never got around to completing the [Roadmap to v1.0](https://github.com/schowdhuri/testman/projects/1?fullscreen=true)
 
 ## License
 MIT
