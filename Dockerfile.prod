@@ -1,0 +1,15 @@
+FROM nginx
+
+RUN apt-get update
+RUN apt-get install -y nodejs curl
+RUN curl -o- -L https://yarnpkg.com/install.sh | bash
+
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/nginx.conf
+
+WORKDIR /usr/src/webapp
+COPY package.json .
+COPY yarn.lock .
+RUN ~/.yarn/bin/yarn
+COPY . .
+RUN ~/.yarn/bin/yarn build
