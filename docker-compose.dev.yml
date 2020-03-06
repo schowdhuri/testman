@@ -11,10 +11,10 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     volumes:
-      - ./src:/var/www/webapp/src
-      - ./public/:/var/www/webapp/public
-      - ./scripts:/var/www/webapp/scripts
-      - /var/www/webapp/node_modules
+      - ./src:/usr/src/webapp/src
+      - ./public:/usr/src/webapp/public
+      - ./scripts:/usr/src/webapp/scripts
+      - /usr/src/webapp/node_modules
     ports:
       - "3000:3000"
       - "3001:3001"
