@@ -1,9 +1,9 @@
 import express from "express";
 
-import DAO from "./utils/dao";
-import Item from "./models/Item";
+import DB from "./utils/DB";
+import controllers from "./controllers";
 
-const dao = new DAO();
+const db = new DB();
 const app = express();
 
 app.use(express.json());
@@ -12,43 +12,16 @@ app.get("/api/ping", (req, res) => {
   res.send("OK");
 });
 
-app.post("/api/todo", async (req, res) => {
-  const { name, completed = false } = req.body;
-  const todo = new Item();
-  todo.name = name;
-  todo.completed = completed;
-  res.json(await dao.save(todo));
+app.get("/api/user", async (req, res) => {
+  res.json(await controllers.User.find());
 });
 
-app.get("/api/todos/:id", async (req, res) => {
-  const id = req.params.id;
-  if (!id) {
-    return res.status(400).json("id is required");
-  }
-  res.json(await dao.findOne(Item, Number(id)));
+app.get("/api/testcase", async (req, res) => {
+  res.json(await controllers.TestCase.find());
 });
 
-app.delete("/api/todos/:id", async (req, res) => {
-  const id = req.params.id;
-  if (!id) {
-    return res.status(400).json("id is required");
-  }
-  res.json(await dao.remove(Item, Number(id)));
-});
-
-app.put("/api/todos/:id", async (req, res) => {
-  const data = req.body;
-  if (!req.params.id) {
-    return res.status(400).json("id is required");
-  }
-  res.json(await dao.update(Item, Number(req.params.id), data));
-});
-
-app.get("/api/todos", async (req, res) => {
-  const todos = await dao.find(Item);
-  res.json(todos);
-});
-
-app.listen(3001, () => {
-  console.log("API server ready...");
+db.connect().then(() => {
+  app.listen(3001, () => {
+    console.log("API server ready...");
+  });
 });

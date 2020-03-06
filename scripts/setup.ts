@@ -1,6 +1,5 @@
 import "reflect-metadata";
 import { createConnection } from "typeorm";
-import Item from "../src/server/models/Item";
 
 async function initDB() {
   const conn = await createConnection({
@@ -9,14 +8,13 @@ async function initDB() {
     port: 3306,
     username: "root",
     password: process.env.MYSQL_ROOT_PASSWORD,
-    database: "bucketlist",
-    entities: [Item],
+    database: "testman",
+    entities: "../src/server/models/*.ts",
     synchronize: true,
     logging: false
   });
-  const itemRepo = conn.getRepository(Item);
-  const items = await itemRepo.find();
-  console.log({ items });
+  const testCases = await models.TestCase.find();
+  console.log({ testCases });
   conn.close();
 }
 
