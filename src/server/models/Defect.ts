@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   Column,
   OneToOne,
+  OneToMany,
   JoinColumn,
   ManyToMany,
   JoinTable

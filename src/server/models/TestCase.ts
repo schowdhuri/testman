@@ -7,7 +7,8 @@ import {
   UpdateDateColumn,
   OneToOne,
   JoinColumn,
-  OneToMany
+  OneToMany,
+  ManyToOne
 } from "typeorm";
 
 import Comment from "./Comment";

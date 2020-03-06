@@ -21,3 +21,5 @@ class RichText extends BaseEntity {
   @Column()
   value: string;
 }
+
+export default RichText;
