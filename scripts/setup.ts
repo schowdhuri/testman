@@ -1,6 +1,8 @@
 import "reflect-metadata";
 import { createConnection } from "typeorm";
 
+import TestCase from "../src/server/models/TestCase";
+
 async function initDB() {
   const conn = await createConnection({
     type: "mysql",
@@ -9,11 +11,11 @@ async function initDB() {
     username: "root",
     password: process.env.MYSQL_ROOT_PASSWORD,
     database: "testman",
-    entities: "../src/server/models/*.ts",
+    entities: ["src/server/models/*.ts"],
     synchronize: true,
     logging: false
   });
-  const testCases = await models.TestCase.find();
+  const testCases = await TestCase.find();
   console.log({ testCases });
   conn.close();
 }

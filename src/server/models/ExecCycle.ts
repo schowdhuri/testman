@@ -7,6 +7,7 @@ import {
   Column,
   OneToMany
 } from "typeorm";
+import { ObjectType, ID, Field } from "type-graphql";
 
 import TestRun from "./TestRun";
 
@@ -16,30 +17,38 @@ export enum Status {
   COMPLETED = "Completed"
 }
 
+@ObjectType()
 @Entity()
 class ExecCycle extends BaseEntity {
+  @Field(() => ID)
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Field()
   @CreateDateColumn()
   created: string;
 
+  @Field()
   @UpdateDateColumn()
   modified: string;
 
+  @Field()
   @Column()
   name: string;
 
+  @Field()
   @Column({
     type: "date"
   })
   startDate: string;
 
+  @Field()
   @Column({
     type: "date"
   })
   endDate: string;
 
+  @Field()
   @Column({
     type: "enum",
     enum: Status,
@@ -47,6 +56,7 @@ class ExecCycle extends BaseEntity {
   })
   status: string;
 
+  @Field(() => [TestRun])
   @OneToMany(
     type => TestRun,
     testRun => testRun.execCycle

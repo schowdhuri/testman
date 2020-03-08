@@ -10,6 +10,7 @@ import {
   OneToMany,
   ManyToOne
 } from "typeorm";
+import { ObjectType, ID, Field } from "type-graphql";
 
 import Comment from "./Comment";
 import RichText from "./RichText";
@@ -22,20 +23,26 @@ export enum Status {
   FAIL = "Fail"
 }
 
+@ObjectType()
 @Entity()
 class TestCase extends BaseEntity {
+  @Field(() => ID)
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Field()
   @CreateDateColumn()
   created: string;
 
+  @Field()
   @UpdateDateColumn()
   modified: string;
 
+  @Field()
   @Column()
   name: string;
 
+  @Field()
   @Column({
     type: "enum",
     enum: Status,
@@ -43,20 +50,24 @@ class TestCase extends BaseEntity {
   })
   status: string;
 
+  @Field(() => RichText)
   @OneToOne(type => RichText)
   @JoinColumn()
   description: RichText;
 
+  @Field()
   @OneToOne(type => User)
   @JoinColumn()
   addedBy: User;
 
+  @Field(() => [Comment])
   @OneToMany(
     type => Comment,
     comment => comment.testCase
   )
   comments: Comment[];
 
+  @Field(() => TestPlan)
   @ManyToOne(
     type => TestPlan,
     testPlan => testPlan.testCases

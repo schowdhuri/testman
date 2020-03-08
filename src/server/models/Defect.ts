@@ -11,6 +11,7 @@ import {
   ManyToMany,
   JoinTable
 } from "typeorm";
+import { ObjectType, Field, ID } from "type-graphql";
 
 import RichText from "./RichText";
 import User from "./User";
@@ -24,20 +25,26 @@ export enum Status {
   NON_ISSUE = "Non Issue"
 }
 
+@ObjectType()
 @Entity()
 class Defect extends BaseEntity {
+  @Field(() => ID)
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Field()
   @CreateDateColumn()
   created: string;
 
+  @Field()
   @UpdateDateColumn()
   modified: string;
 
+  @Field()
   @Column()
   name: string;
 
+  @Field()
   @Column({
     type: "enum",
     enum: Status,
@@ -45,18 +52,22 @@ class Defect extends BaseEntity {
   })
   status: string;
 
+  @Field(() => RichText)
   @OneToOne(type => RichText)
   @JoinColumn()
   description: RichText;
 
+  @Field(() => User)
   @OneToOne(type => User)
   @JoinColumn()
   assignee: User;
 
+  @Field(() => [TestRun])
   @ManyToMany(type => TestRun)
   @JoinTable()
   testRuns: TestRun[];
 
+  @Field(() => [Comment])
   @OneToMany(
     type => Comment,
     comment => comment.defect
