@@ -6,7 +6,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn
 } from "typeorm";
-import { ObjectType, Field, ID } from "type-graphql";
+import { ObjectType, Field, ID, InputType } from "type-graphql";
 
 
 @Entity()
@@ -34,6 +34,21 @@ class User extends BaseEntity {
 
   @Field()
   @Column()
+  authid: string;
+}
+
+@InputType()
+export class CreateUserInput implements Partial<User> {
+  @Field()
+  username: string;
+
+  @Field()
+  email: string;
+
+  @Field()
+  name: string;
+
+  @Field()
   authid: string;
 }
 

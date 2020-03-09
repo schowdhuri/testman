@@ -10,7 +10,7 @@ import {
   OneToMany,
   ManyToOne
 } from "typeorm";
-import { ObjectType, ID, Field } from "type-graphql";
+import { ObjectType, ID, Field, InputType } from "type-graphql";
 
 import Comment from "./Comment";
 import RichText from "./RichText";
@@ -51,13 +51,12 @@ class TestCase extends BaseEntity {
   status: string;
 
   @Field(() => RichText)
-  @OneToOne(type => RichText)
+  @OneToOne(type => RichText, { cascade: true })
   @JoinColumn()
   description: RichText;
 
   @Field()
-  @OneToOne(type => User)
-  @JoinColumn()
+  @ManyToOne(type => User)
   addedBy: User;
 
   @Field(() => [Comment])
@@ -73,6 +72,19 @@ class TestCase extends BaseEntity {
     testPlan => testPlan.testCases
   )
   testPlan: TestPlan;
+}
+
+@InputType()
+export class CreateTestCaseInput {
+  @Field()
+  name: string;
+
+  @Field()
+  descriptionText: string;
+
+  // TODO: user should be retrieved from Context
+  @Field()
+  addedBy: string;
 }
 
 export default TestCase;

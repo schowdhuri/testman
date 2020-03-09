@@ -1,22 +1,22 @@
-import { Resolver, Query, Arg } from "type-graphql";
-import User from "../models/User";
+import { Resolver, Query, Arg, Mutation } from "type-graphql";
+import User, { CreateUserInput } from "../models/User";
 
-// export async function find(id: number) {
-//   if (id) return await User.findOne({ id });
-//   else return await User.find();
-// }
-
-@Resolver()
+@Resolver(() => User)
 class UserResolver {
-
   @Query(returns => User)
-  async user(@Arg("id") id: number) {
-    return await User.findOne({ id });
+  async user(@Arg("username") username: string) {
+    return await User.findOne({ username });
   }
 
   @Query(returns => [User])
   async users() {
     return await User.find();
+  }
+
+  @Mutation(() => User)
+  async createUser(@Arg("data") data: CreateUserInput) {
+    const user = User.create(data);
+    return await user.save();
   }
 }
 

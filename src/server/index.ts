@@ -23,14 +23,6 @@ async function main() {
     res.send("OK");
   });
 
-  // app.get("/api/user", async (req, res) => {
-  //   res.json(await controllers.User.find());
-  // });
-
-  // app.get("/api/testcase", async (req, res) => {
-  //   res.json(await controllers.TestCase.find());
-  // });
-
   app.listen(3001, () => {
     console.log(`API server ready...${apolloServer.graphqlPath}`);
   });

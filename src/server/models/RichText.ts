@@ -6,7 +6,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn
 } from "typeorm";
-import { ObjectType, Field, ID } from "type-graphql";
+import { ObjectType, Field, ID, InputType } from "type-graphql";
 
 @ObjectType()
 @Entity()
@@ -25,6 +25,12 @@ class RichText extends BaseEntity {
 
   @Field()
   @Column()
+  value: string;
+}
+
+@InputType()
+export class CreateRichTextInput implements Partial<RichText> {
+  @Field()
   value: string;
 }
 
