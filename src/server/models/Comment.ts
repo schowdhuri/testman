@@ -8,7 +8,7 @@ import {
   ManyToOne,
   JoinColumn
 } from "typeorm";
-import { ObjectType, Field, ID } from "type-graphql";
+import { ObjectType, Field, ID, InputType } from "type-graphql";
 
 import RichText from "./RichText";
 import User from "./User";
@@ -31,13 +31,12 @@ class Comment extends BaseEntity {
   modified: string;
 
   @Field(() => RichText)
-  @OneToOne(type => RichText)
+  @OneToOne(type => RichText, { cascade: true })
   @JoinColumn()
   content: RichText;
 
-  @Field(() => User)
-  @OneToOne(type => User)
-  @JoinColumn()
+  @Field()
+  @ManyToOne(type => User)
   user: User;
 
   @Field(() => Defect)
@@ -53,6 +52,21 @@ class Comment extends BaseEntity {
     testCase => testCase.comments
   )
   testCase: TestCase;
+}
+
+@InputType()
+export class CreateCommentInput {
+  @Field()
+  content: string;
+
+  @Field()
+  user: string;
+
+  @Field({ nullable: true })
+  defect: number;
+
+  @Field({ nullable: true })
+  testCase: number;
 }
 
 export default Comment;

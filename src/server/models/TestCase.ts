@@ -59,7 +59,9 @@ class TestCase extends BaseEntity {
   @ManyToOne(type => User)
   addedBy: User;
 
-  @Field(() => [Comment])
+  @Field(type => [Comment], {
+    defaultValue: []
+  })
   @OneToMany(
     type => Comment,
     comment => comment.testCase

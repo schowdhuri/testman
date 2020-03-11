@@ -11,7 +11,7 @@ import {
   ManyToMany,
   JoinTable
 } from "typeorm";
-import { ObjectType, Field, ID } from "type-graphql";
+import { ObjectType, Field, ID, InputType } from "type-graphql";
 
 import RichText from "./RichText";
 import User from "./User";
@@ -53,7 +53,7 @@ class Defect extends BaseEntity {
   status: string;
 
   @Field(() => RichText)
-  @OneToOne(type => RichText)
+  @OneToOne(type => RichText, { cascade: true })
   @JoinColumn()
   description: RichText;
 
@@ -73,6 +73,16 @@ class Defect extends BaseEntity {
     comment => comment.defect
   )
   comments: Comment[];
+}
+
+export class CreateDefectInput {
+  @Field()
+  name: string;
+
+  @Field()
+  description: string;
+
+
 }
 
 export default Defect;

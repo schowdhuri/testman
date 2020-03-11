@@ -15,13 +15,15 @@ class TestCaseResolver {
   @Query(returns => TestCase)
   async testCase(@Arg("id") id: number) {
     return await TestCase.findOne({ id }, {
-      relations: ["description", "addedBy"]
+      relations: ["description", "addedBy", "comments", "comments.content"]
     });
   }
 
   @Query(returns => [TestCase])
   async testCases() {
-    return await TestCase.find();
+    return await TestCase.find({
+      relations: ["addedBy"]
+    });
   }
 
   @Mutation(() => TestCase)

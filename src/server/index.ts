@@ -17,7 +17,7 @@ async function main() {
       resolvers
     })
   });
-  apolloServer.applyMiddleware({ app });
+  apolloServer.applyMiddleware({ app, path: "/api/graphql" });
 
   app.get("/api/ping", (req, res) => {
     res.send("OK");

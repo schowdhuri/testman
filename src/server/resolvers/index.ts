@@ -1,5 +1,5 @@
 import User from "./User";
 import TestCase from "./TestCase";
-import RichText from "./RichText";
+import Comment from "./Comment";
 
-export default [TestCase, User, RichText];
+export default [TestCase, User, Comment];
