@@ -1,5 +1,8 @@
-import User from "./User";
-import TestCase from "./TestCase";
 import Comment from "./Comment";
+import Defect from "./Defect";
+import ExecCycle from "./ExecCycle";
+import TestCase from "./TestCase";
+import TestRun from "./TestRun";
+import User from "./User";
 
-export default [TestCase, User, Comment];
+export default [TestCase, User, Comment, Defect, ExecCycle, TestRun];

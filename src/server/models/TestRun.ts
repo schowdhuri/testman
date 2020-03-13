@@ -7,9 +7,11 @@ import {
   Column,
   ManyToOne
 } from "typeorm";
-import { ObjectType, ID, Field } from "type-graphql";
+import { ObjectType, ID, Field, InputType } from "type-graphql";
 
 import ExecCycle from "./ExecCycle";
+import TestCase from "./TestCase";
+import User from "./User";
 
 export enum Status {
   NEW = "New",
@@ -34,7 +36,8 @@ class TestRun extends BaseEntity {
 
   @Field()
   @Column({
-    type: "date"
+    type: "date",
+    nullable: true
   })
   runDate: string;
 
@@ -46,12 +49,32 @@ class TestRun extends BaseEntity {
   })
   status: string;
 
+  @Field()
+  @ManyToOne(type => User)
+  user: User;
+
+  @Field(() => TestCase)
+  @ManyToOne(type => TestCase)
+  testCase: TestCase;
+
   @Field(() => ExecCycle)
   @ManyToOne(
     type => ExecCycle,
     execCycle => execCycle.testRuns
   )
-  execCycle: ExecCycle
+  execCycle: ExecCycle;
+}
+
+@InputType()
+export class CreateTestRunInput {
+  @Field()
+  user: string;
+
+  @Field()
+  testCase: number;
+
+  @Field()
+  execCycle: number;
 }
 
 export default TestRun;

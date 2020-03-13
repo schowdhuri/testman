@@ -7,7 +7,7 @@ import {
   Column,
   OneToMany
 } from "typeorm";
-import { ObjectType, ID, Field } from "type-graphql";
+import { ObjectType, ID, Field, InputType } from "type-graphql";
 
 import TestRun from "./TestRun";
 
@@ -38,13 +38,15 @@ class ExecCycle extends BaseEntity {
 
   @Field()
   @Column({
-    type: "date"
+    type: "date",
+    nullable: true
   })
   startDate: string;
 
   @Field()
   @Column({
-    type: "date"
+    type: "date",
+    nullable: true
   })
   endDate: string;
 
@@ -62,6 +64,13 @@ class ExecCycle extends BaseEntity {
     testRun => testRun.execCycle
   )
   testRuns: TestRun[];
+}
+
+
+@InputType()
+export class CreateExecCycleInput {
+  @Field()
+  name: string;
 }
 
 export default ExecCycle;
