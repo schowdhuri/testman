@@ -4,16 +4,16 @@ import User, { CreateUserInput } from "../models/User";
 @Resolver(() => User)
 class UserResolver {
   @Query(returns => User)
-  async user(@Arg("username") username: string) {
+  async getUser(@Arg("username") username: string) {
     return await User.findOne({ username });
   }
 
   @Query(returns => [User])
-  async users() {
+  async getUsers() {
     return await User.find();
   }
 
-  @Mutation(() => User)
+  @Mutation(returns => User)
   async createUser(@Arg("data") data: CreateUserInput) {
     const user = User.create(data);
     return await user.save();

@@ -69,4 +69,10 @@ export class CreateCommentInput {
   testCase: number;
 }
 
+@InputType()
+export class UpdateCommentInput {
+  @Field()
+  content: string;
+}
+
 export default Comment;

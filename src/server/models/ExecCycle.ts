@@ -71,6 +71,25 @@ class ExecCycle extends BaseEntity {
 export class CreateExecCycleInput {
   @Field()
   name: string;
+
+  @Field(type => [Number], {
+    defaultValue: []
+  })
+  testRuns: Number[]
+}
+
+@InputType()
+export class UpdateExecCycleInput {
+  @Field()
+  id: number;
+
+  @Field()
+  name: string;
+
+  @Field(type => [Number], {
+    defaultValue: []
+  })
+  testRuns: Number[]
 }
 
 export default ExecCycle;

@@ -26,7 +26,7 @@ class TestCaseResolver {
     });
   }
 
-  @Mutation(() => TestCase)
+  @Mutation(returns => TestCase)
   async createTestCase(@Arg("data") data: CreateTestCaseInput) {
     data.addedBy = await User.findOne({ username: data.addedBy });
     const testCase = TestCase.create(data);

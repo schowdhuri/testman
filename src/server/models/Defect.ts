@@ -69,7 +69,10 @@ class Defect extends BaseEntity {
   assignedTo: User;
 
   @Field(() => [TestRun])
-  @ManyToMany(type => TestRun)
+  @ManyToMany(
+    type => TestRun,
+    testRun => testRun.defects
+  )
   @JoinTable()
   testRuns: TestRun[];
 
@@ -90,6 +93,27 @@ export class CreateDefectInput {
   description: string;
 
   @Field()
+  raisedBy: string;
+
+  @Field({ nullable: true })
+  assignedTo: string;
+
+  @Field(() => [Number])
+  testRuns: number[];
+}
+
+@InputType()
+export class UpdateDefectInput {
+  @Field()
+  id: number;
+
+  @Field()
+  name: string;
+
+  @Field()
+  description: string;
+
+  @Field({ nullable: true })
   raisedBy: string;
 
   @Field({ nullable: true })

@@ -5,10 +5,9 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany,
-  JoinTable
+  OneToMany
 } from "typeorm";
-import { ObjectType, Field, ID } from "type-graphql";
+import { ObjectType, Field, ID, InputType } from "type-graphql";
 
 import TestCase from "./TestCase";
 
@@ -32,8 +31,31 @@ class TestPlan extends BaseEntity {
   name: string;
 
   @Field(() => [TestCase])
-  @OneToMany(type => TestCase, testCase => testCase.testPlan)
+  @OneToMany(
+    type => TestCase,
+    testCase => testCase.testPlan
+  )
   testCases: TestCase[];
+}
+
+@InputType()
+export class CreateTestPlanInput {
+  @Field()
+  name: string;
+}
+
+@InputType()
+export class UpdateTestPlanInput {
+  @Field()
+  id: number;
+
+  @Field()
+  name: string;
+
+  @Field(type => [Number], {
+    defaultValue: []
+  })
+  testCases: number[];
 }
 
 export default TestPlan;

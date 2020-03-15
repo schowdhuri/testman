@@ -15,6 +15,7 @@ import { ObjectType, ID, Field, InputType } from "type-graphql";
 import Comment from "./Comment";
 import RichText from "./RichText";
 import TestPlan from "./TestPlan";
+import TestRun from "./TestRun";
 import User from "./User";
 
 export enum Status {
@@ -67,6 +68,15 @@ class TestCase extends BaseEntity {
     comment => comment.testCase
   )
   comments: Comment[];
+
+  @Field(() => [TestRun], {
+    defaultValue: []
+  })
+  @OneToMany(
+    type => TestRun,
+    testRun => testRun.testCase
+  )
+  testRuns: TestRun[]
 
   @Field(() => TestPlan)
   @ManyToOne(

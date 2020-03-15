@@ -5,10 +5,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Column,
-  ManyToOne
+  ManyToOne,
+  ManyToMany
 } from "typeorm";
 import { ObjectType, ID, Field, InputType } from "type-graphql";
 
+import Defect from "./Defect";
 import ExecCycle from "./ExecCycle";
 import TestCase from "./TestCase";
 import User from "./User";
@@ -53,9 +55,21 @@ class TestRun extends BaseEntity {
   @ManyToOne(type => User)
   user: User;
 
-  @Field(() => TestCase)
-  @ManyToOne(type => TestCase)
+  @Field(type => TestCase)
+  @ManyToOne(
+    type => TestCase,
+    testCase => testCase.testRuns
+  )
   testCase: TestCase;
+
+  @Field(type => [Defect], {
+    defaultValue: []
+  })
+  @ManyToMany(
+    type => Defect,
+    defect => defect.testRuns
+  )
+  defects: Defect[];
 
   @Field(() => ExecCycle)
   @ManyToOne(
@@ -67,6 +81,21 @@ class TestRun extends BaseEntity {
 
 @InputType()
 export class CreateTestRunInput {
+  @Field()
+  user: string;
+
+  @Field()
+  testCase: number;
+
+  @Field()
+  execCycle: number;
+}
+
+@InputType()
+export class UpdateTestRunInput {
+  @Field()
+  id: number;
+
   @Field()
   user: string;
 
