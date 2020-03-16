@@ -53,8 +53,9 @@ class Defect extends BaseEntity {
   })
   status: string;
 
-  @Field(() => RichText)
+  @Field(type => RichText)
   @OneToOne(type => RichText, { cascade: true })
+  @JoinColumn()
   description: RichText;
 
   @Field(() => User)
@@ -68,7 +69,9 @@ class Defect extends BaseEntity {
   @JoinColumn()
   assignedTo: User;
 
-  @Field(() => [TestRun])
+  @Field(type => [TestRun], {
+    defaultValue: []
+  })
   @ManyToMany(
     type => TestRun,
     testRun => testRun.defects
@@ -76,7 +79,9 @@ class Defect extends BaseEntity {
   @JoinTable()
   testRuns: TestRun[];
 
-  @Field(() => [Comment])
+  @Field(type => [Comment], {
+    defaultValue: []
+  })
   @OneToMany(
     type => Comment,
     comment => comment.defect

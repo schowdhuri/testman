@@ -68,6 +68,8 @@ async function initDB() {
 
   const defect1 = Defect.create({
     name: "defect 01",
+    raisedBy: user,
+    assignedTo: user,
     description: RichText.create({
       value: "Nothing works!"
     })

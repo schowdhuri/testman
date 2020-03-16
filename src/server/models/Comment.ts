@@ -31,7 +31,7 @@ class Comment extends BaseEntity {
   modified: string;
 
   @Field(() => RichText)
-  @OneToOne(type => RichText, { cascade: true })
+  @OneToOne(type => RichText, { cascade: true, onDelete: "CASCADE" })
   @JoinColumn()
   content: RichText;
 
@@ -71,6 +71,9 @@ export class CreateCommentInput {
 
 @InputType()
 export class UpdateCommentInput {
+  @Field()
+  id: number;
+
   @Field()
   content: string;
 }

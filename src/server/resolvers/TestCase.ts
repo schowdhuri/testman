@@ -13,14 +13,14 @@ import User from "../models/User";
 @Resolver(of => TestCase)
 class TestCaseResolver {
   @Query(returns => TestCase)
-  async testCase(@Arg("id") id: number) {
+  async getTestCase(@Arg("id") id: number) {
     return await TestCase.findOne({ id }, {
       relations: ["description", "addedBy", "comments", "comments.content"]
     });
   }
 
   @Query(returns => [TestCase])
-  async testCases() {
+  async getTestCases() {
     return await TestCase.find({
       relations: ["addedBy"]
     });
@@ -34,6 +34,24 @@ class TestCaseResolver {
     description.value = data.descriptionText;
     testCase.description = description;
     return await testCase.save();
+  }
+
+  @Mutation(returns => Boolean)
+  async deleteTestCase(@Arg("id") id: number) {
+    const testCase = await TestCase.findOne({ id }, {
+      relations: ["description", "comments", "comments.content"]
+    });
+    if(!testCase) {
+      throw new Error("TestCase not found");
+    }
+    const pArr = [];
+    testCase.comments.forEach(c => {
+      pArr.push(c.content.remove());
+      pArr.push(c.remove());
+    });
+    pArr.push(testCase.remove());
+    await Promise.all(pArr);
+    return true;
   }
 }
 
