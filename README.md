@@ -8,6 +8,13 @@
 
 Minimal test-case management tool
 
+## TestMan v2
+Based on feedback gathered from users, TestMan v2 is in active development.
+
+- [Development Branch](https://github.com/schowdhuri/testman/tree/feature/v2)
+- [Project Board](https://github.com/schowdhuri/testman/projects/2)
+
+
 ## Development
 
 Install deps:
