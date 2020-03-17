@@ -72,7 +72,8 @@ async function initDB() {
     assignedTo: user,
     description: RichText.create({
       value: "Nothing works!"
-    })
+    }),
+    testRuns: [testRun1]
   });
   await defect1.save();
 
