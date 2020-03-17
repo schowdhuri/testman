@@ -15,12 +15,17 @@ class ExecCycleResolver {
 
   @Query(returns => ExecCycle)
   async getExecCycle(@Arg("id") id: number) {
-    return await ExecCycle.findOne({ id });
+    return await ExecCycle.findOne(
+      { id },
+      {
+        relations: ["testRuns", "testRuns.testCase", "testRuns.defects"]
+      }
+    );
   }
 
   @Mutation(returns => ExecCycle)
   async createExecCycle(@Arg("data") data: CreateExecCycleInput) {
-    if(data.testRuns) {
+    if (data.testRuns) {
       data.testRuns = await TestRun.find({
         id: In(data.testRuns)
       });
@@ -32,10 +37,10 @@ class ExecCycleResolver {
   @Mutation(returns => ExecCycle)
   async updateExecCycle(@Arg("data") data: UpdateExecCycleInput) {
     const execCycle = await ExecCycle.findOne({ id: data.id });
-    if(!execCycle) {
+    if (!execCycle) {
       throw new Error("ExecCycle not found");
     }
-    if(data.testRuns) {
+    if (data.testRuns) {
       data.testRuns = await TestRun.find({
         id: In(data.testRuns)
       });
@@ -46,13 +51,16 @@ class ExecCycleResolver {
 
   @Mutation(returns => Boolean)
   async deleteExecCycle(@Arg("id") id: number) {
-    const execCycle = await ExecCycle.findOne({ id }, {
-      relations: ["testRuns"]
-    });
-    if(!execCycle) {
+    const execCycle = await ExecCycle.findOne(
+      { id },
+      {
+        relations: ["testRuns"]
+      }
+    );
+    if (!execCycle) {
       throw new Error("ExecCycle not found");
     }
-    if(execCycle.testRuns.length) {
+    if (execCycle.testRuns.length) {
       throw new Error("ExecCycle not empty");
     }
     await execCycle.remove();

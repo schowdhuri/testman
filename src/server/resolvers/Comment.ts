@@ -15,8 +15,14 @@ class CommentResolver {
     data.user = await User.findOne({ username: data.user });
     if (data.testCase) {
       data.testCase = await TestCase.findOne({ id: data.testCase });
+      if(!data.testCase) {
+        throw new Error("TestCase not found");
+      }
     } else if (data.defect) {
       data.defect = await Defect.findOne({ id: data.defect });
+      if(!data.defect) {
+        throw new Error("Defect not found");
+      }
     } else {
       throw new Error("Either TestCase or Defect required");
     }
@@ -51,7 +57,9 @@ class CommentResolver {
     if (!comment) {
       throw new Error("Comment not found");
     }
-    await Promise.all([comment.content.remove(), comment.remove()]);
+    const content = comment.content;
+    await comment.remove();
+    await content.remove();
     return true;
   }
 }

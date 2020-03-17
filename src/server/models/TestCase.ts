@@ -92,11 +92,23 @@ export class CreateTestCaseInput {
   name: string;
 
   @Field()
-  descriptionText: string;
+  description: string;
 
   // TODO: user should be retrieved from Context
   @Field()
   addedBy: string;
+}
+
+@InputType()
+export class UpdateTestCaseInput {
+  @Field()
+  id: number;
+
+  @Field()
+  name: string;
+
+  @Field()
+  description: string;
 }
 
 export default TestCase;
