@@ -87,6 +87,14 @@ class Defect extends BaseEntity {
     comment => comment.defect
   )
   comments: Comment[];
+
+  static getByTestCase(testCaseId: number) {
+    return this.createQueryBuilder("defect")
+      .innerJoin("defect.testRuns", "testRuns")
+      .innerJoin("testRuns.testCase", "testCase")
+      .where("testCase.id = :testCaseId", { testCaseId })
+      .getMany();
+  }
 }
 
 @InputType()

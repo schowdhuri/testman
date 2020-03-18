@@ -4,6 +4,8 @@ import Defect, { CreateDefectInput, UpdateDefectInput } from "../models/Defect";
 import RichText from "../models/RichText";
 import TestRun from "../models/TestRun";
 
+type TestCaseIds = any;
+
 @Resolver(of => Defect)
 class DefectResolver {
   @Query(returns => [Defect])
@@ -39,6 +41,20 @@ class DefectResolver {
       throw new Error("Defect not found");
     }
     return defect;
+  }
+
+  @Query(returns => [Defect])
+  async getDefectsByTestCase(@Arg("testCase") testCase: number) {
+    const res = await Defect.getByTestCase(testCase);
+    return res;
+  }
+
+  @Query(returns => [[Defect]])
+  async getDefectsByTestCases(
+    @Arg("testCases", type => [Number]) testCases: number[]
+  ) {
+    const pArr = testCases.map(id => Defect.getByTestCase(id));
+    return await Promise.all(pArr);
   }
 
   @Mutation(returns => Defect)

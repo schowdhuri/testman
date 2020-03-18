@@ -20,7 +20,14 @@ class TestCaseResolver {
     return await TestCase.findOne(
       { id },
       {
-        relations: ["description", "addedBy", "comments", "comments.content"]
+        relations: [
+          "description",
+          "addedBy",
+          "testRuns",
+          "testRuns.defects",
+          "comments",
+          "comments.content"
+        ]
       }
     );
   }
@@ -28,7 +35,7 @@ class TestCaseResolver {
   @Query(returns => [TestCase])
   async getTestCases() {
     return await TestCase.find({
-      relations: ["addedBy"]
+      relations: ["addedBy", "testRuns", "testRuns.defects"]
     });
   }
 
@@ -70,10 +77,6 @@ class TestCaseResolver {
     if (!testCase) {
       throw new Error("TestCase not found");
     }
-    console.dir(
-      testCase.comments.map(c => c.content),
-      { depth: null }
-    );
     const arrRichText = testCase.comments.map(c => c.content);
     arrRichText.push(testCase.description);
     const arrComments = testCase.comments;

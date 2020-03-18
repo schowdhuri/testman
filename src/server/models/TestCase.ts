@@ -84,6 +84,15 @@ class TestCase extends BaseEntity {
     testPlan => testPlan.testCases
   )
   testPlan: TestPlan;
+
+  static getDefects(testCaseId: number) {
+    return this.createQueryBuilder("testCase")
+      .innerJoinAndSelect("testRuns.defects", "defects")
+      .innerJoin("testCase.testRuns", "testRuns")
+      .where("testCase.id = :testCaseId", { testCaseId })
+      // .getSql()
+      .getMany();
+  }
 }
 
 @InputType()
