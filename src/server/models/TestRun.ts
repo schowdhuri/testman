@@ -71,7 +71,7 @@ class TestRun extends BaseEntity {
   )
   defects: Defect[];
 
-  @Field(() => ExecCycle)
+  @Field(type => ExecCycle)
   @ManyToOne(
     type => ExecCycle,
     execCycle => execCycle.testRuns

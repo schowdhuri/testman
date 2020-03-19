@@ -2,9 +2,10 @@ import { In } from "typeorm";
 import { Resolver, Arg, Query, Mutation } from "type-graphql";
 import ExecCycle, {
   CreateExecCycleInput,
-  UpdateExecCycleInput
+  UpdateExecCycleInput,
+  Status
 } from "../models/ExecCycle";
-import TestRun from "../models/TestRun";
+import TestRun, { Status as TestRunStatus } from "../models/TestRun";
 
 @Resolver()
 class ExecCycleResolver {
@@ -36,7 +37,12 @@ class ExecCycleResolver {
 
   @Mutation(returns => ExecCycle)
   async updateExecCycle(@Arg("data") data: UpdateExecCycleInput) {
-    const execCycle = await ExecCycle.findOne({ id: data.id });
+    const execCycle = await ExecCycle.findOne(
+      { id: data.id },
+      {
+        relations: ["testRuns"]
+      }
+    );
     if (!execCycle) {
       throw new Error("ExecCycle not found");
     }
@@ -44,9 +50,62 @@ class ExecCycleResolver {
       data.testRuns = await TestRun.find({
         id: In(data.testRuns)
       });
+    } else {
+      delete data.testRuns;
     }
     Object.assign(execCycle, data);
-    return await execCycle.save();
+    // return await execCycle.save();
+    return execCycle;
+  }
+
+  @Mutation(returns => Boolean)
+  async startExecCycle(@Arg("id") id: number) {
+    const execCycle = await ExecCycle.findOne(
+      { id },
+      {
+        relations: ["testRuns"]
+      }
+    );
+    if (!execCycle) {
+      throw new Error("ExecCycle not found");
+    }
+    if (!execCycle.testRuns || !execCycle.testRuns.length) {
+      throw new Error("ExecCycle is empty");
+    }
+    if (execCycle.status !== Status.NEW) {
+      throw new Error("ExecCycle can't be started");
+    }
+    execCycle.status = Status.IN_PROGRESS;
+    execCycle.startDate = new Date();
+    await execCycle.save();
+    return true;
+  }
+
+  @Mutation(returns => Boolean)
+  async stopExecCycle(@Arg("id") id: number) {
+    const execCycle = await ExecCycle.findOne(
+      { id },
+      {
+        relations: ["testRuns"]
+      }
+    );
+    if (!execCycle) {
+      throw new Error("ExecCycle not found");
+    }
+    if (!execCycle.testRuns || !execCycle.testRuns.length) {
+      throw new Error("ExecCycle is empty");
+    }
+    if (execCycle.status !== Status.IN_PROGRESS) {
+      throw new Error("ExecCycle not in progress");
+    }
+    // check if all TestRuns have been executed
+    if(execCycle.testRuns.find(tr => tr.status === TestRunStatus.NEW)) {
+      throw new Error("There are unfinished TestRuns. ExecCycle can't be stopped")
+    }
+    execCycle.status = Status.COMPLETED;
+    execCycle.endDate = new Date();
+    await execCycle.save();
+    return true;
   }
 
   @Mutation(returns => Boolean)

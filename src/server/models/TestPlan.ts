@@ -42,6 +42,11 @@ class TestPlan extends BaseEntity {
 export class CreateTestPlanInput {
   @Field()
   name: string;
+
+  @Field(type => [Number], {
+    defaultValue: []
+  })
+  testCases: number[];
 }
 
 @InputType()
@@ -51,11 +56,6 @@ export class UpdateTestPlanInput {
 
   @Field()
   name: string;
-
-  @Field(type => [Number], {
-    defaultValue: []
-  })
-  testCases: number[];
 }
 
 export default TestPlan;

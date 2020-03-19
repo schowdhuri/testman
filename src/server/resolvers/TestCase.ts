@@ -35,7 +35,7 @@ class TestCaseResolver {
   @Query(returns => [TestCase])
   async getTestCases() {
     return await TestCase.find({
-      relations: ["addedBy", "testRuns", "testRuns.defects"]
+      relations: ["addedBy", "testRuns"]
     });
   }
 

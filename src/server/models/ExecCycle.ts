@@ -36,14 +36,14 @@ class ExecCycle extends BaseEntity {
   @Column()
   name: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({
     type: "date",
     nullable: true
   })
   startDate: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column({
     type: "date",
     nullable: true
@@ -58,14 +58,15 @@ class ExecCycle extends BaseEntity {
   })
   status: string;
 
-  @Field(() => [TestRun])
+  @Field(type => [TestRun], {
+    defaultValue: []
+  })
   @OneToMany(
     type => TestRun,
     testRun => testRun.execCycle
   )
   testRuns: TestRun[];
 }
-
 
 @InputType()
 export class CreateExecCycleInput {
@@ -75,7 +76,7 @@ export class CreateExecCycleInput {
   @Field(type => [Number], {
     defaultValue: []
   })
-  testRuns: Number[]
+  testRuns: Number[];
 }
 
 @InputType()
@@ -87,9 +88,9 @@ export class UpdateExecCycleInput {
   name: string;
 
   @Field(type => [Number], {
-    defaultValue: []
+    nullable: true
   })
-  testRuns: Number[]
+  testRuns: Number[];
 }
 
 export default ExecCycle;

@@ -11,20 +11,24 @@ class TestPlanResolver {
   @Query(returns => [TestPlan])
   async getTestPlans() {
     return await TestPlan.find({
-      relations: ["testCases.name", "testCases.id"]
+      relations: ["testCases"]
     });
   }
 
   @Query(returns => TestPlan)
   async getTestPlan(@Arg("id") id: number) {
-    return await TestPlan.findOne({
-      relations: ["testCases.name", "testCases.id"]
+    const testPlan = await TestPlan.findOne({ id }, {
+      relations: ["testCases", "testCases.description"]
     });
+    if(!testPlan) {
+      throw new Error("TestPlan not found");
+    }
+    return testPlan;
   }
 
   @Mutation(returns => TestPlan)
   async createTestPlan(@Arg("data") data: CreateTestPlanInput) {
-    if(data.testCases) {
+    if(data.testCases && data.testCases.length) {
       data.testCases = await TestCase.find({
         id: In(data.testCases)
       });
@@ -39,20 +43,20 @@ class TestPlanResolver {
     if(!testPlan) {
       throw new Error("TestPlan not found");
     }
-    if(data.testCases) {
-      data.testCases = await TestCase.find({
-        id: In(data.testCases)
-      });
-    }
     Object.assign(testPlan, data);
     return await testPlan.save();
   }
 
   @Mutation(returns => Boolean)
   async deleteTestPlan(@Arg("id") id: number) {
-    const testPlan = await TestPlan.findOne({ id });
+    const testPlan = await TestPlan.findOne({ id }, {
+      relations: ["testCases"]
+    });
     if(!testPlan) {
       throw new Error("TestPlan not found");
+    }
+    if(testPlan.testCases && testPlan.testCases.length) {
+      throw new Error("TestPlan is not empty. Can't delete");
     }
     await testPlan.remove();
     return true;
