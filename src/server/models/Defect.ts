@@ -12,7 +12,13 @@ import {
   ManyToOne,
   JoinTable
 } from "typeorm";
-import { ObjectType, Field, ID, InputType } from "type-graphql";
+import {
+  ObjectType,
+  Field,
+  ID,
+  InputType,
+  registerEnumType
+} from "type-graphql";
 
 import RichText from "./RichText";
 import User from "./User";
@@ -25,6 +31,22 @@ export enum Status {
   RESOLVED = "Resolved",
   NON_ISSUE = "Non Issue"
 }
+
+export enum Severity {
+  LOW = "LOW",
+  MEDIUM = "MEDIUM",
+  HIGH = "HIGH"
+}
+
+registerEnumType(Status, {
+  name: "Status",
+  description: "Defect Status"
+});
+
+registerEnumType(Severity, {
+  name: "Severity",
+  description: "Defect Severity"
+});
 
 @ObjectType()
 @Entity()
@@ -45,13 +67,21 @@ class Defect extends BaseEntity {
   @Column()
   name: string;
 
-  @Field()
+  @Field(type => Status)
   @Column({
     type: "enum",
     enum: Status,
     default: Status.OPEN
   })
   status: string;
+
+  @Field(type => Severity)
+  @Column({
+    type: "enum",
+    enum: Severity,
+    default: Severity.MEDIUM
+  })
+  severity: string;
 
   @Field(type => RichText)
   @OneToOne(type => RichText, { cascade: true })
@@ -62,7 +92,7 @@ class Defect extends BaseEntity {
   @ManyToOne(type => User)
   raisedBy: User;
 
-  @Field(() => User)
+  @Field(type => User, { nullable: true })
   @ManyToOne(type => User, {
     nullable: true
   })
@@ -111,7 +141,12 @@ export class CreateDefectInput {
   @Field({ nullable: true })
   assignedTo: string;
 
-  @Field(() => [Number])
+  @Field(type => Severity, {
+    defaultValue: Severity.MEDIUM
+  })
+  severity: string;
+
+  @Field(type => [Number])
   testRuns: number[];
 }
 
@@ -125,6 +160,11 @@ export class UpdateDefectInput {
 
   @Field()
   description: string;
+
+  @Field(type => Severity, {
+    defaultValue: Severity.MEDIUM
+  })
+  severity: string;
 
   @Field({ nullable: true })
   raisedBy: string;

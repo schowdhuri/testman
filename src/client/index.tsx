@@ -1,31 +1,23 @@
 import React, { FunctionComponent } from "react";
 import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-import createMiddleware from "redux-saga";
-import { routerMiddleware } from "connected-react-router";
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "@apollo/react-hooks";
 
-// import * as serviceWorker from './serviceWorker';
-import configureStore from "./store"; // eslint-disable-line import/default
+//import * as serviceWorker from './serviceWorker';
 import history from "./utils/history";
-import createRootReducer from "./reducers";
-import sagas from "./sagas";
 import App from "./components/App";
 
 import "./css/index.css";
 
-const sagaMiddleware = createMiddleware();
-const rootReducer = createRootReducer(history);
-const store = configureStore(rootReducer, [
-  sagaMiddleware,
-  routerMiddleware(history)
-]);
-sagaMiddleware.run(sagas);
+const apolloClient = new ApolloClient({
+  uri: "/api/graphql"
+});
 
 const render = (Component: FunctionComponent) =>
   ReactDOM.render(
-    <Provider store={store}>
+    <ApolloProvider client={apolloClient}>
       <Component />
-    </Provider>,
+    </ApolloProvider>,
     document.getElementById("root")
   );
 

@@ -1,16 +1,12 @@
 import React, { FunctionComponent, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Route, Switch } from "react-router-dom";
-import { ConnectedRouter } from "connected-react-router";
+import { Router, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 
 import history from "../utils/history";
-import Todo from "../../types/todo";
-import { getTodos } from "../selectors";
-import CreateTodo from "./CreateTodo";
-import TodoList from "./TodoList";
+import DefectList from "./DefectList";
 
-// import "./App.css";
+import "./App.css";
 
 interface AppProps {
   children: any;
@@ -48,14 +44,13 @@ const Card = styled.div`
 
 // Routes
 export default () => (
-  <ConnectedRouter history={history}>
+  <Router history={history}>
     <Switch>
       <Route path="/" exact>
         <Skeleton>
-          <CreateTodo />
-          <TodoList />
+          <DefectList />
         </Skeleton>
       </Route>
     </Switch>
-  </ConnectedRouter>
+  </Router>
 );

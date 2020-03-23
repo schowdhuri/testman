@@ -3,6 +3,7 @@ import { In } from "typeorm";
 import Defect, { CreateDefectInput, UpdateDefectInput } from "../models/Defect";
 import RichText from "../models/RichText";
 import TestRun from "../models/TestRun";
+import User from "../models/User";
 
 type TestCaseIds = any;
 
@@ -10,7 +11,7 @@ type TestCaseIds = any;
 class DefectResolver {
   @Query(returns => [Defect])
   async getDefects() {
-    return await Defect.find({
+    let defects = await Defect.find({
       relations: [
         "description",
         "raisedBy",
@@ -19,6 +20,7 @@ class DefectResolver {
         "testRuns.testCase"
       ]
     });
+    return defects;
   }
 
   @Query(returns => Defect)
