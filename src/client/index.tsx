@@ -4,9 +4,7 @@ import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 
 //import * as serviceWorker from './serviceWorker';
-import history from "./utils/history";
 import App from "./components/App";
-
 import "./css/index.css";
 
 const apolloClient = new ApolloClient({

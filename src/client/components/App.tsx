@@ -1,24 +1,44 @@
 import React, { FunctionComponent, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import styled from "styled-components";
 
-import history from "../utils/history";
-import DefectList from "./DefectList";
+// import history from "../utils/history";
+import TestCases from "./TestCases/List";
+import ExecCycles from "./ExecCycles/List";
+import DefectList from "./Defects/List";
 
 import "./App.css";
 
 interface AppProps {
-  children: any;
+  children?: any;
 }
 
-const Skeleton: FunctionComponent<AppProps> = (props: AppProps) => {
-  return (
-    <Wrapper>
-      <Card>{props.children}</Card>
-    </Wrapper>
-  );
-};
+const App: FunctionComponent<AppProps> = (props: AppProps) => (
+  <Wrapper>
+    <Card>
+      <Router>
+        <Switch>
+          <Route path="/" exact>
+            <DefectList />
+          </Route>
+          <Route path="/testplan" exact>
+            <TestCases />
+          </Route>
+          <Route path="/testplan/:id">
+            <TestCases />
+          </Route>
+          <Route path="/execcycle" exact>
+            <ExecCycles />
+          </Route>
+          <Route path="/execcycle/:id">
+            <ExecCycles />
+          </Route>
+        </Switch>
+      </Router>
+      </Card>
+  </Wrapper>
+);
 
 const Wrapper = styled.div`
   align-items: center;
@@ -42,15 +62,4 @@ const Card = styled.div`
   }
 `;
 
-// Routes
-export default () => (
-  <Router history={history}>
-    <Switch>
-      <Route path="/" exact>
-        <Skeleton>
-          <DefectList />
-        </Skeleton>
-      </Route>
-    </Switch>
-  </Router>
-);
+export default App;
