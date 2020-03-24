@@ -23,6 +23,14 @@ $ docker-compose -f docker-compose.dev.yml restart
 
 Open `http://localhost:3000`
 
+### node_modules
+Every time there's a change in `package.json` or `yarn.lock`, add
+the `-V` or `--renew-anon-volumes` switch to docker-compose.
+
+From the [docker documentation](https://docs.docker.com/compose/reference/up/), this is used to:
+
+> Recreate anonymous volumes instead of retrieving data from the previous containers.
+
 ## Deploy
 
 1. Create the `.env.prod` file and add `MYSQL_ROOT_PASSWORD=<some password>`
