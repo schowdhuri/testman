@@ -5,6 +5,8 @@ import ExecCycle, {
   UpdateExecCycleInput,
   Status
 } from "../models/ExecCycle";
+
+import Project from "../models/Project";
 import TestRun, { Status as TestRunStatus } from "../models/TestRun";
 
 @Resolver()
@@ -19,14 +21,23 @@ class ExecCycleResolver {
     return await ExecCycle.findOne(
       { id },
       {
-        relations: ["testRuns", "testRuns.testCase", "testRuns.defects"]
+        relations: [
+          "project",
+          "testRuns",
+          "testRuns.testCase",
+          "testRuns.defects"
+        ]
       }
     );
   }
 
   @Mutation(returns => ExecCycle)
   async createExecCycle(@Arg("data") data: CreateExecCycleInput) {
-    if (data.testRuns) {
+    data.project = await Project.findOne({ id: data.project });
+    if(!data.project) {
+      throw new Error("Project not found");
+    }
+    if (data.testRuns && data.testRuns.length) {
       data.testRuns = await TestRun.find({
         id: In(data.testRuns)
       });
@@ -40,13 +51,13 @@ class ExecCycleResolver {
     const execCycle = await ExecCycle.findOne(
       { id: data.id },
       {
-        relations: ["testRuns"]
+        relations: ["project", "testRuns"]
       }
     );
     if (!execCycle) {
       throw new Error("ExecCycle not found");
     }
-    if (data.testRuns) {
+    if (data.testRuns && data.testRuns.length) {
       data.testRuns = await TestRun.find({
         id: In(data.testRuns)
       });
@@ -54,8 +65,7 @@ class ExecCycleResolver {
       delete data.testRuns;
     }
     Object.assign(execCycle, data);
-    // return await execCycle.save();
-    return execCycle;
+    return await execCycle.save();
   }
 
   @Mutation(returns => Boolean)
@@ -99,8 +109,10 @@ class ExecCycleResolver {
       throw new Error("ExecCycle not in progress");
     }
     // check if all TestRuns have been executed
-    if(execCycle.testRuns.find(tr => tr.status === TestRunStatus.NEW)) {
-      throw new Error("There are unfinished TestRuns. ExecCycle can't be stopped")
+    if (execCycle.testRuns.find(tr => tr.status === TestRunStatus.NEW)) {
+      throw new Error(
+        "There are unfinished TestRuns. ExecCycle can't be stopped"
+      );
     }
     execCycle.status = Status.COMPLETED;
     execCycle.endDate = new Date();

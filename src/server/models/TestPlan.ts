@@ -5,10 +5,12 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany
+  OneToMany,
+  ManyToOne
 } from "typeorm";
 import { ObjectType, Field, ID, InputType } from "type-graphql";
 
+import Project from "./Project";
 import TestCase from "./TestCase";
 
 @ObjectType()
@@ -30,6 +32,10 @@ class TestPlan extends BaseEntity {
   @Column()
   name: string;
 
+  @Field(type => Project)
+  @ManyToOne(type => Project, project => project.testPlans)
+  project: Project;
+
   @Field(() => [TestCase])
   @OneToMany(
     type => TestCase,
@@ -47,6 +53,9 @@ export class CreateTestPlanInput {
     defaultValue: []
   })
   testCases: number[];
+
+  @Field(type => Number)
+  project: number;
 }
 
 @InputType()

@@ -4,7 +4,12 @@ import User, { CreateUserInput } from "../models/User";
 @Resolver(() => User)
 class UserResolver {
   @Query(returns => User)
-  async getUser(@Arg("username") username: string) {
+  async getUser(@Arg("id") id: number) {
+    return await User.findOne({ id });
+  }
+
+  @Query(returns => User)
+  async getUserByUsername(@Arg("username") username: string) {
     return await User.findOne({ username });
   }
 

@@ -4,6 +4,8 @@ import TestPlan, {
   CreateTestPlanInput,
   UpdateTestPlanInput
 } from "../models/TestPlan";
+
+import Project from "../models/Project";
 import TestCase from "../models/TestCase";
 
 @Resolver(of => TestPlan)
@@ -18,7 +20,7 @@ class TestPlanResolver {
   @Query(returns => TestPlan)
   async getTestPlan(@Arg("id") id: number) {
     const testPlan = await TestPlan.findOne({ id }, {
-      relations: ["testCases", "testCases.description"]
+      relations: ["project", "testCases", "testCases.description"]
     });
     if(!testPlan) {
       throw new Error("TestPlan not found");
@@ -28,6 +30,10 @@ class TestPlanResolver {
 
   @Mutation(returns => TestPlan)
   async createTestPlan(@Arg("data") data: CreateTestPlanInput) {
+    data.project = await Project.findOne({ id: data.project });
+    if(!data.project) {
+      throw new Error("Project not found");
+    }
     if(data.testCases && data.testCases.length) {
       data.testCases = await TestCase.find({
         id: In(data.testCases)
@@ -39,7 +45,9 @@ class TestPlanResolver {
 
   @Mutation(returns => TestPlan)
   async updateTestPlan(@Arg("data") data: UpdateTestPlanInput) {
-    const testPlan = await TestPlan.findOne({ id: data.id });
+    const testPlan = await TestPlan.findOne({ id: data.id }, {
+      relations: ["project"]
+    });
     if(!testPlan) {
       throw new Error("TestPlan not found");
     }

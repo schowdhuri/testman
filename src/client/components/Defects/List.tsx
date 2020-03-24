@@ -2,23 +2,25 @@ import React, { FunctionComponent, useState, useEffect } from "react";
 import { useQuery } from "@apollo/react-hooks";
 import styled from "styled-components";
 
-import { getDefects } from "../queries";
+import { getDefects } from "../../graphql/queries";
 
 interface DefectListProps {}
 
 const DefectList: FunctionComponent<DefectListProps> = () => {
-  const { loading, error, data } = useQuery(getDefects())
+  const { loading, error, data } = useQuery(getDefects());
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
   // render
   return (
     <List>
-      {data.getDefects.map(defect => (<li>
-        <span>{defect.id}</span>
-        <span>{defect.name}</span>
-        <span>{defect.raisedBy?.name}</span>
-        <span>{defect.assignedTo?.name}</span>
-      </li>))}
+      {data.getDefects.map(defect => (
+        <li key={defect.id}>
+          <span>{defect.id}</span>
+          <span>{defect.name}</span>
+          <span>{defect.raisedBy?.name}</span>
+          <span>{defect.assignedTo?.name}</span>
+        </li>
+      ))}
     </List>
   );
 };

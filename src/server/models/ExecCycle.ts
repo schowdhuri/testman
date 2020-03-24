@@ -5,10 +5,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Column,
-  OneToMany
+  OneToMany,
+  ManyToOne
 } from "typeorm";
 import { ObjectType, ID, Field, InputType } from "type-graphql";
 
+import Project from "./Project";
 import TestRun from "./TestRun";
 
 export enum Status {
@@ -35,6 +37,10 @@ class ExecCycle extends BaseEntity {
   @Field()
   @Column()
   name: string;
+
+  @Field(type => Project)
+  @ManyToOne(type => Project, project => project.execCycles)
+  project: Project;
 
   @Field({ nullable: true })
   @Column({
@@ -77,6 +83,9 @@ export class CreateExecCycleInput {
     defaultValue: []
   })
   testRuns: Number[];
+
+  @Field(type => Number)
+  project: number;
 }
 
 @InputType()

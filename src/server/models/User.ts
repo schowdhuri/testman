@@ -8,12 +8,15 @@ import {
 } from "typeorm";
 import { ObjectType, Field, ID, InputType } from "type-graphql";
 
-
 @Entity()
 @ObjectType()
 class User extends BaseEntity {
   @Field(returns => ID)
   @PrimaryColumn()
+  id: number;
+
+  @Field()
+  @Column({ unique: true })
   username: string;
 
   @Field()

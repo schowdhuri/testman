@@ -3,6 +3,7 @@ import { createConnection } from "typeorm";
 
 import Defect from "../src/server/models/Defect";
 import ExecCycle from "../src/server/models/ExecCycle";
+import Project from "../src/server/models/Project";
 import RichText from "../src/server/models/RichText";
 import TestCase from "../src/server/models/TestCase";
 import TestPlan from "../src/server/models/TestPlan";
@@ -30,6 +31,15 @@ async function initDB() {
   });
   await user.save();
 
+  let project1 = Project.create({
+    name: "Project TestMan",
+    description: RichText.create({
+      value: "Sample Project"
+    }),
+    users: [ user ]
+  });
+  await project1.save();
+
   let testCase1 = TestCase.create({
     name: "tc 01",
     description: RichText.create({
@@ -50,7 +60,8 @@ async function initDB() {
 
   const testPlan = TestPlan.create({
     name: "Test Plan 01",
-    testCases: [testCase1, testCase2]
+    project: project1,
+    testCases: [testCase1, testCase2],
   });
   await testPlan.save();
 
@@ -62,6 +73,7 @@ async function initDB() {
 
   const execCycle = ExecCycle.create({
     name: "Execution Cycle 1",
+    project: project1,
     testRuns: [testRun1]
   });
   await execCycle.save();
@@ -77,12 +89,17 @@ async function initDB() {
   });
   await defect1.save();
 
-  // Read something
-  const result = await Promise.all([
-    TestPlan.find({ relations: ["testCases"] }),
-    ExecCycle.find({ relations: ["testRuns"] }),
-    User.find()
-  ]);
+  // Read it all back
+  const result = await Project.find({
+    relations: [
+      "description",
+      "testPlans",
+      "testPlans.testCases",
+      "execCycles",
+      "execCycles.testRuns",
+      "execCycles.testRuns.defects"
+    ]
+  });
   console.dir(result, { depth: null });
   conn.close();
 }
