@@ -22,7 +22,7 @@ services:
     env_file: .env.dev
     networks:
       - webapp
-    command: yarn start
+    command: sh scripts/watch.sh
     depends_on:
       - db
 networks:
