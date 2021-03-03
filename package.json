@@ -33,7 +33,7 @@
     "passport": "^0.4.0",
     "passport-google-oauth": "^2.0.0",
     "prop-types": "^15.6.0",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "react": "^16.2.0",
     "react-autosize-textarea": "^3.0.2",
     "react-bootstrap": "^0.32.0",
